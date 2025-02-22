@@ -1,64 +1,157 @@
-/* Footer Container */
+.cloud-container {
+  position: relative;
+  width: 100%;
+  height: 300px; /* Adjust height as needed */
+}
+
+.cloud-top {
+  position: absolute;
+  top: -300px; /* Adjust position to go behind the footer */
+  left: 50%; /* Center the cloud horizontally */
+  transform: translateX(-50%); /* Center the cloud horizontally */
+  width: 140%; /* Adjust the width as needed */
+  background: url('./assets/topcloud.png') no-repeat center top;
+  background-size: cover;
+
+}
+
+.curve {
+  position: absolute;
+  top: -150px; 
+  left: 0;
+  width: 100%;
+  background: url('./assets/Subtract.png') no-repeat center top;
+  background-size: cover;
+  z-index: 1; 
+}
+
 .footer {
-    background: rgba(255, 255, 255, 0.9); /* Soft glass effect */
-    backdrop-filter: blur(10px);
-    color: #333;
-    padding: 20px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 15px 15px 0 0;
-    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
-    font-family: "SF Pro Display", sans-serif;
-  }
-  
-  /* Footer Links */
-  .footer-links {
-    list-style: none;
-    display: flex;
-    gap: 12px;
-    padding: 0;
-    margin: 0;
-  }
-  
-  /* Footer Buttons */
-  .footer-button {
-    background: linear-gradient(135deg, #f3f3f3, #e0e0e0);
-    border: none;
-    padding: 10px 16px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    text-transform: capitalize;
-  }
-  
-  /* Hover Effect */
-  .footer-button:hover {
-    background: linear-gradient(135deg, #e8e8e8, #d6d6d6);
-    transform: scale(1.05);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Click Effect */
-  .footer-button:active {
-    transform: scale(0.95);
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Remove Outline on Focus */
-  .footer-button:focus {
-    outline: none;
-  }
-  
-  /* Footer Text Styling */
-  .footer p {
-    margin: 0;
-    font-size: 14px;
-    font-weight: 500;
-    color: #666;
-  }
-  
+  background-color: transparent;
+  color: white;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  position: relative;
+  padding-top: 100px; /* Space for the arc */
+  padding-bottom: 160px; /* Space at the bottom */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+  top: 220px;
+}
+
+.footer::before {
+  content: "";  
+  position: absolute;
+  top: -50px; /* Adjust this to control the curve height */
+  left: 0;
+  width: 100%;
+  height: 110px; /* Adjust to control curvature */
+  background-color: transparent;
+  border-radius: 40% / 50px; /* Creates the curved effect */
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch; /* Stretch all sections to same height */
+  max-width: 1200px;
+  margin: auto;
+  position: relative;
+  z-index: 1;
+  flex-grow: 1;
+  margin-left: 275px;
+}
+
+.footer-section {
+  flex: 1;
+  padding: 0 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distributes content evenly */
+}
+
+.logo-footer {
+  width: 250px; /* Increased width */
+  margin-bottom: 20px;
+}
+
+.contact-info {
+  list-style: none;
+  padding: 0;
+  margin-top: 5px;
+}
+
+.contact-info li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.social-media li {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Add spacing between icon and text */
+  white-space: nowrap; /* Prevents text from wrapping */
+  margin-bottom: 15px;
+
+}
+
+.contact-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.social-media {
+  list-style: none;
+  padding: 0;
+  margin-top: -10px;
+  vertical-align: middle;
+}
+
+.social-media {
+  width: 25px;  /* Adjust icon size */
+  height: 24px;
+  flex-shrink: 0; /* Prevent icons from shrinking */
+}
+
+.social-media a {
+  text-decoration: none; /* Remove underline */
+  color: white; /* Ensure text is white */
+}
+
+.social-media a:hover {
+  color: #fe93b4; /* Change color on hover */
+}
+
+.footer-section2 {
+  flex: 1;
+  padding: 0 20px;
+  text-align: left;
+  margin-top: 57px; /* Add this to move the sections down slightly */
+}
+
+h3 {
+  font-size: 18px;
+  margin-bottom: 50px; /* Increased margin-bottom to add space between header and text */
+  color: white; /* Ensures headings are white */
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 300px;
+  color: white; /* Ensures paragraphs are white */
+}
+
+.cloud-bottom {
+  position: absolute;
+  bottom: -70px; /* Adjust this value to move the bottom cloud down */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110%;
+  background: url('./assets/botcloud.png') no-repeat center bottom;
+  background-size: cover;
+  z-index: 2; /* Places it behind the footer */
+}
