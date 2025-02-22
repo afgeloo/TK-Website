@@ -1,0 +1,71 @@
+/* General Header Styling */
+.header {
+    background: rgba(255, 255, 255, 0.9); /* Light glass effect */
+    backdrop-filter: blur(10px);
+    color: #333;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Logo Styling */
+  .logo {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: capitalize;
+    color: #1e1e1e;
+  }
+  
+  /* Navigation Styling */
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 12px;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Remove unwanted space */
+  .nav-links li {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* iOS-Inspired Button Styling */
+  .nav-button {
+    background: linear-gradient(135deg, #f3f3f3, #e0e0e0);
+    border: none;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    text-transform: capitalize;
+    font-family: "SF Pro Display", sans-serif;
+  }
+  
+  /* Hover Effect */
+  .nav-button:hover {
+    background: linear-gradient(135deg, #e8e8e8, #d6d6d6);
+    transform: scale(1.05);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Click Effect */
+  .nav-button:active {
+    transform: scale(0.95);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Focus Outline Removal */
+  .nav-button:focus {
+    outline: none;
+  }
+  

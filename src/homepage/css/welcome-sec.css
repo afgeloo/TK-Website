@@ -1,0 +1,123 @@
+.welcome-sec {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    max-width: 100%;
+    overflow: hidden;
+    gap: 5px;
+}
+
+
+.welcome1 img {
+    width: clamp(300px, 80vw, 800px); 
+    height: auto;
+    max-width: 100%;
+    transition: transform 0.3s ease-in-out;
+    margin-bottom: -50px;
+}
+
+.cow img {
+    width: clamp(200px, 50vw, 400px);
+    height: auto;
+    max-width: 100%;
+    transition: transform 0.3s ease-in-out;
+    margin-bottom: -30px;
+}
+
+.welcome3 img {
+    width: clamp(300px, 80vw, 800px);
+    height: auto;
+    max-width: 100%;
+    transition: transform 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+.flower-container {
+    width: 100%;
+    overflow: hidden;
+    position: absolute;  
+    top: clamp(450px, 60vh, 500px); 
+    left: 0;
+    height: clamp(50px, 8vh, 70px); 
+    display: flex;
+    align-items: center;
+    pointer-events: none; 
+    z-index: 1000;
+}
+
+.top-layer {
+    top: clamp(480px, 60vh, 530px); 
+    z-index: -1000;
+}
+
+.bottom-layer {
+    top: clamp(530px, 70vh, 570px); 
+    z-index: 1000;
+}
+
+.flowers1 {
+    display: flex;
+    align-items: center;
+    gap: clamp(500px, 15vw, 250px);
+    width: fit-content; 
+}
+
+.flowers2 {
+    display: flex;
+    align-items: center;
+    gap: clamp(500px, 15vw, 250px);
+    width: fit-content; 
+}
+
+.flowers1 img {
+    width: clamp(10px, 2vw, 35px); 
+    height: 35px;
+    opacity: 0.9; 
+}
+
+.flowers2 img {
+    width: clamp(30px, 5vw, 40px); 
+    height: auto;
+    opacity: 0.9; 
+}
+
+@media screen and (max-width: 768px) {
+    .welcome-sec {
+        gap: 10px;
+    }
+
+    .welcome1 img {
+        width: 90vw;
+    }
+
+    .cow img {
+        width: 50vw;
+    }
+
+    .welcome3 img {
+        width: 90vw;
+    }
+
+    .flower-container {
+        top: 50vh;
+        height: 50px;
+    }
+
+    .top-layer {
+        top: 48vh;
+    }
+
+    .bottom-layer {
+        top: 52vh;
+    }
+
+    .flowers {
+        gap: 60px;
+    }
+
+    .flowers img {
+        width: 25px;
+    }
+}
