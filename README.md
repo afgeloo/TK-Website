@@ -1,50 +1,24 @@
-# React + TypeScript + Vite
+# Group 1 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Members:
+- Arcangel, Herson
+- Austero, Abdiel
+- Layson, Dennis S.
+- Palattao, Pauline
+- Pineda, Miguel
+- Revaula, Alexcisz
+- Reyes, France Angelo Joel M.
 
-Currently, two official plugins are available:
+Tara Kabataan provides a wide range of services aimed at addressing critical societal needs. They specialize in disaster relief, offering essential support during emergencies. Additionally, Tara Kabataan advocates for environmental preservation and community beautification, addressing health worker shortages and mobility challenges to make health services more accessible. The organization also promotes comprehensive education aimed at fostering a strong sense of national identity and encouraging creative thinking. Furthermore, Tara Kabataan champions gender equality, ensuring that all genders are respected and valued.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The decision to build a web page for Tara Kabataan stems from their exceptional commitment to community welfare and transformative advocacies. The organization’s ability to collaborate effectively with various partners and stakeholders enhances their impact and reach. The following reasons underscore their suitability for this project:
+- Collaborative Efforts: TK actively partners with local and national organizations to expand its initiatives and create meaningful change.
+- Donation Facilitation: The organization provides a reliable avenue for donations to support their programs and disaster relief efforts.
+- Emergency Support: Tara Kabataan responds swiftly to emergencies, providing critical resources and aid to those in need.
+- Community Engagement: Their blog posts and activities highlight the organization's achievements, initiatives, and the positive changes they bring to communities.
+- Mission-Driven Advocacy: Their focus on youth empowerment, equality, and sustainability aligns with the values that inspire impactful social projects.
 
-## Expanding the ESLint configuration
+This webpage application will feature dynamic functionalities, including a blog, events management, membership and partnership opportunities, a donation platform, and emergency response coordination. The application will also incorporate a user-friendly interface for seamless interaction and an administrative backend for managing content efficiently. Their unwavering commitment to community welfare, combined with their proactive approach to addressing societal issues, makes them an ideal choice for this webpage application project.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
