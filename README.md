@@ -9,6 +9,7 @@
 - Revaula, Alexcisz
 - Reyes, France Angelo Joel M.
 
+# What is TK?
 Tara Kabataan provides a wide range of services aimed at addressing critical societal needs. They specialize in disaster relief, offering essential support during emergencies. Additionally, Tara Kabataan advocates for environmental preservation and community beautification, addressing health worker shortages and mobility challenges to make health services more accessible. The organization also promotes comprehensive education aimed at fostering a strong sense of national identity and encouraging creative thinking. Furthermore, Tara Kabataan champions gender equality, ensuring that all genders are respected and valued.
 
 The decision to build a web page for Tara Kabataan stems from their exceptional commitment to community welfare and transformative advocacies. The organization’s ability to collaborate effectively with various partners and stakeholders enhances their impact and reach. The following reasons underscore their suitability for this project:
