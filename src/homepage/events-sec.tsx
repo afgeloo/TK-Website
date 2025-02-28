@@ -2,7 +2,7 @@ import './css/events-sec.css';
 
 function EventsSec(){
     return (
-        <div className="welcome-sec">
+        <div className="events-sec">
             <h1>Events Here</h1>
             
         </div>
