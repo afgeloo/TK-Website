@@ -5,7 +5,9 @@ import Footer from './footer';
 function UserSide(){
     return (
         <div>
+            <div>
                 <Header />
+            </div>
             <div>
                 <HomePage />
             </div>
