@@ -15,7 +15,7 @@
     height: auto;
     max-width: 100%;
     transition: transform 0.3s ease-in-out;
-    margin-bottom: -100px;
+    margin-bottom: -130px;
 }
 
 .cow img {
@@ -23,7 +23,7 @@
     height: auto;
     max-width: 100%;
     transition: transform 0.3s ease-in-out;
-    margin-bottom: -50px;
+    margin-bottom: -60px;
 }
 
 .welcome3 img {
@@ -48,12 +48,12 @@
 }
 
 .top-layer {
-    top: clamp(480px, 60vh, 530px); 
+    top: clamp(440px, 50vh, 530px); 
     z-index: -1000;
 }
 
 .bottom-layer {
-    top: clamp(530px, 70vh, 570px); 
+    top: clamp(500px, 60vh, 570px); 
     z-index: 500;
 }
 

@@ -1,7 +1,5 @@
 import "./css/header.css";
-import logo from './assets/tarakabataanlogo2.png';
-
-
+import logo from './assets/header/tarakabataanlogo2.png';
 
 const Header = () => {
   return (
@@ -16,7 +14,6 @@ const Header = () => {
           <li><button className="nav-button">Events</button></li>
           <li><button className="nav-button">Blogs</button></li>
           <li><button className="nav-join">Join Now</button></li>
-
         </ul>
       </nav>
     </header>
