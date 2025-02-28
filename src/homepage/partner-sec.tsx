@@ -1,7 +1,6 @@
 import React from "react";
 import Marquee from "react-fast-marquee";
 import "./css/partner-sec.css";
-
 import miami from '../assets/logos/miamilogo.png';
 import bulls from "../assets/logos/bullslogo.png";
 import lakers from "../assets/logos/lakerslogo.png";
@@ -23,8 +22,10 @@ const teamLogos: string[] = [
 
 const PartnerSec: React.FC = () => {
   return (
-    <>~
+    <div className="partner-sec">
+      <>
       <h1 className="PastPartnership-Text">PAST PARTNERSHIPS</h1>
+      <br />
       <div>
       <Marquee speed={100} pauseOnHover loop={0} gradient={false}>
   {teamLogos.map((team, index) => (
@@ -33,11 +34,8 @@ const PartnerSec: React.FC = () => {
     </div>
   ))}
 </Marquee>
-
       </div>
       <hr className="Hr-under-pastpartnership" />
-      <br></br>
-      
       {/* Partner & Member Sections */}
       <div className="partner-member-container">
         <div className="BePartnerMemberSection">
@@ -86,6 +84,8 @@ const PartnerSec: React.FC = () => {
 
       </div>
     </>
+    </div>
+    
   );
 };
 

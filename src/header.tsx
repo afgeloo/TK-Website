@@ -6,9 +6,9 @@ import logo from './assets/tarakabataanlogo2.png';
 const Header = () => {
   return (
     <header className="header">
-<a href="/">
-  <img src={logo} alt="Tarakabataan Logo" className="logo" />
-</a>
+      <a href="/">
+        <img src={logo} alt="Tarakabataan Logo" className="logo" />
+      </a>
       <nav>
         <ul className="nav-links">
           <li><button className="nav-button">About</button></li>

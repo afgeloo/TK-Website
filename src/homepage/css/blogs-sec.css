@@ -1,0 +1,10 @@
+.blogs-sec {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    max-width: 100%;
+    overflow: hidden;
+    gap: 5px;
+}
