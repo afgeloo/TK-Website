@@ -1,3 +1,17 @@
+@font-face {
+    font-family: 'Bogart Trial';
+    src: url('../../assets/fonts/Bogart-Extrabold-trial.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'helvetic';
+    src: url('../../assets/fonts/HelveticaNowText-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
 .welcome-sec {
     display: flex;
     flex-direction: column; 
@@ -69,23 +83,48 @@
 .content-section {
     width: 100%;
     background-color: #4DB1E3; /* Blue background */
-    padding: 100px 20px;
+    padding: 10px 20px;
     text-align: center;
     color: white;
     z-index:1;
     margin-top: -200px;
     margin-bottom: -200px;
+    display: flex;
+    justify-content: center;
+    gap: 100px;
 }
 
 .content-section h2 {
+    font-family: 'Bogart Trial', sans-serif;
     font-size: 2rem;
     margin-bottom: 10px;
 }
 
 .content-section p {
+    font-family: 'helvetic', sans-serif;
     font-size: 1.2rem;
     max-width: 800px;
     margin: 0 auto;
+    text-align: justify;
+    line-height: 2;
+    letter-spacing: 1px;
+}
+
+.tk-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left:100px;
+}
+
+.tk-logo img{
+    width: clamp(200px, 50vw, 500px);
+    height: auto;
+}
+
+.whatsTK{
+    justify-items: left;
+    margin-right: 150px;
 }
 
 /* Moving Flowers */
