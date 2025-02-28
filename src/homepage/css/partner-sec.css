@@ -1,5 +1,5 @@
 .partner-sec {
-  padding: 10px;
+  padding: 0;
   gap: 5px;
 }
 
@@ -48,7 +48,7 @@
 .partner-member-container {
   display: flex;
   justify-content: center;
-  gap: 130px; /* Increased spacing for wider middle space */
+  gap: 130px; 
   margin-top: 30px;
   align-items: flex-start;
 }
@@ -71,15 +71,15 @@
 .BePartnerMemberSection-box {
   position: relative;
   width: 350px;
-  height: 350px; /* Increased height to fit text */
-  padding: 40px 30px; /* Adjust padding for better spacing */
+  height: 350px; 
+  padding: 40px 30px; 
   border-radius: 25px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 15px; /* Controls spacing between items */
+  gap: 15px; 
   background-color: white;
 }
 
@@ -92,7 +92,7 @@
   font-size: 15px;
   cursor: pointer;
   font-family: 'helvetic';
-  border-radius: 25px; /* Increased for rounder button */
+  border-radius: 25px; 
   transition: background-color 0.3s ease;
   margin-top: auto;
   margin-bottom: 20px;

@@ -25,33 +25,29 @@
 
 /* Welcome Images */
 .welcome1 img {
-    width: clamp(300px, 80vw, 800px); 
     height: auto;
-    max-width: 100%;
+    max-width: clamp(300px, 80rem, 800px); 
     transition: transform 0.3s ease-in-out;
     margin-bottom: -130px;
 }
 
 .cow img {
-    width: clamp(200px, 50vw, 400px);
+    max-width: clamp(200px, 50rem, 400px);
     height: auto;
-    max-width: 100%;
     transition: transform 0.3s ease-in-out;
     margin-bottom: -60px;
 }
 
 .welcome3 img {
-    width: clamp(300px, 80vw, 800px);
+    max-width:clamp(300px, 80rem, 800px);
     height: auto;
-    max-width: 100%;
     transition: transform 0.3s ease-in-out;
     margin-top: -100px;
 }
 
-/* Cloud Section */
 .clouds-content-container {
-    margin-top: -150px;
-    width: 100vw; 
+    margin-top: -170px;
+    max-width: 100rem; 
     overflow: hidden; 
     display: flex;
     flex-direction: column;
@@ -61,8 +57,7 @@
 }
 
 .top-cloud {
-    width: 100vw; 
-    max-width: none; 
+    max-width: 100rem; 
     height: auto;
     display: block;
     margin: 0; 
@@ -71,8 +66,8 @@
 }
 
 .bot-cloud {
-    width: 100vw; 
-    max-width: none; 
+    max-width: 100rem; 
+    width: 100%;
     height: auto;
     display: block;
     margin: 0; 
@@ -80,15 +75,19 @@
     z-index: -1;
 }
 
+.content-section-main{
+    max-width: 100%;
+    background-color: #4DB1E3; 
+    padding: 10px 100px 0 30px;
+    margin-bottom: -200px;
+    margin-top: -200px;
+}
+
 .content-section {
-    width: 100%;
-    background-color: #4DB1E3; /* Blue background */
-    padding: 10px 20px;
+    background-color: #4DB1E3; 
     text-align: center;
     color: white;
     z-index:1;
-    margin-top: -200px;
-    margin-bottom: -200px;
     display: flex;
     justify-content: center;
     gap: 100px;
@@ -118,18 +117,47 @@
 }
 
 .tk-logo img{
-    width: clamp(200px, 50vw, 500px);
+    max-width: clamp(200px, 50rem, 500px);
     height: auto;
 }
 
 .whatsTK{
     justify-items: left;
-    margin-right: 150px;
+    margin-right: 80px;
 }
 
-/* Moving Flowers */
+.know-more{
+    display:flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-right: 70px;
+    background-color: #4DB1E3;
+}
+
+.nav-know-more{
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 50px; 
+    padding: 20px 70px 20px 70px; 
+    font-size: 16px;
+    font-weight: 700;
+    font-family: "Helvetica Now Text -Bold", Helvetica, sans-serif;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15); 
+    text-decoration: none;
+}
+
+.nav-know-more:hover {
+    background-color: #bce0fc;
+    transform: scale(1.05); 
+  }
+
 .flower-container {
-    width: 100%;
+    max-width: 100rem;
     overflow: hidden;
     position: absolute;  
     top: clamp(450px, 60vh, 500px); 
@@ -144,53 +172,97 @@
 .top-layer {
     top: clamp(440px, 50vh, 530px); 
     z-index: -1000;
+    max-width: 100rem;
 }
 
 .bottom-layer {
     top: clamp(500px, 60vh, 570px); 
     z-index: 500;
+    max-width: 100rem;
 }
 
 .flowers1, .flowers2 {
     display: flex;
     align-items: center;
-    gap: clamp(500px, 15vw, 250px);
-    width: fit-content; 
+    gap: clamp(500px, 15rem, 250px);
+    max-width: fit-content; 
 }
 
 .flowers1 img {
-    width: clamp(10px, 2vw, 35px); 
+    max-width: clamp(10px, 2rem, 35px); 
     height: 35px;
     opacity: 0.9; 
 }
 
 .flowers2 img {
-    width: clamp(30px, 5vw, 40px); 
+    max-width: clamp(30px, 5rem, 40px); 
     height: auto;
     opacity: 0.9; 
 }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .welcome-sec {
-        gap: 10px;
+@media screen and (max-width: 1024px) {
+    .content-section {
+        flex-wrap: wrap; /* Allows stacking */
+        gap: 50px;
+        padding: 20px;
     }
 
-    .welcome1 img {
-        width: 90vw;
+    .tk-logo {
+        margin-left: 0;
+        justify-content: center;
+    }
+
+    .whatsTK {
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .know-more {
+        justify-content: center;
+        margin-right: 0;
+    }
+    
+    .nav-know-more {
+        padding: 15px 50px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .welcome-sec {
+        padding: 10px;
+        gap: 20px;
+    }
+
+    .welcome1 img,
+    .welcome3 img {
+        max-width: 95rem;
+        margin-bottom: -80px;
     }
 
     .cow img {
-        width: 50vw;
+        max-width: 70rem;
+        margin-bottom: -40px;
     }
 
-    .welcome3 img {
-        width: 90vw;
+    .content-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .content-section p {
+        font-size: 1rem;
+        padding: 0 20px;
+        text-align: center;
+    }
+
+    .nav-know-more {
+        padding: 12px 40px;
+        font-size: 13px;
     }
 
     .flower-container {
         top: 50vh;
-        height: 50px;
+        height: 40px;
     }
 
     .top-layer {
@@ -201,11 +273,30 @@
         top: 52vh;
     }
 
-    .flowers {
-        gap: 60px;
+    .flowers1 img,
+    .flowers2 img {
+        max-width: 20px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .content-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
     }
 
-    .flowers img {
-        width: 25px;
+    .nav-know-more {
+        font-size: 12px;
+        padding: 10px 30px;
+    }
+
+    .flower-container {
+        height: 30px;
+    }
+
+    .flowers1 img,
+    .flowers2 img {
+        max-width: 15px;
     }
 }

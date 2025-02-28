@@ -28,12 +28,12 @@ const PartnerSec: React.FC = () => {
       <br />
       <div>
       <Marquee speed={100} pauseOnHover loop={0} gradient={false}>
-  {teamLogos.map((team, index) => (
-    <div key={index} style={{ padding: "0 30px" }}> 
-      <img src={team} className="past-partnerships-logo" alt={`Team ${index}`} />
-    </div>
-  ))}
-</Marquee>
+        {teamLogos.map((team, index) => (
+          <div key={index} style={{ padding: "0 30px" }}> 
+            <img src={team} className="past-partnerships-logo" alt={`Team ${index}`} />
+          </div>
+        ))}
+      </Marquee>
       </div>
       <hr className="Hr-under-pastpartnership" />
       {/* Partner & Member Sections */}

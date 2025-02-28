@@ -8,8 +8,7 @@
   left: 0;
   display: flex;
   align-items: center;
-  padding: 5 20px;
-  z-index: 1000;
+  z-index: 5000;
   justify-content: space-between;
 }
 
@@ -17,18 +16,16 @@
   height: 80px;
   width: auto;
   object-fit: contain;
-
+  margin-left: 20px;
 }
 
 .nav-links {
   list-style: none;
   display: flex;
   gap: 12px;
-  padding: 50px;
+  padding: 30px;
   margin: 0;
 }
-
-
 
 .nav-button {
   background-color: transparent;
@@ -40,33 +37,33 @@
   cursor: pointer;
   transition: color 0.3s ease-in-out, text-decoration 0.3s ease-in-out;
   text-transform: uppercase;
-  text-decoration: none; /* No underline by default */
+  text-decoration: none; 
   padding: 10px 16px;
 }
 
 .nav-button:hover {
   color: #d94772;
-  text-decoration: underline; /* Underline on hover */
+  text-decoration: underline; 
 }
 
-/* Join Now Button Styling */
 .nav-join {
   background-color: #ff5a89;
   color: white;
   border: none;
-  border-radius: 50px; /* Makes it fully rounded */
-  padding: 12px 30px; /* Adjust padding for size */
+  border-radius: 50px; 
+  padding: 12px 30px; 
   font-size: 16px;
   font-weight: 700;
   font-family: "Helvetica Now Text -Bold", Helvetica, sans-serif;
   text-transform: uppercase;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15); /* Soft shadow for depth */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15); 
+  text-decoration: none;
 }
 
-/* Hover Effect */
+
 .nav-join:hover {
   background-color: #d94772;
-  transform: scale(1.05); /* Slightly enlarges on hover */
+  transform: scale(1.05); 
 }
