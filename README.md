@@ -1,12 +1,12 @@
 # Group 1 
 
 # Members:
-- Arcangel, Herson
-- Austero, Abdiel
+- Arcangel, Herson Fergus
+- Austero, Abdiel R.
 - Layson, Dennis S.
-- Palattao, Pauline
-- Pineda, Miguel
-- Revaula, Alexcisz
+- Palattao, Pauline Janelle C.
+- Pineda, Miguel Ynigo T.
+- Revaula, Alexcszis Rasec T.
 - Reyes, France Angelo Joel M.
 
 # What is TK?
