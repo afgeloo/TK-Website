@@ -1,17 +1,15 @@
 .blogs-sec {
     display: flex;
     flex-direction: column; 
-    justify-content: center;
-    align-items: center;
     padding: 10px;
     max-width: 100%;
     overflow: hidden;
     gap: 5px;
+    padding: 10px 100px 0 100px;
 }
 
 .blogs-header{
-        font-family: 'Bogart Trial', sans-serif;
-        text-align: center;
-        font-size: 30px;
-        font-weight: bold;
+    font-family: 'Bogart Trial', sans-serif;
+    font-size: 30px;
+    font-weight: bold;
 }
