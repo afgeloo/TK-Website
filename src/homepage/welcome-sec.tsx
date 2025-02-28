@@ -9,9 +9,8 @@ function WelcomeSec() {
                 <Marquee gradient={false} speed={50} loop={0}>
                     <div className="flowers1">
                         {[...Array(6)].map((_, index) => (
-                            <img key={index} src="./src/assets/flowers.png" alt="Flower" />
+                            <img key={index} src="./src/assets/homepage/flowers.png" alt="Flower" />
                         ))}
-                        {/* Add an empty space at the end to create a gap */}
                         <div style={{ width: "50px" }}></div>
                     </div>
                 </Marquee>
@@ -20,24 +19,34 @@ function WelcomeSec() {
                 <Marquee gradient={false} speed={90} loop={0} direction="left">
                     <div className="flowers2">
                         {[...Array(6)].map((_, index) => (
-                            <img key={index} src="./src/assets/flowers.png" alt="Flower" />
+                            <img key={index} src="./src/assets/homepage/flowers.png" alt="Flower" />
                         ))}
-                        {/* Add an empty space at the end to create a gap */}
                         <div style={{ width: "50px" }}></div>
                     </div>
                 </Marquee>
             </div>
-            
 
             {/* Existing Content */}
             <div className="welcome1">
-                <img src="./src/assets/welcome.png" alt="Welcome" />
+                <img src="./src/assets/homepage/welcome.png" alt="Welcome" />
             </div>
             <div className="cow">
-                <img src="./src/assets/cow.png" alt="Cow" />
+                <img src="./src/assets/homepage/cow.png" alt="Cow" />
             </div>
             <div className="welcome3">
-                <img src="./src/assets/welcome1.png" alt="Welcome 1" />
+                <img src="./src/assets/homepage/welcome1.png" alt="Welcome 1" />
+            </div>
+
+            {/* Clouds & Content Section */}
+            <div className="clouds-content-container">
+                <img src="./src/assets/homepage/top-cloud.png" className="top-cloud" alt="Top Cloud" />
+
+                {/* Content Area */}
+                <div className="content-section">
+                    <h2>Your Content Here</h2>
+                    <p>This is where you can add your content between the clouds.</p>
+                </div>
+                <img src="./src/assets/homepage/bot-cloud.png" className="bot-cloud" alt="Bottom Cloud" />
             </div>
         </div>
     );

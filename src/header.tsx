@@ -1,4 +1,4 @@
-import "./css/header.css";
+import "./global-css/header.css";
 import logo from './assets/header/tarakabataanlogo2.png';
 
 const Header = () => {

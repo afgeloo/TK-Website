@@ -1,4 +1,4 @@
-import "./css/footer.css";
+import "./global-css/footer.css";
 import logo from './assets/footer/tarakabataanlogo2.png';
 import emailIcon from './assets/footer/email.png';
 import facebookIcon from './assets/footer/facebook.png';
@@ -10,12 +10,10 @@ import cloudTop from './assets/footer/topcloud.png';
 import cloudBottom from './assets/footer/botcloud.png';  
 import curve from './assets/footer/Subtract.png';  
 
-
 function Footer(){
     return (
         <div className="footer-sec">
             <h1>Footer Here</h1>
-            
         </div>
     )
 }
