@@ -3,8 +3,7 @@ import './css/events-sec.css';
 function EventsSec(){
     return (
         <div className="events-sec">
-            <h1>Events Here</h1>
-            
+            <h1 className="events-header">EVENTS</h1> 
         </div>
     )
 }
