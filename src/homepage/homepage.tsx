@@ -1,13 +1,13 @@
 import BlogsSec from "./blogs-sec";
-import EventsSec from "./events-sec";
 import WelcomeSec from "./welcome-sec";
 import PartnerSec from "./partner-sec";
+import EventsSec from "./events-sec";
 
 function HomePage(){
     return(
         <div> 
             <WelcomeSec />
-            <EventsSec />
+            <EventsSec/>
             <BlogsSec />
             <PartnerSec />
         </div>

@@ -1,12 +1,23 @@
+@font-face {
+    font-family: 'Bogart Trial';
+    src: url('../../assets/fonts/Bogart-Extrabold-trial.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'helvetic';
+    src: url('../../assets/fonts/HelveticaNowText-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
 .events-sec {
-    display: flex;
-    flex-direction: column; 
     padding: 10px;
     max-width: 100%;
-    overflow: hidden;
     gap: 5px;
     margin-top: -150px;
-    padding: 10px 100px 0 100px;
+    padding: 20px 100px 0 100px;
 }
 
 .events-header{
@@ -14,4 +25,31 @@
     text-align: start;
     font-size: 30px;
     font-weight: bold;
+}
+
+.events-sec-nav{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+    margin-right: 220px;
+}
+
+.nav-events {
+    background-color: #ff5a89;
+    color: white;
+    border: none;
+    border-radius: 50px; 
+    padding: 12px 70px; 
+    font-size: 14px;
+    font-family: Helvetica, sans-serif;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15); 
+    text-decoration: none;
+  }
+  
+.nav-events:hover {
+    background-color: #d94772;
+    transform: scale(1.05); 
 }

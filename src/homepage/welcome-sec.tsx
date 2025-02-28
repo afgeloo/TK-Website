@@ -2,6 +2,7 @@ import './css/welcome-sec.css';
 import Marquee from "react-fast-marquee";
 import { Link } from "react-router-dom";
 
+
 function WelcomeSec() {
     return (
         <div className="welcome-sec">
@@ -54,7 +55,7 @@ function WelcomeSec() {
                         </div>
                     </div>
                     <div className="know-more">
-                        <Link to="/Join" className="nav-know-more">KNOW MORE</Link>
+                        <Link to="/About" className="nav-know-more">KNOW MORE</Link>
                     </div>
                 </div>
                 <img src="./src/assets/homepage/bot-cloud.png" className="bot-cloud" alt="Bottom Cloud" />

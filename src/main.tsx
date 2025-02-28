@@ -5,12 +5,13 @@ import UserSide from './user-side'
 import EventsPage from './eventspage/eventspage'
 import AboutPage from './aboutpage/aboutpage'
 import ContactPage from './contactpage/contactpage'
+import BlogsPage from './blogspage/blogspage'
+
 import {
   createBrowserRouter,
   RouterProvider,
   Route,
 } from "react-router-dom";
-import BlogsPage from './blogspage/blogspage'
 
 const router = createBrowserRouter([
   {
