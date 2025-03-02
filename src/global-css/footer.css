@@ -6,6 +6,7 @@
   max-width: 100%;
   overflow: hidden;
   gap: 5px;
+  margin-top: -50px;
 }
 
 .footer-section-main{
