@@ -3,8 +3,123 @@
   flex-direction: column; 
   justify-content: center;
   align-items: center;
-  padding: 20px;
   max-width: 100%;
   overflow: hidden;
   gap: 5px;
 }
+
+.footer-section-main{
+  min-width: 100%;
+  min-height: 500px;
+  background-color: #0F82CA;
+  margin-top: -10px; 
+  
+}
+
+.footer-content{
+  margin-top: 50px;
+  display:flex;
+  justify-content: center;
+  gap: 100px;
+  font-family: 'helvetic', sans-serif;
+  color: white;
+  padding-left: 70px;
+}
+
+.footer-left-content {
+  text-align: justify;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px; 
+}
+
+.footer-left-content p {
+  margin: 0; 
+}
+
+.footer-number, .footer-email {
+  display: flex;
+  gap: 10px;
+  align-items: center; 
+}
+
+.footer-number img{
+  width: 20px;
+  height: auto;
+}
+
+.footer-email img{
+  width: 15px;
+  height: auto;
+  margin-left: 4px;
+}
+
+.footer-mid-content{
+  text-align: justify;
+  width: 300px;
+}
+
+.footer-right-content{
+  text-align: justify;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px; 
+}
+
+.footer-right-content p {
+  margin: 0; 
+}
+
+.footer-facebook, .footer-instagram {
+  display: flex;
+  gap: 10px;
+  align-items: center; 
+}
+
+.footer-facebook img, .footer-instagram img{
+  width: 30px;
+  height: auto;
+}
+
+.footer-tk-logo {
+  margin-top: -30px;
+  height: 120px;
+  width: auto;
+  object-fit: contain;
+}
+
+.footer-top-cloud {
+  max-width: 120rem; 
+  height: auto;
+  display: block;
+  margin: 0; 
+  padding: 0;
+  z-index: -1;
+  margin-bottom: -670px;
+}
+
+.footer-mid {
+  display:relative;
+  max-width: 100rem; 
+  height: auto;
+  display: block;
+  margin: 0; 
+  padding: 0;
+  z-index: -1;
+  clip-path: inset(0 0 80% 0); 
+  margin-bottom: -650px;
+}
+
+.footer-bot-cloud {
+  max-width: 105rem;
+  display: block;
+  margin: 0; 
+  padding: 0;
+  z-index: 1;
+  margin-top: -500px;
+}
+
+
+

@@ -1,0 +1,49 @@
+
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #ef84c9, #75aeff);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    z-index: 9999;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .preloader-logo img {
+    width: 100px; 
+    height: auto;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+  }
+  
+  .preloader-text {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    opacity: 0.8;
+    animation: pulse 1.5s infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
+  }
+  
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
