@@ -13,6 +13,7 @@
 
 .past-partnerships-logo:hover {
   filter: grayscale(0%);
+  transform: scale(1.1);
 }
 
 @font-face {
@@ -71,7 +72,7 @@
 .BePartnerMemberSection-box {
   position: relative;
   width: 350px;
-  height: 350px; 
+  min-height: 350px; 
   padding: 40px 30px; 
   border-radius: 25px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -83,69 +84,63 @@
   background-color: white;
 }
 
-
 .button-inside-be-a-partner-member {
-  background-color: #FF5A89;
-  color: #fff;
+  background: linear-gradient(135deg, #ff5a89, #ff94b2);
+  color: white;
   border: none;
+  border-radius: 50px;
   padding: 12px 70px;
   font-size: 15px;
+  font-weight: 700;
+  font-family: "Helvetica Now Text -Bold", Helvetica, sans-serif;
+  text-transform: uppercase;
   cursor: pointer;
-  font-family: 'helvetic';
-  border-radius: 25px; 
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  position: relative;
   margin-top: auto;
   margin-bottom: 20px;
 }
 
+.button-inside-be-a-partner-member:hover {
+  background: linear-gradient(135deg, #d94772, #ff7fa0);
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 12px rgba(255, 90, 137, 0.2);
+}
 
 .circle-inside-be-a-partner-member {
-  width: 100px; /* Adjust size */
+  width: 100px; 
   height: 100px;
-  border-radius: 50%; /* Ensures a perfect circle */
-  border: 4px solid #FF5A89; /* Pink border */
+  border-radius: 50%; 
+  border: 4px solid #FF5A89; 
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white; /* Optional, for contrast */
+  background-color: white; 
   position: absolute;
-  top: 20px; /* Adjust placement inside the box */
-  overflow: hidden; /* 🚀 Clips anything outside the circle */
+  top: 20px; 
+  overflow: hidden; 
 }
 
-
-/* Shared styles 
-.circle-image {
-  
-  object-fit: contain;
-  border-radius: 50%;
-}
-*/
-
-/* Partner Logo (Move Higher) */
 .partner-image {
-  transform: translateY(-15px); /* Adjust as needed */
+  transform: translateY(-15px); 
   width: 108px;
 }
 
-/* Member Logo (Move Even Higher or Lower) */
 .member-image {
-  transform: translateY(-22px); /* Adjust as needed */
+  transform: translateY(-22px); 
   width: 108px;
 }
-
 
 .text-inside-be-a-partner-member-container {
-  text-align: justify; /* Ensures clean text alignment */
+  width: 100%;
+  max-width: 320px;
+  display: block;
+  margin-top: 110px;
+  flex-grow: 1; 
+  text-align: justify;
   font-family: 'helvetic';
-  background-color: white;
-  font-size: 16px;
-  line-height: 1.6; /* Keeps text spacing balanced */
-  padding: 0px 10px; /* Ensures spacing without creating a "box look" */
-  width: 100%; /* Uses full container width */
-  max-width: 320px; /* Prevents text from stretching too wide */
-  display: block; /* Keeps it positioned properly */
-  margin-top:110px ;
 }
 
 .support-tk-title {
@@ -155,41 +150,55 @@
   font-weight: bold;
   margin-top: 50px;
 }
+
 .support-tk-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
   width: 820px;
-  height: 400px;
+  min-height: 400px;
   margin: 20px auto;
-  padding: 30px;
+  padding: 1px 30px 40px 30px;
   border-radius: 25px;
   background-color: white;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
-  position: relative; /* Needed for absolute positioning inside */
-  overflow: hidden; /* Ensures no overflow outside the rounded corners */
+  position: relative; 
+  overflow: hidden; 
 }
 
 .donate-now-section {
-  background-color: #FF5A89;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(135deg, #ff5a89, #ff94b2);
   color: white;
-  font-size: 30px;
-  font-weight: bold;
-  text-align: center;
-  font-family: 'helvetic';
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: "Helvetica Now Text -Bold", Helvetica, sans-serif;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  position: relative;
   padding: 15px 0;
   width: 100%;
   height: 70px;
   position: absolute;
   bottom: 0;
   left: 0;
-  border: none; /* Remove default button border */
-  cursor: pointer; /* Make it look clickable */
-  transition: background-color 0.3s ease-in-out;
+  border: none; 
+  cursor: pointer; 
 }
+
+.donate-now-section:hover {
+  background: linear-gradient(135deg, #d94772, #ff7fa0);
+  box-shadow: 0px 6px 12px rgba(255, 90, 137, 0.2);
+}
+
 .logo-inside-donate-now {
-  height: 35px; /* Adjust as needed */
+  height: 35px; 
   width: auto;
   margin-right: 10px;
 }
@@ -203,16 +212,15 @@
 }
 
 .logo-inside-donate-now-placing {
-  flex: 0 0 40%; /* 45% of the width */
+  flex: 0 0 40%; 
   display: flex;
   justify-content: center;
 }
+
 .logo-inside-donate-now-sizing {
-  width: 100%;
-  max-width: 250px; /* Adjust as needed */
+  width: 300px;
   height: auto;
-  margin-left: -50px;
-  margin-top: 25px;
+  margin-top: -30px;
 }
 
 .support-tk-text {
@@ -222,8 +230,9 @@
   line-height: 1.6;
   text-align: justify;
   background-color: white;
-  margin-left: -100px; /* Moves the text slightly to the left */
-  padding-right: 38px; /* Ensures text doesn’t touch the edge */
+  margin-left: -80px; 
+  padding-right: 38px;
+  padding-bottom: 20px; 
 }
 
 .donate-now-text {
@@ -232,6 +241,4 @@
   color: white;
   font-family: 'helvetic';
   position: relative;
-  top: -3px; /* Moves text slightly higher */
-  
 }

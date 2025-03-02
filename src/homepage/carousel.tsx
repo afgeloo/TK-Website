@@ -48,7 +48,10 @@ export default function Carousel({
                 <span className="description-category">{slide.category}</span>
                 <h2 className="description-title">{slide.title}</h2>
                 <p className="description-date">{slide.date}</p>
-                <p className="description-location">{slide.location}</p>
+                <div className="description-location">
+                  <img src="./src/assets/homepage/loc-pin.png"/>
+                  <p className="description-location-pin">{slide.location}</p>
+                </div>
             </div>
             </div>
           </div>

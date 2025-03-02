@@ -78,9 +78,9 @@ const PartnerSec: React.FC = () => {
           </div>
         </div>
         <button className="donate-now-section">
-  <img src={donateicon} alt="Donate Icon" className="logo-inside-donate-now " />
-  <span className="donate-now-text ">DONATE NOW</span>
-</button>
+          <img src={donateicon} alt="Donate Icon" className="logo-inside-donate-now " />
+          <span className="donate-now-text ">DONATE NOW</span>
+        </button>
 
       </div>
     </>

@@ -42,7 +42,7 @@
 }
 
 .carousel-slide img {
-    width: 100%;
+    max-width: 900px;
     height: 100%;
     object-fit: cover; 
     border-radius: 12px;
@@ -127,7 +127,26 @@
     margin: 0.3rem 0;
 }
 
-.description-date, .description-location {
+.description-date {
     font-size: 0.9rem;
     opacity: 0.8;
 }
+
+.description-location {
+    display: flex;
+    gap: 5px; 
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.description-location img {
+    width: 16px; 
+    height: auto;
+}
+
+.description-location p {
+    margin: 0;
+    padding: 0;
+    font-size: 14px; 
+}
+

@@ -55,7 +55,10 @@ function WelcomeSec() {
                         </div>
                     </div>
                     <div className="know-more">
-                        <Link to="/About" className="nav-know-more">KNOW MORE</Link>
+                        <Link to="/About" className="nav-know-more">
+                        <img src="./src/assets/homepage/bulb.png" alt="Know More" />
+                        KNOW MORE
+                        </Link>
                     </div>
                 </div>
                 <img src="./src/assets/homepage/bot-cloud.png" className="bot-cloud" alt="Bottom Cloud" />
