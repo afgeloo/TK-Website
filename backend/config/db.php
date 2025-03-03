@@ -1,13 +1,14 @@
 <?php
-$servername = "localhost"; 
-$username = "root"; 
-$password = ""; 
-$dbname = ""; 
+$host = "localhost";
+$user = "root";
+$pass = "";
+$dbname = "tkdb";
 
-
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($host, $user, $pass, $dbname);
 
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die(json_encode(["error" => "Connection failed: " . $conn->connect_error]));
 }
+
+header("Content-Type: application/json");
 ?>
