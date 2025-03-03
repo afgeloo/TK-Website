@@ -23,6 +23,33 @@
     gap: 5px;
 }
 
+.wave-svg {
+    width: 100%;
+    max-width: 100rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1000;
+    pointer-events: none;
+}
+
+.wave-container {
+    position: absolute;
+    width: 100%;
+    max-width: 100rem;
+    height: auto;
+    margin-top: 100px;
+    top: 0;
+    left: 0;
+    z-index: -1000;
+}
+
+.wave-path {
+    fill: none;
+    stroke: #4282eae2;
+    stroke-width: 2px;
+}
+
 .welcome1 img {
     height: auto;
     max-width: clamp(300px, 80rem, 800px); 
@@ -35,6 +62,7 @@
     height: auto;
     transition: transform 0.3s ease-in-out;
     margin-bottom: -60px;
+    z-index: 1000;
 }
 
 .welcome3 img {
