@@ -1,5 +1,5 @@
 import "./css/events-sec.css";
-import Carousel from "./carousel";
+import EventsCarousel from "./events-carousel";
 import { Link } from "react-router-dom";
 import { memo } from "react";
 
@@ -41,7 +41,7 @@ const EventsSec: React.FC = memo(() => (
     <div className="events-sec-content">
       <h1 className="events-header">EVENTS</h1>
       <div className="carousel-container">
-        <Carousel slides={slides} autoSlide autoSlideInterval={5000} />
+        <EventsCarousel slides={slides} autoSlide autoSlideInterval={5000} />
       </div>
     </div>
     <div className="events-sec-nav">

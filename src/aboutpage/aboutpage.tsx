@@ -1,5 +1,9 @@
 import Footer from "../footer";
 import Header from "../header";
+import BriefBg from "./briefbg-sec";
+import CoreValue from "./coreval-sec";
+import Council from "./council";
+import VideoSec from "./video-sec";
 
 function AboutPage(){
     return (
@@ -7,8 +11,11 @@ function AboutPage(){
             <div>
                 <Header />
             </div>
-            <div className="about-page-content">
-                <h1 className="about-page-header">ABOUT</h1>
+            <div>
+                <BriefBg />
+                <VideoSec />
+                <CoreValue />
+                <Council />
             </div>
             <div>
                 <Footer />

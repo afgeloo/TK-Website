@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, memo } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";
-import "./css/carousel.css";
+import "./css/events-carousel.css";
 import React from "react";
 
 interface Slide {
@@ -17,7 +17,7 @@ interface CarouselProps {
   autoSlideInterval?: number;
 }
 
-const Carousel: React.FC<CarouselProps> = memo(({ 
+const EventsCarousel: React.FC<CarouselProps> = memo(({ 
   slides, 
   autoSlide = false, 
   autoSlideInterval = 3000 
@@ -79,4 +79,4 @@ const Carousel: React.FC<CarouselProps> = memo(({
   );
 });
 
-export default Carousel;
+export default EventsCarousel;
