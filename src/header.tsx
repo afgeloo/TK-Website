@@ -1,20 +1,32 @@
 import { Link } from "react-router-dom";
 import "./global-css/header.css";
-import logo from './assets/header/tarakabataanlogo2.png';
+import logo from "./assets/header/tarakabataanlogo2.png";
+
+const navLinks = [
+  { path: "/About", label: "About" },
+  { path: "/Contact", label: "Contact" },
+  { path: "/Events", label: "Events" },
+  { path: "/Blogs", label: "Blogs" },
+];
 
 const Header = () => {
   return (
     <header className="header">
-      <a href="/">
+      <Link to="/">
         <img src={logo} alt="Tarakabataan Logo" className="logo" />
-      </a>
+      </Link>
       <nav>
         <ul className="nav-links">
-          <li><Link to="/About" className="nav-button">About</Link></li>
-          <li><Link to="/Contact" className="nav-button">Contact</Link></li>
-          <li><Link to="/Events" className="nav-button">Events</Link></li>
-          <li><Link to="/Blogs" className="nav-button">Blogs</Link></li>
-          <li><Link to="/Join" className="nav-join">Join Now</Link></li>
+          {navLinks.map(({ path, label }) => (
+            <li key={path}>
+              <Link to={path} className="nav-button">
+                {label}
+              </Link>
+            </li>
+          ))}
+          <li>
+            <Link to="/Join" className="nav-join">Join Now</Link>
+          </li>
         </ul>
       </nav>
     </header>

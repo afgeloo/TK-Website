@@ -1,24 +1,25 @@
-import { StrictMode } from "react";
+import { StrictMode, lazy } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./global-css/index.css";
-import App from "./app";
-import HomePage from "./homepage/homepage";
-import EventsPage from "./eventspage/eventspage";
-import AboutPage from "./aboutpage/aboutpage";
-import ContactPage from "./contactpage/contactpage";
-import BlogsPage from "./blogspage/blogspage";
+import App from "./app"; 
+
+const HomePage = lazy(() => import("./homepage/homepage"));
+const EventsPage = lazy(() => import("./eventspage/eventspage"));
+const AboutPage = lazy(() => import("./aboutpage/aboutpage"));
+const ContactPage = lazy(() => import("./contactpage/contactpage"));
+const BlogsPage = lazy(() => import("./blogspage/blogspage"));
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />, 
     children: [
-      { path: "/", element: <HomePage /> },
-      { path: "About", element: <AboutPage /> },
-      { path: "Contact", element: <ContactPage /> },
-      { path: "Events", element: <EventsPage /> },
-      { path: "Blogs", element: <BlogsPage /> },
+      { index: true, element: <HomePage /> },
+      { path: "about", element: <AboutPage /> },
+      { path: "contact", element: <ContactPage /> },
+      { path: "events", element: <EventsPage /> },
+      { path: "blogs", element: <BlogsPage /> },
     ],
   },
 ]);

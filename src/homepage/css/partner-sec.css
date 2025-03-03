@@ -2,6 +2,8 @@
   margin-top: 50px;
   padding: 0;
   gap: 5px;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .past-partnerships-logo {
@@ -44,7 +46,8 @@
   height: 1px;
   background-color: #BFBFBF;
   margin: 20px auto;
-  width: 1400px;
+  width: 90%; 
+  max-width: 1200px;
 }
 
 .partner-member-container {
@@ -242,4 +245,8 @@
   color: white;
   font-family: 'helvetic';
   position: relative;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }

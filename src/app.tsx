@@ -4,37 +4,31 @@ import Preloader from "./preloader";
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
-  const location = useLocation(); 
+  const location = useLocation();
 
   useEffect(() => {
     setLoading(true);
 
-    const minLoadTime = 5000; // Minimum time for preloader (5s)
-    const startTime = Date.now();
+    const MIN_LOAD_TIME = 3000; 
+    const startTime = performance.now();
 
     const handleLoad = () => {
-      const elapsedTime = Date.now() - startTime;
-      const remainingTime = Math.max(0, minLoadTime - elapsedTime);
+      const elapsed = performance.now() - startTime;
+      const delay = Math.max(0, MIN_LOAD_TIME - elapsed);
 
-      setTimeout(() => {
-        setLoading(false);
-      }, remainingTime);
+      requestAnimationFrame(() => setTimeout(() => setLoading(false), delay));
     };
 
     if (document.readyState === "complete") {
       handleLoad();
     } else {
-      window.addEventListener("load", handleLoad);
+      window.addEventListener("load", handleLoad, { once: true });
     }
 
     return () => window.removeEventListener("load", handleLoad);
-  }, [location.pathname]); 
+  }, [location.key]);
 
-  return loading ? <Preloader /> : (
-    <div>
-      <Outlet /> {/* This will load the correct page */}
-    </div>
-  );
+  return loading ? <Preloader /> : <Outlet />;
 };
 
 export default App;

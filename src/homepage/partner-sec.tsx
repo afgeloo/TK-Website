@@ -1,7 +1,8 @@
 import React from "react";
 import Marquee from "react-fast-marquee";
 import "./css/partner-sec.css";
-import miami from '../assets/logos/miamilogo.png';
+
+import miami from "../assets/logos/miamilogo.png";
 import bulls from "../assets/logos/bullslogo.png";
 import lakers from "../assets/logos/lakerslogo.png";
 import celtics from "../assets/logos/celticslogo.png";
@@ -12,30 +13,26 @@ import warriors from "../assets/logos/warriorslogo.png";
 import partnerLogo from "../assets/logos/tklogo1.png";
 import memberLogo from "../assets/logos/tklogo2.png";
 import tklogo from "../assets/logos/tklogo3.png";
-import donateicon from "../assets/logos/donateicon.png"; 
+import donateicon from "../assets/logos/donateicon.png";
 
-
-const teamLogos: string[] = [
-  miami, celtics, bulls, lakers, spurs, thunder, suns, warriors,
-];
-
+const teamLogos: string[] = [miami, celtics, bulls, lakers, spurs, thunder, suns, warriors];
 
 const PartnerSec: React.FC = () => {
   return (
     <div className="partner-sec">
-      <>
       <h1 className="PastPartnership-Text">PAST PARTNERSHIPS</h1>
       <br />
       <div>
-      <Marquee speed={100} pauseOnHover loop={0} gradient={false}>
-        {teamLogos.map((team, index) => (
-          <div key={index} style={{ padding: "0 30px" }}> 
-            <img src={team} className="past-partnerships-logo" alt={`Team ${index}`} />
-          </div>
-        ))}
-      </Marquee>
+        <Marquee speed={100} pauseOnHover loop={0} gradient={false}>
+          {teamLogos.map((team, index) => (
+            <div key={index} style={{ padding: "0 30px" }}>
+              <img src={team} className="past-partnerships-logo" alt={`Team ${index}`} />
+            </div>
+          ))}
+        </Marquee>
       </div>
       <hr className="Hr-under-pastpartnership" />
+
       {/* Partner & Member Sections */}
       <div className="partner-member-container">
         <div className="BePartnerMemberSection">
@@ -78,14 +75,11 @@ const PartnerSec: React.FC = () => {
           </div>
         </div>
         <button className="donate-now-section">
-          <img src={donateicon} alt="Donate Icon" className="logo-inside-donate-now " />
-          <span className="donate-now-text ">DONATE NOW</span>
+          <img src={donateicon} alt="Donate Icon" className="logo-inside-donate-now" />
+          <span className="donate-now-text">DONATE NOW</span>
         </button>
-
       </div>
-    </>
     </div>
-    
   );
 };
 
