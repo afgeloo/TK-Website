@@ -8,9 +8,7 @@ import VideoSec from "./video-sec";
 function AboutPage(){
     return (
         <div className="about-page">
-            <div>
                 <Header />
-            </div>
             <div>
                 <BriefBg />
                 <VideoSec />
