@@ -1,17 +1,16 @@
-import Footer from "../footer";
+
 import Header from "../header";
+import EmailUs from "./emailus";
+import GetInTouch from "./getintouch";
+import Contact from "./tryemail";
 
 function ContactPage(){
     return (
         <div className="contact-page">
-            <div>
                 <Header />
-            </div>
-            <div className="contact-page-content">
-                <h1 className="contact-page-header">CONTACT</h1>
-            </div>
             <div>
-                <Footer />
+                <EmailUs/>
+                <GetInTouch/>
             </div>
         </div>
     )
