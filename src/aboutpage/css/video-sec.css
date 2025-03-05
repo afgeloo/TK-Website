@@ -36,7 +36,6 @@
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Video Container with Gradient */
 .about-video-container {
   display: flex;
   justify-content: center;
@@ -49,7 +48,6 @@
   max-width: 1000px;
 }
 
-/* Stylish Video Frame */
 .custom-video-frame {
   width: 100%;  
   max-width: 1000px;  

@@ -42,7 +42,7 @@ const BlogsSec: React.FC = () => {
     <div className="blogs-sec">
       <h1 className="blogs-header">BLOGS</h1>
       <div className="blogs-bg">
-        <img src="./src/assets/homepage/blogs-bg.png" alt="Blogs Background" />
+        <img className="blogs-bg-tk" src="./src/assets/homepage/blogs-bg.png" alt="Blogs Background" />
         <div className="blogs-content">
           <div className="blogs-container">
             {blogData.map(({ id, image, title, category, description }) => (

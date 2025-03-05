@@ -13,19 +13,19 @@
   }
 
 .welcome-sec {
+    margin-top: 30px;
     display: flex;
     flex-direction: column; 
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    max-width: 100%;
+    width: 100%;
     overflow: hidden;
     gap: 5px;
 }
 
 .wave-svg {
     width: 100%;
-    max-width: 100rem;
+    min-width: 100rem;
     position: absolute;
     top: 0;
     left: 0;
@@ -36,7 +36,7 @@
 .wave-container {
     position: absolute;
     width: 100%;
-    max-width: 100rem;
+    min-width: 100rem;
     height: auto;
     margin-top: 100px;
     top: 0;
@@ -73,8 +73,9 @@
 }
 
 .clouds-content-container {
-    margin-top: -170px;
-    max-width: 100rem; 
+    margin-top: -150px;
+    min-width: 100rem; 
+    width: 100%;
     overflow: hidden; 
     display: flex;
     flex-direction: column;
@@ -84,7 +85,8 @@
 }
 
 .top-cloud {
-    max-width: 100rem; 
+    min-width: 100rem; 
+    width: 100%;
     height: auto;
     display: block;
     margin: 0; 
@@ -93,7 +95,7 @@
 }
 
 .bot-cloud {
-    max-width: 100rem; 
+    min-width: 100rem; 
     width: 100%;
     height: auto;
     display: block;
@@ -103,11 +105,12 @@
 }
 
 .content-section-main{
-    max-width: 100%;
     background-color: #4DB1E3; 
     padding: 10px 100px 0 30px;
-    margin-bottom: -200px;
-    margin-top: -200px;
+    margin-bottom: -235px;
+    margin-top: -235px;
+    min-width: 100rem; 
+    width: 100%;
 }
 
 .content-section {
@@ -118,6 +121,7 @@
     display: flex;
     justify-content: center;
     gap: 100px;
+    
 }
 
 .content-section h2 {
@@ -191,10 +195,11 @@
 }
 
 .flower-container {
-    max-width: 100rem;
+    min-width: 120rem;
+    max-width: 120rem;
     overflow: hidden;
     position: absolute;  
-    top: clamp(450px, 60vh, 500px); 
+    top: 450px;
     left: 0;
     height: clamp(50px, 8vh, 70px); 
     display: flex;
@@ -204,15 +209,17 @@
 }
 
 .top-layer {
-    top: clamp(440px, 50vh, 530px); 
+    top: 440px;
     z-index: -1000;
-    max-width: 100rem;
+    min-width: 120rem;
+    max-width: 120rem;
 }
 
 .bottom-layer {
-    top: clamp(500px, 60vh, 570px); 
+    top: 500px;
     z-index: 500;
-    max-width: 100rem;
+    min-width: 120rem;
+    max-width: 120rem;
 }
 
 .flowers1, .flowers2 {

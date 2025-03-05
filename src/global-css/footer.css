@@ -18,7 +18,7 @@
 }
 
 .footer-content{
-  margin-top: 50px;
+  margin-top: 30px;
   display:flex;
   justify-content: center;
   gap: 100px;
@@ -98,28 +98,28 @@
   margin: 0; 
   padding: 0;
   z-index: -1;
-  margin-bottom: -670px;
+  margin-bottom: -720px;
 }
 
 .footer-mid {
   display:relative;
-  max-width: 100rem; 
+  max-width: 120rem; 
   height: auto;
   display: block;
   margin: 0; 
   padding: 0;
   z-index: -1;
-  clip-path: inset(0 0 80% 0); 
-  margin-bottom: -650px;
+  margin-bottom: -750px;
 }
 
 .footer-bot-cloud {
-  max-width: 105rem;
+  max-width: 140rem;
+  min-width: 130rem;
   display: block;
   margin: 0; 
   padding: 0;
   z-index: 1;
-  margin-top: -500px;
+  margin-top: -650px;
 }
 
 

@@ -14,7 +14,7 @@
 
 .briefbg-sec {
     padding: 10px;
-    max-width: 100%;
+    width: 100%;
     gap: 5px;
     padding: 0;
     margin-top: 100px;
@@ -27,9 +27,9 @@
 
 .briefbg-carousel-bg {
     padding: 0;
-    margin-top: 150px;
-    width: 100%;
-    max-width: 100rem;
+    margin-top: 50px;
+    min-width: 120rem;
+    max-width: 120rem;
     display: flex;
     justify-content: center;
     align-items: center;
