@@ -1,18 +1,16 @@
 <?php
-include 'db.php';
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json");
 
-$sql = "SELECT * FROM events";
-$result = $conn->query($sql);
+include "../config/db.php";
 
-if ($result->num_rows > 0) {
-    $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
-    }
-    echo json_encode($data);
-} else {
-    echo json_encode(["message" => "No data found"]);
+$result = $conn->query("SELECT * FROM events");
+$data = [];
+
+while ($row = $result->fetch_assoc()) {
+    $data[] = $row;
 }
 
+echo json_encode($data);
 $conn->close();
 ?>
