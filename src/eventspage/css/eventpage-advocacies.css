@@ -1,0 +1,259 @@
+@font-face {
+    font-family: 'Bogart Trial';
+    src: url('../../assets/fonts/Bogart-Extrabold-trial.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'helvetic';
+    src: url('../../assets/fonts/HelveticaNowText-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  
+  .eventspage-header-container {
+    display: flex;
+    justify-content: space-between; /* Ensures items go to opposite sides */
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 20px;
+}
+
+.eventspage-header {
+    font-family: 'Bogart Trial', sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    margin-left: 150px;
+    margin-bottom: 10px;
+    margin-top: 50px;
+    
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; 
+    flex-shrink: 0;
+    margin-right: 200px; 
+  
+}
+
+
+
+.search-input-eventspage {
+  width: 0;
+  opacity: 0;
+  padding: 6px 0;
+  margin-right: 8px;
+  border: none;
+  border-radius: 20px;
+  background-color: #4DB1E3;
+  color: white;
+  font-size: 14px;
+  outline: none;
+  transition: width 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+  pointer-events: none;
+  
+}
+
+.search-icon-eventspage {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+/* Hover effect for showing the input */
+.search-wrapper:hover .search-input-eventspage {
+  width: 200px;
+  opacity: 1;
+  padding: 6px 10px;
+  pointer-events: auto;
+}
+
+.advocacies-slider {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 20px 0;
+  scrollbar-width: none; /* Firefox */
+  justify-content: center;
+
+}
+
+.advocacies-slider::-webkit-scrollbar {
+  height: 8px;
+}
+
+
+.advocacies-slider::-webkit-scrollbar-thumb {
+  background: #ccc; /* Color of the scrollbar */
+  border-radius: 10px;
+}
+
+
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(157, 42, 42, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+
+.advocacy-card {
+  border-radius: 15px; /* Rounded corners */
+  padding: 20px;
+  width: 350px; /* Adjust width as needed */
+  color: white;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the left */
+  gap: 10px; /* Space between elements */
+  margin: 10px;
+}
+.advocacy-card {
+  transition: all 0.3s ease-in-out; /* Smooth transition */
+  transform: scale(1); /* Default size */
+}
+
+/* Default Card Styles */
+.advocacy-card.kalusugan {
+  background-color: white;
+  color: black;
+  border: 3px solid #FF7474;
+}
+
+.advocacy-card.kalikasan {
+  background-color: white;
+  color: black;
+  border: 3px solid #42BF81;
+}
+
+.advocacy-card.karunungan {
+  background-color: white;
+  color: black;
+  border: 3px solid #74B0FF;
+}
+
+.advocacy-card.kasarian {
+  background-color: white;
+  color: black;
+  border: 3px solid #FFB4EC;
+}
+
+.advocacy-card.kultura {
+  background-color: white;
+  color: black;
+  border: 3px solid #ECE05C;
+}
+
+
+/* Hover Effect */
+.advocacy-card:hover {
+  transform: scale(1.05); /* Slight enlargement */
+  color: rgb(255, 255, 255) !important; /* Ensures text turns black */
+}
+
+/* Hover Color Fill for Each Card */
+.advocacy-card.kalusugan:hover {
+  background-color: #FF7474;
+  border-color: #FF7474;
+}
+
+.advocacy-card.kalikasan:hover {
+  background-color: #42BF81;
+  border-color: #42BF81;
+}
+
+.advocacy-card.karunungan:hover {
+  background-color: #74B0FF;
+  border-color: #74B0FF;
+}
+
+.advocacy-card.kasarian:hover {
+  background-color: #FFB4EC;
+  border-color: #FFB4EC;
+}
+
+.advocacy-card.kultura:hover {
+  background-color: #ECE05C;
+  border-color: #ECE05C;
+}
+
+/* Icon Container */
+.advocacy-icon-container {
+  position: relative;
+  width: 70px; /* Keeps icon size */
+  height: 70px;
+  display: flex;
+  align-items: center; /* Center vertically */
+  padding: 10px;
+  justify-content: center; /* Center horizontally */
+}
+
+.advocacy-icon-container .hover-icon {
+  position: absolute;
+  width: 70px; /* Maintain icon size */
+  height: 70px;
+  object-fit: contain;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
+}
+
+/* Show hover icon and hide default on hover */
+.advocacy-card:hover .default-icon {
+  opacity: 0;
+}
+
+.advocacy-card:hover .hover-icon {
+  opacity: 1;
+}
+
+
+.advocacy-icon-container .default-icon {
+  position: absolute;
+  width: 70px; /* Maintain icon size */
+  height: 70px;
+  object-fit: contain;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
+}
+
+.advocacy-category {
+  font-family: 'Bogart Trial', sans-serif;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.advocacy-title {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-top: 5px;
+}
+
+.advocacies-slider::-webkit-scrollbar {
+  height: 8px;
+}
+
+.custom-divider {
+  border: none;
+  height: 1px;
+  background-color: #BFBFBF;
+  margin: 20px auto;
+  width: 90%; 
+  max-width: 1200px;
+}

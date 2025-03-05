@@ -9,7 +9,7 @@ const App: React.FC = () => {
   useEffect(() => {
     setLoading(true);
 
-    const MIN_LOAD_TIME = 3000; 
+    const MIN_LOAD_TIME = 1000; // 3000 
     const startTime = performance.now();
 
     const handleLoad = () => {
