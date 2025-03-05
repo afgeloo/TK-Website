@@ -40,11 +40,12 @@ const blogData: Blog[] = [
 const BlogsSec: React.FC = () => {
   return (
     <div className="blogs-sec">
-      <h1 className="blogs-header">BLOGS</h1>
       <div className="blogs-bg">
         <img className="blogs-bg-tk" src="./src/assets/homepage/blogs-bg.png" alt="Blogs Background" />
         <div className="blogs-content">
-          <div className="blogs-container">
+          <div className="blogs-container-sec">
+            <h1 className="blogs-header">BLOGS</h1>
+            <div className="blogs-container">
             {blogData.map(({ id, image, title, category, description }) => (
               <div key={id} className="blog-box">
                 <div className="blogs-image-container">
@@ -61,6 +62,7 @@ const BlogsSec: React.FC = () => {
                 </div>
               </div>
             ))}
+            </div>
           </div>
           <div className="blogs-sec-nav">
             <Link to="/Blogs" className="nav-blogs">

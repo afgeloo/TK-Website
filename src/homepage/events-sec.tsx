@@ -43,12 +43,12 @@ const EventsSec: React.FC = memo(() => (
       <div className="carousel-container">
         <EventsCarousel slides={slides} autoSlide autoSlideInterval={5000} />
       </div>
-    </div>
-    <div className="events-sec-nav">
+      <div className="events-sec-nav">
       <Link to="/Events" className="nav-events">
         <img src={`${assetsPath}calendar.png`} alt="Calendar Icon" />
         SEE MORE
       </Link>
+    </div>
     </div>
   </div>
 ));

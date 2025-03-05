@@ -16,8 +16,8 @@
     overflow: hidden;
     position: relative;
     width: 100%;
-    max-width: 900px; 
-    height: 500px; 
+    max-width: 1000px; 
+    height: 600px; 
     margin: auto;
     border-radius: 12px; 
     background: transparent;
@@ -42,7 +42,7 @@
 }
 
 .carousel-slide img {
-    max-width: 900px;
+    max-width: 1000px;
     height: 100%;
     object-fit: cover; 
     border-radius: 12px;
