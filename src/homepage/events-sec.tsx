@@ -3,6 +3,7 @@ import EventsCarousel from "./events-carousel";
 import { Link } from "react-router-dom";
 import { memo } from "react";
 
+
 const assetsPath = "./src/assets/homepage/";
 
 const slides = [
