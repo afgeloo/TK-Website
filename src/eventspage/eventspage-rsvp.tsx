@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";  // Import navigation hook
+import { useNavigate } from "react-router-dom"; 
 import { fetchEvents } from "./mockServer";
 import "./css/eventpage-rsvp.css";
 import locationIconeventspage from "../assets/eventspage/Location-eventspage.png";
+import { Link } from "react-router-dom";  
+import EventDetails from "./eventpage-details"; // Import EventDetails component
+
 
 function EventsPageRSVP() {
     const [events, setEvents] = useState([]);
-    const navigate = useNavigate(); // Initialize navigation function
+    const [selectedEvent, setSelectedEvent] = useState(null);
 
     useEffect(() => {
         fetchEvents().then((data) => {
@@ -14,6 +17,20 @@ function EventsPageRSVP() {
             setEvents(data);
         });
     }, []);
+
+    const handleViewDetails = (event) => {
+        setSelectedEvent(event);
+    };
+
+    const handleBack = () => {
+        setSelectedEvent(null);
+    };
+
+    if (selectedEvent) {
+        return (
+            <EventDetails event={selectedEvent} onBack={handleBack} />
+        );
+    }
 
     return (
         <div className="eventsrsvp-grid">
@@ -29,11 +46,9 @@ function EventsPageRSVP() {
                     </p>
                     <div className="event-buttons">
                         <button className="eventrsvp-button">RSVP</button>
-
-                        {/* View Details Button Navigates to Event Details Page */}
                         <button 
                             className="detailsevent-button"
-                            onClick={() => navigate(`/event/${event.id}`)}
+                            onClick={() => handleViewDetails(event)}
                         >
                             View Details
                         </button>
