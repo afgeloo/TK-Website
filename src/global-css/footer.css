@@ -43,6 +43,7 @@
   display: flex;
   gap: 10px;
   align-items: center; 
+  margin-left: 20px;
 }
 
 .footer-number img{
