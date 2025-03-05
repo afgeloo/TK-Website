@@ -17,8 +17,6 @@
     flex-direction: column;
 }
 
-
-
 /* Hover effect */
 /* .event-card:hover {
     box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.2);
@@ -39,7 +37,6 @@
     font-weight: bold;
     margin: 10px 0;
     margin-bottom: -5px; /* Reduce spacing below */
-
 }
 
 .event-category {
@@ -50,7 +47,6 @@
     margin-bottom: -5px; /* Reduce spacing below */
 }
 
-
 .event-date,
 .event-location {
     font-size: 15px;
@@ -59,7 +55,6 @@
     align-items: center;
     gap: 2px;
 }
-
 
 .locationevent-icon {
     width: 25px;
@@ -103,4 +98,43 @@
 
 .detailsevent-button:hover {
     color: #555; /* Darker gray */
+}
+
+.eventsrsvp-container {
+    width: 100%; /* Utilize the full width of the screen */
+    margin: auto;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between elements */
+    margin-bottom: 20px; /* Space below search bar */
+    justify-content: flex-start; /* Align search bar to the left */
+}
+
+.search-icon-eventspage {
+    width: 30px;
+    height: 30px;
+}
+
+.search-input-eventspage {
+    width: 200px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #f9f9f9;
+    color: black;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-dropdown {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #f9f9f9;
+    color: black;
+    font-size: 14px;
+    outline: none;
 }

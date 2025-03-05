@@ -11,6 +11,7 @@ function Eventspage() {
                         <Header />
             <Advocacies />
             <EventsPageRSVP />
+            <PastEvents />
             <Footer />
         </div>
     );
