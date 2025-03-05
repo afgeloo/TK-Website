@@ -45,33 +45,20 @@
 
 
 .search-input-eventspage {
-  width: 0;
-  opacity: 0;
-  padding: 6px 0;
-  margin-right: 8px;
-  border: none;
+  width: 200px; /* Ensure the textbox is always visible */
+  padding: 6px 10px;
+  border: 1px solid #ccc;
   border-radius: 20px;
   background-color: #4DB1E3;
   color: white;
   font-size: 14px;
   outline: none;
-  transition: width 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
-  pointer-events: none;
-  
 }
 
 .search-icon-eventspage {
   width: 30px;
   height: 30px;
   cursor: pointer;
-}
-
-/* Hover effect for showing the input */
-.search-wrapper:hover .search-input-eventspage {
-  width: 200px;
-  opacity: 1;
-  padding: 6px 10px;
-  pointer-events: auto;
 }
 
 .advocacies-slider {
@@ -250,10 +237,13 @@
 }
 
 .custom-divider {
-  border: none;
-  height: 1px;
-  background-color: #BFBFBF;
-  margin: 20px auto;
-  width: 90%; 
-  max-width: 1200px;
+  border-top: 2px solid #E5E7EB;
+  width: 100%;
+  margin: 16px 0;
+  align-self: center; /* Center the divider */
+}
+
+.events-page {
+  padding-left: 150px; 
+  padding-right: 150px; /* Add padding to align with other components */
 }

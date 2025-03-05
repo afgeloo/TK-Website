@@ -12,8 +12,13 @@ function Eventspage() {
                        {/* <Header />
                        <Advocacies /> */}
             <EventsPageRSVP />
+<<<<<<< HEAD
             {/* <Detailspage /> */}
             {/* <Footer /> */}
+=======
+            <PastEvents />
+            <Footer />
+>>>>>>> b7a2e9c19bb013c93e3503885ae10c2efde26757
         </div>
     );
 }
