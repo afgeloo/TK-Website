@@ -196,3 +196,32 @@
   border: 1px solid black;
   cursor: pointer;
 }
+
+.see-more-button {
+  background: #f04f88; /* Pink */
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: 2px solid #f04f88; /* Border to match background */
+  border-radius: 20px;
+  cursor: pointer;
+  display: block;
+  width: 150px;
+  text-align: center;
+  margin: 20px auto;
+  font-weight: bold;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+
+}
+
+/* When Clicking "See Less" (White Background, Pink Text) */
+.see-more-button.see-less {
+  background: white;
+  color: #f04f88; /* Pink text */
+  border: 2px solid #f04f88; /* Keeps border visible */
+}
+
+/* Click Animation */
+.see-more-button:active {
+  transform: scale(0.95);
+}

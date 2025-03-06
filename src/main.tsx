@@ -1,12 +1,11 @@
-import { StrictMode, lazy } from "react";
+import { StrictMode, lazy } from "react"; // Added lazy import
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./global-css/index.css";
-import App from "./app"; 
+import App from "./app";
 
 const HomePage = lazy(() => import("./homepage/homepage"));
 const EventsPage = lazy(() => import("./eventspage/eventspagehome"));
-const EventDetails = lazy(() => import("./eventspage/eventpage-details")); // ✅ Import Event Details
 const AboutPage = lazy(() => import("./aboutpage/aboutpage"));
 const ContactPage = lazy(() => import("./contactpage/contactpage"));
 const BlogsPage = lazy(() => import("./blogspage/blogspage"));
@@ -14,13 +13,12 @@ const BlogsPage = lazy(() => import("./blogspage/blogspage"));
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />, 
+    element: <App />,
     children: [
       { index: true, element: <HomePage /> },
       { path: "about", element: <AboutPage /> },
       { path: "contact", element: <ContactPage /> },
       { path: "events", element: <EventsPage /> },
-      { path: "event/:id", element: <EventDetails /> }, // ✅ Correct Path
       { path: "blogs", element: <BlogsPage /> },
     ],
   },

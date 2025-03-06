@@ -54,18 +54,7 @@ function EventsPageadvocacies() {
             <div className="eventspage-content">
                 <h1 className="eventspage-header">EVENTS AND ADVOCACIES</h1>
 
-                <div className="search-wrapper">
-                    <input
-                        type="text"
-                        className="search-input-eventspage"
-                        placeholder="Search in conversation"
-                    />
-                    <img
-                        src={searchIconEventspage}
-                        alt="Search"
-                        className="search-icon-eventspage"
-                    />
-                </div>
+                
 
                 <div className="advocacies-slider">
                     {slidesadvocacies.map((slide, index) => (

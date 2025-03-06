@@ -33,33 +33,7 @@
     
 }
 
-.search-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end; 
-    flex-shrink: 0;
-    margin-right: 200px; 
-  
-}
 
-
-
-.search-input-eventspage {
-  width: 200px; /* Ensure the textbox is always visible */
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  background-color: #4DB1E3;
-  color: white;
-  font-size: 14px;
-  outline: none;
-}
-
-.search-icon-eventspage {
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-}
 
 .advocacies-slider {
   display: flex;
@@ -101,7 +75,7 @@
 .advocacy-card {
   border-radius: 15px; /* Rounded corners */
   padding: 20px;
-  width: 350px; /* Adjust width as needed */
+  width: 300px; /* Adjust width as needed */
   color: white;
   font-family: 'Arial', sans-serif;
   box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);

@@ -4,6 +4,7 @@ import Header from "../header";
 import EventsPageRSVP from "./eventspage-rsvp";
 // import Eventrouter from "./eventrouter";
 import Detailspage from "./eventpage-details"; // Corrected import path
+import Pastevents from "./eventspage-pastevents"; // Corrected import path
 
 
 function Eventspage() {
@@ -12,13 +13,9 @@ function Eventspage() {
                        {/* <Header />
                        <Advocacies /> */}
             <EventsPageRSVP />
-<<<<<<< HEAD
+            <Pastevents />
             {/* <Detailspage /> */}
             {/* <Footer /> */}
-=======
-            <PastEvents />
-            <Footer />
->>>>>>> b7a2e9c19bb013c93e3503885ae10c2efde26757
         </div>
     );
 }

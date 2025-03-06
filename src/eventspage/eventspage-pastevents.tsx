@@ -10,12 +10,15 @@ export default function PastEvents() {
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [category, setCategory] = useState("");
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     fetchEvents().then((data) => {
       setEvents(data);
     });
   }, []);
+
+  const displayedEvents = showAll ? events : events.slice(0, 3);
 
   return (
     <div className="past-events-container">
@@ -51,9 +54,10 @@ export default function PastEvents() {
           </select>
         </div>
       </div>
+
       <div className="past-events-list">
         <div className="past-events-box">
-          {events.slice(0, 6).map((event, index) => (
+          {displayedEvents.map((event, index) => (
             <div key={index} className="past-event-item">
               <div className="past-event-date">
                 <p className="past-event-date-day">{event.date}</p>
@@ -82,6 +86,14 @@ export default function PastEvents() {
           ))}
         </div>
       </div>
+
+      {/* See More / See Less Button */}
+      <button 
+  className={`see-more-button ${showAll ? "see-less" : ""}`} 
+  onClick={() => setShowAll(!showAll)}
+>
+  {showAll ? "See Less" : "See More"}
+</button>
     </div>
   );
 }
