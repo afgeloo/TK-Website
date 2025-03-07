@@ -1,6 +1,6 @@
 import React from "react";
 import "./global-css/preloader.css"; 
-import preloaderImg from "./assets/logos/preloader.png"; // adjust the path if needed
+import preloaderImg from "./assets/logos/preloader.png"; 
 
 const Preloader: React.FC = () => {
   return (
