@@ -1,9 +1,13 @@
+
+
 .eventsrsvp-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
     gap: 0px;
-    padding: 150px;
+    padding-left: 150px;
+    padding-right: 150px;
     justify-content: center;
+    padding-bottom: 150px;
 }
 
 .event-card {
@@ -113,14 +117,15 @@
     gap: 10px; /* Space between elements */
     margin-bottom: 20px; /* Space below search bar */
     justify-content: flex-start; /* Align search bar to the left */
-}
+  }
 
-.search-icon-eventspage {
+
+.search-icon-eventspage-rsvp {
     width: 30px;
     height: 30px;
-}
-
-.search-input-eventspage {
+  }
+  
+  .search-input-eventspage-rsvp {
     width: 200px;
     padding: 6px 10px;
     border: 1px solid #ccc;
@@ -129,17 +134,11 @@
     color: black;
     font-size: 14px;
     outline: none;
-}
+  }
+  
 
-.search-dropdown {
-    padding: 6px 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    background-color: #f9f9f9;
-    color: black;
-    font-size: 14px;
-    outline: none;
-}
+
+
 
 .pagination {
     display: flex;
@@ -195,20 +194,5 @@
 
 
 
-.search-wrapper {
-    display: flex;
-    align-items: right;
-    justify-content: flex-start; /* Aligns the search input and icon to the right */
-    width: 100%;
-}
 
-.search-input-eventspage {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-left: 0px;
-    opacity: 0; /* Initially hidden */
-    visibility: hidden; /* Initially hidden */
-    transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition */
 
-}

@@ -1,8 +1,8 @@
 .past-events-container {
-  width: 100%; /* Utilize the full width of the screen */
+  width: 100%; 
   margin: auto;
   padding-left: 150px; 
-  padding-right: 150px; /* Adjust padding to be consistent with other components */
+  padding-right: 150px; 
 }
 
 .past-events-header {
@@ -26,12 +26,15 @@
   margin: 16px 0;
 }
 
-.search-wrapper {
+.search-wrapper-rsvp {
   display: flex;
   align-items: center;
   gap: 10px; /* Space between elements */
-  margin-bottom: 20px; /* Space below search bar */
-  justify-content: flex-start; /* Align search bar to the left */
+  margin-bottom: 30px; /* Space below search bar */
+  justify-content: flex-end; /* Align search bar to the left */
+  margin-top: 50px;
+  margin-right: 150px;
+
 }
 
 .search-icon-eventspage {
