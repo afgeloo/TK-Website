@@ -1,9 +1,7 @@
-/* Single Blog Page Styles */
 
-/* Wraps only the blog content (not header) */
 .single-blog-blog-content-wrapper {
-    max-width: 1400px; /* Adjust width for better readability */
-    margin: 0 auto; /* Centers the content */
+    max-width: 1400px; 
+    margin: 0 auto; 
     padding: 20px;
 }
 
@@ -20,7 +18,7 @@
     font-weight: normal;
     font-style: normal;
   }
-/* Large Image at the Very Top */
+
 
 .single-blog-blog-image {
     width: 100%;
@@ -33,7 +31,7 @@
     padding-bottom: 10px;
 }
 
-/* Category Styling */
+
 .single-blog-blog-category {
     font-size: 32px;
     font-family: 'helvetic';
@@ -43,7 +41,7 @@
     margin-bottom: 10px;
 }
 
-/* Title Styling */
+
 .single-blog-blog-title {
     font-size: 48px;
     text-align: left;
@@ -52,7 +50,7 @@
     margin-top: -10px;
 }
 
-/* Author & Date Section */
+
 .single-blog-blog-meta {
     display: flex;
     align-items: center;
@@ -63,13 +61,13 @@
     font-family: 'helvetic';
 }
 
-/* Icon Styling Before Author & Date */
+
 .single-blog-blog-meta img {
     height: 24px;
     width: 24px;
 }
 
-/* Blog Content Styling */
+
 .single-blog-blog-content {
     font-size: 20px;
     font-family: 'helvetic';

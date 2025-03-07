@@ -5,6 +5,7 @@ import Footer from "../footer";
 import "./singleblog.css";
 import silverPencil from "../assets/logos/silverPencil.png";
 import silverTime from "../assets/logos/silverTime.jpg";
+import Preloader from "../preloader";
 
 interface Blog {
     blog_id: number;
@@ -20,33 +21,37 @@ function SingleBlog() {
     const { id } = useParams();
     const [blog, setBlog] = useState<Blog | null>(null);
     const [loading, setLoading] = useState(true);
-    http://localhost:8000/api/blogs.php?category=${category}
+
     useEffect(() => {
         const fetchBlog = async () => {
             try {
                 const response = await fetch(`http://localhost/tara-kabataan-webapp/backend/api/blogs.php?blog_id=${id}`);
                 const data = await response.json();
-                if (data) {
+                if (data && data.blog_id) {
                     setBlog(data);
                 } else {
                     console.error("No blog found");
+                    setBlog(null);
                 }
             } catch (error) {
                 console.error("Error fetching blog:", error);
+                setBlog(null);
+            } finally {
+                setLoading(false); 
             }
-            setLoading(false);
         };
 
         fetchBlog();
     }, [id]);
 
+    if (loading) return <Preloader />;
     if (!blog) return <p>Blog not found.</p>;
 
     return (
         <div className="single-blog-blog-detail-page">
-            <Header /> {/* Keep header unaffected */}
+            <Header />
             
-            <div className="single-blog-blog-content-wrapper"> {/* New wrapper to center content */}
+            <div className="single-blog-blog-content-wrapper">
                 <img src={blog.image_url} alt={blog.title} className="single-blog-blog-image" />
     
                 <p className="single-blog-blog-category">{blog.category}</p>
@@ -54,7 +59,7 @@ function SingleBlog() {
                 <h1 className="single-blog-blog-title">{blog.title}</h1>
     
                 <div className="single-blog-blog-meta">
-                    <img src={silverTime}  className="single-blog-blog-time-icon" />
+                    <img src={silverTime} className="single-blog-blog-time-icon" />
                     {new Date(blog.created_at).toLocaleDateString("en-US", { 
                         year: "numeric", 
                         month: "long", 
@@ -71,7 +76,6 @@ function SingleBlog() {
             <Footer />
         </div>
     );
-    
 }
 
 export default SingleBlog;

@@ -7,6 +7,8 @@ import authoriconwhite from "../assets/logos/authorwhiteicon.png"
 import timeblack from "../assets/logos/timeblack.png"
 import authorblack from "../assets/logos/pencilblack.jpg"
 import { useNavigate } from "react-router-dom"; 
+import Preloader from "../preloader";
+
 
 interface Blog {
     blog_id: number;
@@ -30,9 +32,7 @@ function BlogsPage() {
     const fetchBlogs = async (category: string) => {
         setLoading(true);
         try {
-            const response = await fetch(
-                `http://localhost/tara-kabataan-webapp/backend/api/blogs.php?category=${category}`
-            );
+            const response = await fetch(`http://localhost/tara-kabataan-webapp/backend/api/blogs.php?category=${category}`);
             const data = await response.json();
             if (data && data.pinned && data.blogs) {
                 setPinnedBlogs(data.pinned);
@@ -40,10 +40,12 @@ function BlogsPage() {
             } else {
                 console.error("Unexpected API response format:", data);
             }
-        } catch (error) {
+            setLoading(false); 
+            } catch (error) {
             console.error("Error fetching blogs:", error);
-        }
-        setLoading(false);
+            setLoading(false); 
+            }
+        
     };
     
 
@@ -155,7 +157,7 @@ function BlogsPage() {
             {/* Latest Blogs Section */}
             <div className="blogs-page-blogs-list">
                 {loading ? (
-                    <p>Loading blogs...</p>
+                    <Preloader />
                 ) : displayedBlogs.length > 0 ? (
                     <div className="blogs-page-blogs-grid">
                         {displayedBlogs.map((blog) => (
@@ -163,8 +165,8 @@ function BlogsPage() {
                                 <img 
                                     src={blog.image_url || placeholderImage} 
                                     alt={blog.title} 
-                                    onClick={() => handleBlogClick(blog.blog_id)} // Click event for image
-                                    style={{ cursor: "pointer" }} // Make it visually clickable
+                                    onClick={() => handleBlogClick(blog.blog_id)} 
+                                    style={{ cursor: "pointer" }} 
                                 />
                                 <div className="blogs-page-pinned-overlay">
                                     <p className="blogs-page-pinned-category-3">{blog.category}</p>
