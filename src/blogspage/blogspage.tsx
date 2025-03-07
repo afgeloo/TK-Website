@@ -6,8 +6,7 @@ import timeiconwhite from "../assets/logos/time.png";
 import authoriconwhite from "../assets/logos/authorwhiteicon.png"
 import timeblack from "../assets/logos/timeblack.png"
 import authorblack from "../assets/logos/pencilblack.jpg"
-import { useNavigate } from "react-router-dom"; // Import navigation function
-
+import { useNavigate } from "react-router-dom"; 
 
 interface Blog {
     blog_id: number;
@@ -32,7 +31,7 @@ function BlogsPage() {
         setLoading(true);
         try {
             const response = await fetch(
-                `http://localhost:8000/api/blogs.php?category=${category}`
+                `http://localhost/tara-kabataan-webapp/backend/api/blogs.php?category=${category}`
             );
             const data = await response.json();
             if (data && data.pinned && data.blogs) {
@@ -48,19 +47,18 @@ function BlogsPage() {
     };
     
 
-    const navigate = useNavigate(); // Initialize navigation function
+    const navigate = useNavigate(); 
 
     const handleBlogClick = (blog_id: number) => {
-        navigate(`/blog/${blog_id}`); // Navigate to the individual blog page
+        navigate(`/blog/${blog_id}`); 
     };
-    // Fetch blogs when component mounts or category changes
+    
     useEffect(() => {
         fetchBlogs(selectedCategory === "ALL" ? "ALL" : selectedCategory);
     }, [selectedCategory]);
 
     const categories = ["ALL", "KALUSUGAN", "KALIKASAN", "KARUNUNGAN", "KULTURA", "KASARIAN"];
 
-    // Filter blogs by search query
     const filteredBlogs = blogs.filter(blog =>
         blog.title.toLowerCase().includes(searchQuery.toLowerCase())
     );

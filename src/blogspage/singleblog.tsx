@@ -24,7 +24,7 @@ function SingleBlog() {
     useEffect(() => {
         const fetchBlog = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/blogs.php?blog_id=${id}`);
+                const response = await fetch(`http://localhost/tara-kabataan-webapp/backend/api/blogs.php?blog_id=${id}`);
                 const data = await response.json();
                 if (data) {
                     setBlog(data);
@@ -40,7 +40,6 @@ function SingleBlog() {
         fetchBlog();
     }, [id]);
 
-    if (loading) return <p>Loading...</p>;
     if (!blog) return <p>Blog not found.</p>;
 
     return (
