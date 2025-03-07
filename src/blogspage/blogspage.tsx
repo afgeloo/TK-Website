@@ -90,7 +90,7 @@ function BlogsPage() {
                         <div
                             className="blogs-page-pinned-main"
                             style={{ "--bg-image": `url(${pinnedBlogs[0].image_url || placeholderImage})` } as React.CSSProperties}
-                            onClick={() => handleBlogClick(pinnedBlogs[0].blog_id)} // Make pinned blog clickable
+                            onClick={() => handleBlogClick(pinnedBlogs[0].blog_id)} 
                         >
                             <div className="blogs-page-pinned-overlay">
                                 <p className="blogs-page-pinned-category-1">{pinnedBlogs[0].category}</p>
@@ -114,7 +114,7 @@ function BlogsPage() {
                                     key={blog.blog_id}
                                     className="blogs-page-pinned-item"
                                     style={{ "--bg-image": `url(${blog.image_url || placeholderImage})` } as React.CSSProperties}
-                                    onClick={() => handleBlogClick(blog.blog_id)} // Make side pinned blogs clickable
+                                    onClick={() => handleBlogClick(blog.blog_id)} 
                                 >
                                     <div className="blogs-page-pinned-overlay">
                                         <p className="blogs-page-pinned-category-2">{blog.category}</p>
@@ -172,7 +172,7 @@ function BlogsPage() {
                                     <p className="blogs-page-pinned-category-3">{blog.category}</p>
                                     <h3 
                                         className="blogs-page-pinned-title-3"
-                                        onClick={() => handleBlogClick(blog.blog_id)} // Click event for title
+                                        onClick={() => handleBlogClick(blog.blog_id)} 
                                         style={{ cursor: "pointer" }}
                                     >
                                         {blog.title}
