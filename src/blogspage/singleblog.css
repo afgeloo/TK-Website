@@ -1,0 +1,87 @@
+/* Single Blog Page Styles */
+
+/* Wraps only the blog content (not header) */
+.single-blog-blog-content-wrapper {
+    max-width: 1400px; /* Adjust width for better readability */
+    margin: 0 auto; /* Centers the content */
+    padding: 20px;
+}
+
+@font-face {
+    font-family: 'Bogart Trial';
+    src: url('../assets/fonts/Bogart-Extrabold-trial.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+ 
+  @font-face {
+    font-family: 'helvetic';
+    src: url('../assets/fonts/HelveticaNowText-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+/* Large Image at the Very Top */
+
+.single-blog-blog-image {
+    width: 100%;
+    padding-top: 40px;
+    max-width: 1392px;
+    display: block;
+    margin: 0 auto 20px auto;
+    border-radius: 10px;
+    height: 766px;
+    padding-bottom: 10px;
+}
+
+/* Category Styling */
+.single-blog-blog-category {
+    font-size: 32px;
+    font-family: 'helvetic';
+    font-style: italic;
+    color: #000000;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+/* Title Styling */
+.single-blog-blog-title {
+    font-size: 48px;
+    text-align: left;
+    margin-bottom: 10px;
+    font-family: "helvetic";
+    margin-top: -10px;
+}
+
+/* Author & Date Section */
+.single-blog-blog-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 28px;
+    color: #777;
+    margin-bottom: 20px;
+    font-family: 'helvetic';
+}
+
+/* Icon Styling Before Author & Date */
+.single-blog-blog-meta img {
+    height: 24px;
+    width: 24px;
+}
+
+/* Blog Content Styling */
+.single-blog-blog-content {
+    font-size: 20px;
+    font-family: 'helvetic';
+    line-height: 1.8;
+    text-align: justify;
+}
+
+.single-blog-blog-time-icon{
+    height: 30px;
+    width: 30px;
+}
+.single-blog-blog-author-icon{
+    height: 30px;
+    width: 30px;
+}
