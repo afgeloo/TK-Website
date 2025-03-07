@@ -4,6 +4,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./global-css/index.css";
 import App from "./app"; 
 
+
+const SingleBlog = lazy(() => import("./blogspage/singleblog"));
+
 const HomePage = lazy(() => import("./homepage/homepage"));
 const EventsPage = lazy(() => import("./eventspage/eventspage"));
 const AboutPage = lazy(() => import("./aboutpage/aboutpage"));
@@ -20,6 +23,7 @@ const router = createBrowserRouter([
       { path: "contact", element: <ContactPage /> },
       { path: "events", element: <EventsPage /> },
       { path: "blogs", element: <BlogsPage /> },
+      { path: "blog/:id", element: <SingleBlog /> },
     ],
   },
 ]);

@@ -1,0 +1,357 @@
+/* Center the pinned blogs section */
+.blogs-page-pinned-blogs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto; /* Ensure it stays at the top */
+}
+
+@font-face {
+    font-family: 'Bogart Trial';
+    src: url('../assets/fonts/Bogart-Extrabold-trial.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+ 
+  @font-face {
+    font-family: 'helvetic';
+    src: url('../assets/fonts/HelveticaNowText-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+/* Pinned Blogs Header (Title + Search Bar) */
+.blogs-page-pinned-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 10px;
+    font-family: 'Bogart Trial';
+    font-size: 100px;
+}
+
+.blogs-page-pinned-header h2 {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.blogs-page-search-bar {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 250px;
+}
+
+/* Main pinned blogs container */
+.blogs-page-pinned-container {
+    display: flex;
+    width: 100%;
+    gap: 15px;
+    position: relative;
+}
+
+/* Left side (First pinned blog - 65%) */
+.blogs-page-pinned-main {
+    width: 60%;
+    position: relative;
+    height: 650.25px; /* Adjusted for a slightly bigger size */
+    border-radius: 30px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.blogs-page-pinned-main::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.8);
+    z-index: 0;
+}
+
+.blogs-page-pinned-main .blogs-page-pinned-overlay {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    border-radius: 30px;
+    z-index: 2;
+    background: none; /* No background */
+    
+    color: white;
+    padding: 5px; /* Optional */
+}
+
+/* Right side (Second & Third pinned blogs - 35%) */
+.blogs-page-pinned-side {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.blogs-page-pinned-side .blogs-page-pinned-item {
+    width: 100%;
+    height: 320px; /* Adjusted size */
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.blogs-page-pinned-side .blogs-page-pinned-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.8);
+    z-index: 0;
+}
+
+.blogs-page-pinned-side .blogs-page-pinned-overlay {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 2;
+    background: none; /* No background */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Adds contrast */
+}
+
+/* Blogs Section */
+.blogs-page-blogs-header {
+    font-size: 48px;
+    max-width: 1400px;
+    margin: 30px auto 10px;
+    padding-left: 0;
+    text-align: left;
+    display: block; /* Ensure it behaves as a block-level element */
+    width: 100%; /* Allow it to span full width */
+}
+
+
+
+/* Category Filters */
+.blogs-page-blog-categories {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align to the left */
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    margin-top: 20px;
+}
+
+.blogs-page-blog-categories h2 {
+    margin-bottom: 10px; /* Adds spacing below "Blogs" */
+    text-align: left;
+}
+
+.blogs-page-category-list {
+    display: flex;
+    gap: 15px; /* Adds space between category buttons */
+    justify-content: flex-start; /* Align to the left */
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    font-size: 28px;
+    margin-left: -15px;
+}
+
+.blogs-page-category-list span {
+    cursor: pointer;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.blogs-page-category-list span:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Slight hover effect */
+}
+
+.active-category {
+    background-color: rgba(0, 0, 0, 0.2); /* Darker background when active */
+    
+    padding: 8px 15px; /* Ensure same padding for consistency */
+    border-radius: 5px;
+}
+
+.blogs-page-Hr{
+    width:1400px;
+}
+
+
+.blogs-page-blogs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    max-width: 1400px; /* Adjust as needed */
+    margin: 0 auto; /* Centers the grid */
+    padding: 30px;
+}
+
+
+.blogs-page-blog-item {
+    
+    border-radius: 10px;
+    overflow: hidden;
+    height: 580px;
+    
+    transition: transform 0.3s ease;
+}
+.blogs-page-timeiconwhite{
+    height: 22px;
+    width: 22px;
+    margin-bottom: -4px;
+    margin-right: 15px; 
+}
+.blogs-page-authoriconwhite{
+    height: 22px;
+    width: 22px;
+    margin-bottom: -4px;
+    margin-right: 10px; 
+    margin-left: 20px;
+}
+
+
+.blogs-page-blog-item img {
+    width: 100%;
+    height: 390px;
+    object-fit: cover;
+    border-radius: 20px;
+
+   
+    
+}
+
+.blogs-page-pinned-overlay {
+    padding: 15px;
+}
+
+.blogs-page-pinned-title-1 {
+    font-size: 32px;
+    font-family: 'helvetic';
+    margin: 10px 0;
+}
+.blogs-page-pinned-title-2 {
+    font-size: 24px;
+    font-family: 'helvetic';
+    margin: 10px 0;
+}
+.blogs-page-pinned-title-3 {
+    font-size: 32px;
+    font-family: 'helvetic';
+    margin: 10px 0;
+    margin-left: -15px;
+    margin-top: 15px;
+}
+.blogs-page-pinned-category-1{
+    font-size: 24px;
+    font-family: 'helvetic';
+    font-style: italic;
+    margin-bottom: -8px;
+    
+}
+.blogs-page-pinned-category-2{
+    font-size: 20px;
+    font-family: 'helvetic';
+    font-style: italic;
+    margin-bottom: -8px;
+}
+
+.blogs-page-pinned-category-3{
+    font-size: 20px;
+    font-family: 'helvetic';
+    font-style: italic;
+    margin-bottom: -8px;
+    margin-left: -15px;
+    margin-top: 10px;
+}
+
+
+.blogs-page-pinned-meta-1{
+    font-size: 16px;
+    font-family: 'helvetic';
+    margin-bottom: 5px;
+    margin-left: 5px;
+    
+}
+
+.blogs-page-pinned-meta-2{
+    font-size: 16px;
+    font-family: 'helvetic';
+    margin-bottom: 0px;
+}
+
+
+/* Styles for the meta section */
+.blogs-page-pinned-meta-3 {
+    display: flex;
+    align-items: center; /* Ensures text and icons align properly */
+    gap: 10px; /* Reduce space between items */
+    
+}
+
+/* Time icon styling */
+.blogs-page-time-black {
+    height: 28px !important;
+    width: 28px !important;
+    margin-bottom: px !important;
+    margin-right: 5px !important;
+    margin-left: -15px;
+}
+
+/* Author icon styling */
+.blogs-page-author-black {
+    height: 26px !important;
+    width: 26px !important;
+    margin-top: -10px !important;
+    margin-bottom: -10px !important;
+    margin-right: 2px !important;
+    margin-left: 60px !important;
+    border-radius: 0% !important;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .blogs-page-blogs-grid {
+        grid-template-columns: 1fr; /* Stack items in a single column on smaller screens */
+    }
+}
+
+.blogs-page-see-more-btn {
+    display: block; /* Ensures margin auto works */
+    margin: 20px auto; /* Centers it horizontally */
+    padding: 12px 24px;
+    font-size: 24px;
+    background-color: #FFC5D7;
+    color: #FF5A89;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'helvetic';
+    font-style: bold;
+
+}
