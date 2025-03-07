@@ -34,16 +34,16 @@ function EventsPageRSVP() {
 
     return (
         <div>
-            <div className="search-wrapper">
+            <div className="search-wrapper-rsvp">
                 <input
                     type="text"
-                    className="search-input-eventspage"
+                    className="search-input-eventspage-rsvp"
                     placeholder="Search in Events"
                 />
                 <img
                     src={searchIconEventspage}
                     alt="Search"
-                    className="search-icon-eventspage"
+                    className="search-icon-eventspage-rsvp"
                 />
             </div>
     

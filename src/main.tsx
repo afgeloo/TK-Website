@@ -5,7 +5,7 @@ import "./global-css/index.css";
 import App from "./app";
 
 const HomePage = lazy(() => import("./homepage/homepage"));
-const EventsPage = lazy(() => import("./eventspage/eventspagehome"));
+const EventsPage = lazy(() => import("./eventspage/eventspage"));
 const AboutPage = lazy(() => import("./aboutpage/aboutpage"));
 const ContactPage = lazy(() => import("./contactpage/contactpage"));
 const BlogsPage = lazy(() => import("./blogspage/blogspage"));

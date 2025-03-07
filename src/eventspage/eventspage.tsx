@@ -10,12 +10,11 @@ import Pastevents from "./eventspage-pastevents"; // Corrected import path
 function Eventspage() {
     return (
         <div>
-                       {/* <Header />
-                       <Advocacies /> */}
+                       <Header />
+                       <Advocacies />
             <EventsPageRSVP />
             <Pastevents />
-            {/* <Detailspage /> */}
-            {/* <Footer /> */}
+            <Footer />
         </div>
     );
 }
