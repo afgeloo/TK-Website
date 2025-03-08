@@ -32,7 +32,7 @@ function BlogsPage() {
     const fetchBlogs = async (category: string) => {
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost/tara-kabataan-webapp/backend/api/blogs.php?category=${category}`);
+            const response = await fetch(`http://localhost/TK-Website/backend/api/blogs.php?category=${category}`);
             const data = await response.json();
             if (data && data.pinned && data.blogs) {
                 setPinnedBlogs(data.pinned);

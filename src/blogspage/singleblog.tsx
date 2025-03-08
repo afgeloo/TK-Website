@@ -25,7 +25,7 @@ function SingleBlog() {
     useEffect(() => {
         const fetchBlog = async () => {
             try {
-                const response = await fetch(`http://localhost/tara-kabataan-webapp/backend/api/blogs.php?blog_id=${id}`);
+                const response = await fetch(`http://localhost/TK-WEBSITE/backend/api/blogs.php?blog_id=${id}`);
                 const data = await response.json();
                 if (data && data.blog_id) {
                     setBlog(data);
@@ -59,6 +59,8 @@ function SingleBlog() {
                 <h1 className="single-blog-blog-title">{blog.title}</h1>
     
                 <div className="single-blog-blog-meta">
+                    <img src={silverPencil} className="single-blog-blog-author-icon" />
+                        {blog.author}
                     <img src={silverTime} className="single-blog-blog-time-icon" />
                     {new Date(blog.created_at).toLocaleDateString("en-US", { 
                         year: "numeric", 
@@ -66,8 +68,7 @@ function SingleBlog() {
                         day: "numeric" 
                     })}
                     
-                    <img src={silverPencil} className="single-blog-blog-author-icon" />
-                    {blog.author}
+                    
                 </div>
     
                 <p className="single-blog-blog-content">{blog.content}</p>
