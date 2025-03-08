@@ -114,7 +114,7 @@
     align-items: center;
     gap: 10px; /* Space between elements */
     margin-bottom: 20px; /* Space below search bar */
-    margin-top: 50px;
+    margin-top: 75px;
     margin-right: 175px;
     justify-content: flex-end; 
 }

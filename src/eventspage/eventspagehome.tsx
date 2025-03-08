@@ -14,7 +14,7 @@ function Eventspage() {
                        <Advocacies />
             <EventsPageRSVP />
             <Pastevents />
-            {/* <Footer /> */}
+            <Footer />
         </div>
     );
 }
