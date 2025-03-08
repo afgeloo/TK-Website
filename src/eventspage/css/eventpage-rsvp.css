@@ -1,0 +1,190 @@
+.eventsrsvp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 0px;
+    padding-left: 150px;
+    padding-right: 150px;
+    padding-bottom: 150px;
+    justify-content: center;
+}
+
+.event-card {
+    background: none; /* Removes background */
+    border: none; /* No border */
+    border-radius: 10px; /* Slight rounding for soft look */
+    padding: 10px; /* Space around the content */
+    text-align: left; /* Align text to the left */
+    width: 280px; /* Set width similar to your image */
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect */
+.event-card:hover {
+    box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05); /* Slightly enlarges the card */
+}
+
+/* Image Styling */
+.event-image {
+    width: 100%;
+    height: 180px; /* Adjust to match design */
+    object-fit: cover;
+    border-radius: 15px; /* Gives curved edges */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Adds soft shadow */
+}
+
+.event-title {
+    font-family: 'Helvetica Now Text ', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+    margin-bottom: -5px; /* Reduce spacing below */
+}
+
+.event-category {
+    font-size: 12px;
+    font-weight: bold;
+    color: #FF5A89; /* Pinkish red like in the image */
+    text-transform: uppercase;
+    margin-bottom: -5px; /* Reduce spacing below */
+}
+
+.event-date,
+.event-location {
+    font-size: 15px;
+    color: gray;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.locationevent-icon {
+    width: 25px;
+    height: 25px;
+}
+
+.event-buttons {
+    display: flex;
+    align-items: center;
+    gap: 30px; /* Space between buttons */
+    margin-top: 10px;
+}
+
+.eventrsvp-button {
+    background: #FF5A89; 
+    color: white;
+    border: none;
+    padding: 8px 50px;
+    border-radius: 30px; /* Fully rounded */
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+/* Hover effect */
+.eventrsvp-button:hover {
+    background: #ff3b6a; /* Darker pink */
+}
+
+.detailsevent-button {
+    background: none;
+    color: #7A7676; /* Light gray color */
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: underline; /* Underline effect */
+    font-weight: bold;
+}
+
+.detailsevent-button:hover {
+    color: #555; /* Darker gray */
+}
+
+.eventsrsvp-container {
+    width: 100%; /* Utilize the full width of the screen */
+    margin: auto;
+}
+
+.search-wrapper-rsvp {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between elements */
+    margin-bottom: 20px; /* Space below search bar */
+    margin-top: 75px;
+    margin-right: 175px;
+    justify-content: flex-end; 
+}
+
+.search-icon-eventspage-rsvp {
+    width: 30px;
+    height: 30px;
+}
+
+.search-input-eventspage-rsvp {
+    width: 200px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #f9f9f9;
+    color: black;
+    font-size: 14px;
+    outline: none;
+}
+
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -75px;
+    margin-bottom: 30px;
+}
+
+.pagination-button {
+    background: transparent;
+    border: none;
+    color: #7A7676; /* Keeps original text color */
+    font-size: 10px;
+    padding: 8px 12px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 50%; /* Ensures circular shape when active */
+    transition: all 0.3s ease;
+}
+
+.pagination-button:hover {
+    background: #f04f88;
+    color: white;
+}
+
+.pagination-button.active {
+    background: #f04f88;
+    color: white;
+    font-weight: bold;
+    width: 32px; /* Fixed width for circle */
+    height: 32px; /* Fixed height for circle */
+}
+
+.eventrsvp-button-details {
+    background: #FF5A89; 
+    color: white;
+    border: none;
+    padding: 8px 125px;
+    border-radius: 30px; /* Fully rounded */
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    margin-top: 30px;
+}
+
+/* Hover effect */
+.eventrsvp-button-details :hover {
+    background: #ff3b6a; /* Darker pink */
+}
+
