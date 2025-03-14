@@ -21,17 +21,21 @@ function EventDetails({ event, onBack }) {
                 <div className="custom-divider-details2"></div>
                 <p className="location-header-event">Location:</p>
                 <div className="custom-divider-details2"></div>
+
+                {/* Clickable Map with Embedded Iframe */}
                 <a href={event.map_url} target="_blank" rel="noopener noreferrer" className="event-map-link">
-    <div className="event-map-container">
-        {/* Automatically generate Google Maps Static Image */}
-        <img 
-            src={`https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(event.location)}&zoom=15&size=400x300&maptype=roadmap&markers=color:red%7C${encodeURIComponent(event.location)}&key=YOUR_GOOGLE_MAPS_API_KEY`} 
-            alt="Event Location" 
-            className="event-map-image"
-        />
-                        <div className="event-map-overlay">
-                            <p>View More</p>
-                        </div>
+                    <div className="event-map-container">
+                    <iframe
+    src={`https://www.google.com/maps?q=${encodeURIComponent(event.location)}&z=18&output=embed`}
+    width="300"
+    height="300"
+    style={{ border: 0 }}
+    loading="lazy"
+    className="event-map-iframe"
+></iframe>
+
+
+
                     </div>
                 </a>
             </div>
