@@ -101,9 +101,8 @@ const EmailUs = () => {
       <div className="emailus-content">
         <h1 className="emailus-header">Email Us</h1>
         <p className="emailus-description">
-          Got any questions to ask Tara Kabataan? Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua.
+        Got any questions for Tara Kabataan? 💌 Whether you’re looking to partner, volunteer, support a cause, or simply someone who needs a little help or a kind conversation — we’re here for you.
+        Our inbox is always open for stories, suggestions, or souls in need of solidarity. 
         </p>
       </div>
       <div className="emailus-form">
