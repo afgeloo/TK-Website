@@ -24,9 +24,14 @@ const Header = () => {
               </Link>
             </li>
           ))}
-          <li>
-            <Link to="/Join" className="nav-join">Join Now</Link>
-          </li>
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSewrSWYnmn5lVqOTbSh9751x80e-IhIp_atvMFaDf3M0n6uVg/viewform"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-join"
+          >
+            Join Now
+          </a>
         </ul>
       </nav>
     </header>

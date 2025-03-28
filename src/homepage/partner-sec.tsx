@@ -57,7 +57,16 @@ const PartnerSec: React.FC = () => {
             <p className="text-inside-be-a-partner-member-container">
               Being a member will lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
             </p>
-            <button className="button-inside-be-a-partner-member">BECOME A MEMBER</button>
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSewrSWYnmn5lVqOTbSh9751x80e-IhIp_atvMFaDf3M0n6uVg/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "none" }}
+            >
+              <button className="button-inside-be-a-partner-member">
+                BECOME A MEMBER
+              </button>
+            </a>
           </div>
         </div>
       </div>
