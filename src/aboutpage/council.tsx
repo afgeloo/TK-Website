@@ -1,4 +1,5 @@
 import "./css/council.css";
+import { useEffect, useState } from "react";
 
 const councilPresident = [
     { 
@@ -20,8 +21,24 @@ const councilMembers = [
     { name: "Enrico Villegas", role: "Internals", image: "./src/assets/aboutpage/img-placeholder-guy.png" }
 ];
 
-
 function Council() {
+    const [council, setCouncil] = useState("Loading...");
+
+    useEffect(() => {
+        fetch("http://localhost/tara-kabataan-webapp/backend/api/aboutus.php")
+        .then((res) => {
+            if (!res.ok) throw new Error("Network error");
+            return res.json();
+        })
+        .then((data) => {
+            setCouncil(data.council || "No data.");
+        })
+        .catch((err) => {
+            console.error("Fetch error:", err);
+            setCouncil("Failed to load.");
+        });
+    }, []);
+
     return (
         <div className="council-sec">
             <div className="council-ribbon">
@@ -29,8 +46,12 @@ function Council() {
             </div>
             <div className="council-sec-content">
                 <h1 className="council-header">Council</h1>
-                <p className="council-description">
-                    Ang TK Council ang pangunahing namamahala sa mga gawaing administratibo ng organisasyon at nagsisiguro sa maayos na kalagayan ng mga miyembro. Sila ang nangangasiwa sa pagpaplano, pagsasagawa, at pagsusubaybay ng mga proyekto upang matiyak na natutupad ang layunin at adbokasiya ng Tara Kabataan. Bukod dito, binibigyan nila ng pansin ang kapakanan ng mga miyembro sa pamamagitan ng pagbibigay ng suporta at mga programa na nagpapalakas ng kanilang kakayahan at samahan bilang isang komunidad.
+                <p className="council-description"
+                dangerouslySetInnerHTML={{
+                    __html: council.replace(/\n/g, "<br />"),
+                  }}
+                >
+                    {/* Ang TK Council ang pangunahing namamahala sa mga gawaing administratibo ng organisasyon at nagsisiguro sa maayos na kalagayan ng mga miyembro. Sila ang nangangasiwa sa pagpaplano, pagsasagawa, at pagsusubaybay ng mga proyekto upang matiyak na natutupad ang layunin at adbokasiya ng Tara Kabataan. Bukod dito, binibigyan nila ng pansin ang kapakanan ng mga miyembro sa pamamagitan ng pagbibigay ng suporta at mga programa na nagpapalakas ng kanilang kakayahan at samahan bilang isang komunidad. */}
                 </p>
             </div>
             
