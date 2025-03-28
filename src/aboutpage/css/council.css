@@ -117,6 +117,7 @@
     align-items: center;
     overflow: hidden; 
     top: -70px;
+    -webkit-user-drag: none;
 }
 
 .council-member-image img {
@@ -124,6 +125,7 @@
     height: 130px;
     object-fit: cover;
     border-radius: 50%;
+    -webkit-user-drag: none;
 }
 
 .council-member-name {

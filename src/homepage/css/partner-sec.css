@@ -13,6 +13,7 @@
   margin-right: 20px;
   filter: grayscale(100%);
   transition: filter 0.3s ease-in-out;
+  -webkit-user-drag: none;
 }
 
 .past-partnerships-logo:hover {
@@ -131,11 +132,13 @@
 .partner-image {
   transform: translateY(-15px); 
   width: 108px;
+  -webkit-user-drag: none;
 }
 
 .member-image {
   transform: translateY(-22px); 
   width: 108px;
+  -webkit-user-drag: none;
 }
 
 .text-inside-be-a-partner-member-container {
