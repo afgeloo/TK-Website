@@ -1,21 +1,27 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchEvents } from "./mockServer";
-import { useNavigate } from "react-router-dom";
 import "./css/eventpage-rsvp.css";
 import locationIconeventspage from "../assets/eventspage/Location-eventspage.png";
 import searchIconEventspage from "../assets/eventspage/Search-icon-events.png";
 
 function EventsPageRSVP() {
     const [events, setEvents] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const eventsPerPage = 12;
+    const { page } = useParams();
     const navigate = useNavigate();
+
+    const eventsPerPage = 12;
+    const currentPage = parseInt(page || "1", 10);
 
     useEffect(() => {
         fetchEvents().then((data) => {
             setEvents(data);
         });
     }, []);
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, [page]);
 
     const handleViewDetails = (id) => {
         navigate(`/events/${id}`);
@@ -65,27 +71,31 @@ function EventsPageRSVP() {
                 ))}
             </div>
 
+            {/* Pagination Controls */}
             <div className="pagination">
                 <button 
-                    onClick={() => setCurrentPage(currentPage - 1)}
+                    onClick={() => navigate(`/events/page/${currentPage - 1}`)}
                     disabled={currentPage === 1}
                     className="pagination-button"
                 >
                     {"<"}
                 </button>
 
-                {[...Array(totalPages)].map((_, index) => (
-                    <button 
-                        key={index} 
-                        onClick={() => setCurrentPage(index + 1)}
-                        className={`pagination-button ${currentPage === index + 1 ? "active" : ""}`}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
+                {[...Array(totalPages)].map((_, index) => {
+                    const pageNum = index + 1;
+                    return (
+                        <button 
+                            key={pageNum} 
+                            onClick={() => navigate(`/events/page/${pageNum}`)}
+                            className={`pagination-button ${currentPage === pageNum ? "active" : ""}`}
+                        >
+                            {pageNum}
+                        </button>
+                    );
+                })}
 
                 <button 
-                    onClick={() => setCurrentPage(currentPage + 1)}
+                    onClick={() => navigate(`/events/page/${currentPage + 1}`)}
                     disabled={currentPage === totalPages}
                     className="pagination-button"
                 >

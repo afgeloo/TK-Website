@@ -57,11 +57,13 @@
     margin-top: -20px;
     width: 60px;
     height: auto;
+    -webkit-user-drag: none;
 } 
 .contact-facebook img, 
 .contact-instagram img {
     width: 40px;
     height: 40px;
+    -webkit-user-drag: none;
 }
 
 .contact-telephone h1, .contact-email h1{

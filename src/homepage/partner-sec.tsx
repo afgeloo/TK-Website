@@ -42,7 +42,7 @@ const PartnerSec: React.FC = () => {
               <img src={partnerLogo} alt="Partner Logo" className="circle-image partner-image" />
             </div>
             <p className="text-inside-be-a-partner-member-container">
-              Being a partner will lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Partnering with Tara Kabataan means joining a dedicated movement focused on empowering the youth and fostering community development. Your collaboration will support initiatives that promote education, environmental stewardship, and active civic engagement among young individuals.
             </p>
             <button className="button-inside-be-a-partner-member">BECOME A PARTNER</button>
           </div>
@@ -55,9 +55,18 @@ const PartnerSec: React.FC = () => {
               <img src={memberLogo} alt="Member Logo" className="circle-image member-image" />
             </div>
             <p className="text-inside-be-a-partner-member-container">
-              Being a member will lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Joining Tara Kabataan as a member means becoming part of a passionate community of youth advocates and changemakers. You’ll have opportunities to engage in meaningful volunteer work and develop your leadership and advocacy skills through community-based activities.
             </p>
-            <button className="button-inside-be-a-partner-member">BECOME A MEMBER</button>
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSewrSWYnmn5lVqOTbSh9751x80e-IhIp_atvMFaDf3M0n6uVg/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "none" }}
+            >
+              <button className="button-inside-be-a-partner-member">
+                BECOME A MEMBER
+              </button>
+            </a>
           </div>
         </div>
       </div>
@@ -70,7 +79,8 @@ const PartnerSec: React.FC = () => {
           </div>
           <div className="support-tk-text">
             <p>
-              In-kind donations will go to lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            Your donation is more than just a contribution — it’s a commitment to youth empowerment and inclusive nation-building. Every peso you give fuels Tara Kabataan’s programs that uplift communities, advance human rights, and promote genuine civic engagement.
+            Whether it’s through in-kind support or financial assistance, your help goes directly to grassroots initiatives: from relief operations and educational drives to health missions and climate justice actions.
             </p>
           </div>
         </div>

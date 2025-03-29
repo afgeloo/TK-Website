@@ -2,6 +2,8 @@ import React from "react";
 import "./css/welcome-sec.css";
 import Marquee from "react-fast-marquee";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 
 const Wave: React.FC = () => {
     return (
@@ -76,8 +78,25 @@ const Wave: React.FC = () => {
     );
 };
 
-
 function WelcomeSec() {
+    const [overview, setOverview] = useState<string>("Loading...");
+
+    useEffect(() => {
+        fetch("http://localhost/tara-kabataan-webapp/backend/api/aboutus.php")
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.overview) {
+                    setOverview(data.overview);
+                } else {
+                    setOverview("No overview content found.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching overview:", error);
+                setOverview("Failed to load overview.");
+            });
+    }, []);
+    
     return (
         <div className="welcome-sec">
             <div className="wave-container">
@@ -127,8 +146,9 @@ function WelcomeSec() {
                         </div>
                         <div className="whatsTK">
                             <h2>What is TARA KABATAAN?</h2>
-                            <p>Ang <strong>Tara Kabataan (TK)</strong> ay isang organisasyon ng mga kabataan sa Maynila na itinatag para isulong ang kaginhawaan ng bawat kabataan at Manilenyo. Pinapahalagahan ng samahan ang pakikipagkapwa ng mga Pilipino na nakasandig sa ating karapatan at pagkakapantay-pantay. Naniniwala ang TK sa kakayahan ng bawat kabataan, sa loob at labas ng paaralan, na siyang higit na dapat mabigyan ng oportunidad na malinang at mapaunlad. Mula rito, mas makikilala ng kabataan ang kaniyang sarili at matatanaw ang kaniyang mahalagang papel sa komunidad, lipunan, at bayan. Mula sa sarili tungo sa bayan ang siyang hinihikayat ng Tara Kabataan sa kaniyang kapwa.
-                            </p>
+                            {/* <p>Ang <strong>Tara Kabataan (TK)</strong> ay isang organisasyon ng mga kabataan sa Maynila na itinatag para isulong ang kaginhawaan ng bawat kabataan at Manilenyo. Pinapahalagahan ng samahan ang pakikipagkapwa ng mga Pilipino na nakasandig sa ating karapatan at pagkakapantay-pantay. Naniniwala ang TK sa kakayahan ng bawat kabataan, sa loob at labas ng paaralan, na siyang higit na dapat mabigyan ng oportunidad na malinang at mapaunlad. Mula rito, mas makikilala ng kabataan ang kaniyang sarili at matatanaw ang kaniyang mahalagang papel sa komunidad, lipunan, at bayan. Mula sa sarili tungo sa bayan ang siyang hinihikayat ng Tara Kabataan sa kaniyang kapwa.
+                            </p> */}
+                            <p>{overview}</p>
                         </div>
                     </div>
                     <div className="know-more">

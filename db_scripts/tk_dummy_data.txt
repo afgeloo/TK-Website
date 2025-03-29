@@ -1,0 +1,110 @@
+-- DUMMY DATA
+INSERT INTO tk_webapp.aboutus (
+    background, overview, core_kapwa, core_kalinangan, core_kaginhawaan, 
+    mission, vision, council, adv_kalusugan, adv_kalikasan, adv_karunungan, 
+    adv_kultura, adv_kasarian, contact_no, about_email
+) VALUES (
+    'Ang Tara Kabataan (TK) ay naitatag noong Hulyo 3, 2022, pagkatapos ng 2022 national elections. Sa tulong ng DAKILA at Partido Manggagawa, nabuo ang pormasyon na binubuo ng mga boluntaryo mula sa national campaign sa Maynila. Mula rito, nagpasya ang mga kabataan na hindi lang kandidato ang susuportahan kundi mga pangmatagalang adbokasiya. Layunin din nilang bumuo ng malalalim na ugnayan sa iba’t ibang organisasyon at komunidad. Nagsimula ang TK sa boluntaryong pagtulong sa mga relief operations tuwing may sakuna at Brigada Eskwela sa mga pampublikong paaralan. Sa kasalukuyan, mas malawak na ang sakop nito, na may ugnayan sa maraming komunidad sa Maynila at sa ibang lungsod. May limang pangunahing adbokasiya ang TK: karunungan, kasarian, kalikasan, kalusugan, at kultura. Sa lahat ng gawain, nakasentro ang TK sa tao at karapatang pantao, kasama ang mga kabataan sa pagtataguyod ng kaginhawaan para sa lahat.',
+    'Ang Tara Kabataan (TK) ay isang organisasyon ng mga kabataan sa Maynila na itinatag para isulong ang kaginhawaan ng bawat kabataan at Manilenyo. Pinapahalagahan ng samahan ang pakikipagkapwa ng mga Pilipino na nakasandig sa ating karapatan at pagkakapantay-pantay. Naniniwala ang TK sa kakayahan ng bawat kabataan, sa loob at labas ng paaralan, na siyang higit na dapat mabigyan ng oportunidad na malinang at mapaunlad. Mula rito, mas makikilala ng kabataan ang kaniyang sarili at matatanaw ang kaniyang mahalagang papel sa komunidad, lipunan, at bayan. Mula sa sarili tungo sa bayan ang siyang hinihikayat ng Tara Kabataan sa kaniyang kapwa.',
+    'Pagpapalaganap ng pagkakapantay-pantay at tunay na koneksyon sa pamamagitan ng pakikiisa sa mga tao.\n\nIsinasabuhay ito ng TK sa pamamagitan ng pagtutulungan at bayanihan sa mga komunidad, lalo na sa pagbibigay suporta sa mga nangangailangan. Pinapahalagahan nila ang pakikinig at pag-intindi sa iba''t ibang perspektibo upang mapalakas ang pagkakaisa.',
+    'Pagyakap sa maingat na proseso ng pag-unawa at pagmumuni-muni.\n\nBilang organisasyon, binibigyang-halaga ng TK ang patuloy na pag-aaral ng sarili at lipunan mula sa sariling karanasan at sa mga kasamang komunidad. Ginagamit ang mga natutunan upang mas mapabuti ang mga programa at adbokasiya.',
+    'Pagsusumikap na makamit ang pag-unlad at kagalingang panlahat.\n\nTinitiyak ng TK na ang kanilang mga gawain ay may positibong epekto sa komunidad, mula sa maliit na tulong hanggang sa paglikha ng mga programang tumutugon sa pangmatagalang pangangailangan. Layunin na makapagbigay ng konkretong pagbabago na nakakapagpagaan ng buhay ng mga tao.',
+    'Layunin ng Tara Kabataan ang pagpapatibay ng lakas at tinig ng mga kabataan, sa loob at labas ng paaralan, upang makilala nila ang kanilang sarili at ang kanilang taglay na kakayahan at talento na siyang magsisilbing instrumento upang makatulong sa kanilang sarili, kapwa, komunidad, at bayan.',
+    'Pangarap ng Tara Kabataan ang pagkakaroon ng isang lungsod at bayan na makakabataan kung saan sa malayang paglinang ng sarili at ng kapwa, abot-kamay ang kaginhawaan para sa lahat.',
+    'Ang TK Council ang pangunahing namamahala sa mga gawaing administratibo ng organisasyon at nagsisiguro sa maayos na kalagayan ng mga miyembro. Sila ang nangangasiwa sa pagpaplano, pagsasagawa, at pagsusubaybay ng mga proyekto upang matiyak na natutupad ang layunin at adbokasiya ng Tara Kabataan. Bukod dito, binibigyan nila ng pansin ang kapakanan ng mga miyembro sa pamamagitan ng pagbibigay ng suporta at mga programa na nagpapalakas ng kanilang kakayahan at samahan bilang isang komunidad.',
+    'Itinataguyod ang abot-kamay at makataong serbisyong pangkalusugan para sa lahat sa pamamagitan ng paglaban sa pribatisasyon ng healthcare, pagtugon sa mga salik panlipunan na nakakaapekto sa kalusugan, at pagsasaayos sa kakulangan ng health workers at pasilidad.',
+    'Nangunguna sa panawagan para sa katarungang pangklima at pangangalaga sa kalikasan sa pamamagitan ng makatarungang paglipat sa sustenableng pamumuhay, paghahanda sa sakuna, at pagprotekta sa mga komunidad laban sa mapaminsalang proyekto tulad ng reclamation.',
+    'Isinusulong ang kabuuang pagkatuto at mapagpalayang edukasyon sa pamamagitan ng mga programang nakabatay sa laro, pagpapalalim ng kamalayang panlipunan, at pagtataguyod ng mabuting pamamahala.',
+    'Pinapalakas ang pambansang identidad at malikhaing kaisipan habang nilalabanan ang historikal na distorsyon sa pamamagitan ng sining bilang sandata ng paglaban at adbokasiya.',
+    'Pinapahalagahan ang pagkakapantay-pantay ng kasarian at inklusibong lipunan sa pamamagitan ng pagsusulong ng mga polisiya tulad ng SOGIESC Bill, Divorce Bill, at pagtatanggol sa karapatan ng kababaihan.',
+    '+639123456789',
+    'tarakabataan@gmail.com'
+);
+
+INSERT INTO tk_webapp.roles (role_name, role_description) VALUES
+('President', 'Oversees the entire organization, makes executive decisions, and ensures alignment with the vision and mission.'),
+('Partnerships', 'Establishes and maintains relationships with external organizations and stakeholders.'),
+('Research & Advocacy', 'Leads research efforts and drives advocacy campaigns based on data and community needs.'),
+('Finance', 'Manages organizational budgets, donations, and financial reporting.'),
+('Secretary', 'Handles official documentation, meeting minutes, schedules, and organizational correspondence.'),
+('Online Engagement', 'Manages social media presence and engages with the online community.'),
+('Programs & Events', 'Plans and coordinates events, workshops, and organizational activities.'),
+('Documentation', 'Captures and archives photos, videos, and records of all organizational activities.'),
+('Creatives', 'Designs visual content, branding materials, and multimedia outputs for the organization.'),
+('Internals', 'Ensures internal coordination, member welfare, and team-building initiatives.');
+
+INSERT INTO tk_webapp.users (user_name, user_email, password_hash, role_id) VALUES
+('Ferdinand Sanchez II', 'ferdinance@tkwebapp.com', SHA2('ferdinandpass', 256), NULL),
+('Marion Navarro', 'marion@tkwebapp.com', SHA2('marionpass', 256), NULL),
+('Joshua Barbo', 'joshua@tkwebapp.com', SHA2('joshuapass', 256), NULL),
+('Mildred Collado', 'mildred@tkwebapp.com', SHA2('mildredpass', 256), NULL),
+('Eunice Santiago', 'eunice@tkwebapp.com', SHA2('eunicepass', 256), NULL),
+('Isaac Hernandez', 'isaac@tkwebapp.com', SHA2('isaacpass', 256), NULL),
+('Raf Ranin', 'raf@tkwebapp.com', SHA2('rafpass', 256), NULL),
+('Chester Carreon', 'chester@tkwebapp.com', SHA2('chesterpass', 256), NULL),
+('Aaron Sumampong', 'aaron@tkwebapp.com', SHA2('aaronpass', 256), NULL),
+('Enrico Villegas', 'enrico@tkwebapp.com', SHA2('enricopass', 256), NULL);
+
+INSERT INTO tk_webapp.blogs (blog_image, blog_category, blog_title, blog_author_id, created_at, blog_content) VALUES
+('blog1.jpg', 'Technology', 'Welcome to TK Blog', NULL, NOW(), 'This is the first blog post.'),
+('blog2.jpg', 'Updates', 'System Maintenance', NULL, NOW(), 'Scheduled maintenance on Sunday.');
+
+INSERT INTO tk_webapp.events (event_image, event_category, event_title, event_date, event_day, event_time, event_venue, event_content, event_speakers, event_status, created_at) VALUES
+('event1.jpg', 'Workshop', 'Intro to MySQL', '2025-07-01', 'Tuesday', '10:00:00', 'Conference Hall', 'Learn basics of MySQL.', 'John Smith', 'active', NOW()),
+('event2.jpg', 'Seminar', 'WebApp Strategies', '2025-08-10', 'Friday', '14:00:00', 'Auditorium', 'How to scale apps.', 'Eli Johnson', 'upcoming', NOW());
+
+INSERT INTO tk_webapp.partnerships (partner_name, partner_dec, partner_contact_email, partner_phone_number) VALUES
+('TechCorp', 'Technology Partner', 'techcorp@example.com', '123-456-7890'),
+('EduLink', 'Education Outreach Partner', 'edulink@example.com', '987-654-3210');
+
+INSERT INTO tk_webapp.memberships (member_id, membership_type, status, created_at) VALUES
+(NULL, 'Basic', 'active', NOW()),
+(NULL, 'Premium', 'pending', NOW());
+
+INSERT INTO tk_webapp.donors (donor_name, donor_contact_email, donor_phone_number) VALUES
+('Jane Donor', 'jane@example.com', '111-222-3333'),
+('Mike Donor', 'mike@example.com', '444-555-6666');
+
+INSERT INTO tk_webapp.recipients (recipient_name, recipient_contact_email, recipient_phone_number) VALUES
+('Hope Center', 'hope@center.org', '777-888-9999'),
+('Food Aid', 'food@aid.org', '000-111-2222');
+
+INSERT INTO tk_webapp.donations (donor_id, recipient_id, amount, message, created_at) VALUES
+(NULL, NULL, 100.00, 'Keep up the good work!', NOW()),
+(NULL, NULL, 250.00, 'Donation for relief', NOW());
+
+INSERT INTO tk_webapp.finance_sources (source_name, source_description) VALUES
+('Gov Grant', 'Government funded'),
+('Private Donor', 'Anonymous contribution');
+
+INSERT INTO tk_webapp.finance (source_id, amount, transaction_date) VALUES
+(NULL, 1500.00, NOW()),
+(NULL, 2300.00, NOW());
+
+INSERT INTO tk_webapp.transactions (finance_id, transaction_type, amount, transaction_date) VALUES
+(NULL, 'credit', 500.00, NOW()),
+(NULL, 'debit', 300.00, NOW());
+
+INSERT INTO tk_webapp.monetary_donations (donor_id, recipient_id, amount, transaction_id, created_at) VALUES
+(NULL, NULL, 200.00, NULL, NOW()),
+(NULL, NULL, 450.00, NULL, NOW());
+
+INSERT INTO tk_webapp.item_donations (donor_id, recipient_id, item_name, item_quantity, transaction_id, created_at) VALUES
+(NULL, NULL, 'Blankets', 100, NULL, NOW()),
+(NULL, NULL, 'Food Packs', 50, NULL, NOW());
+
+INSERT INTO tk_webapp.audit_logs (user_id, action, timestamp) VALUES
+(NULL, 'Created test user', NOW()),
+(NULL, 'Generated backup', NOW());
+
+INSERT INTO tk_webapp.contact_messages (name, email, message, created_at) VALUES
+('John Visitor', 'john@example.com', 'Just checking in.', NOW()),
+('Lucy Contact', 'lucy@domain.com', 'I love this project!', NOW());
+
+INSERT INTO tk_webapp.chatbot_faqs (question, answer) VALUES
+('How to donate?', 'Click the donate button and follow the instructions.'),
+('Can I volunteer?', 'Yes, just sign up using the membership form.');
+
+INSERT INTO tk_webapp.members (user_id, role_id, join_date) VALUES
+(NULL, NULL, NOW()),
+(NULL, NULL, NOW());

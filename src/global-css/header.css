@@ -22,9 +22,11 @@
 .nav-links {
   list-style: none;
   display: flex;
+  align-items: center; 
   gap: 12px;
-  padding: 30px;
+  padding: 0 30px;      
   margin: 0;
+  height: 100%;         
 }
 
 .nav-button {
