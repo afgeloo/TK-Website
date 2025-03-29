@@ -126,11 +126,9 @@ function BlogsPage() {
     return (
         <div className="blogs-page">
             <Header />
-
             {/* Pinned Blogs Header (Title + Search Bar) */}
             <div className="blogs-page-pinned-header">
-                <h2>Pinned Blogs</h2>
-                
+                <h2>Pinned Blogs</h2>  
             </div>
 
             {/* Pinned Blogs Section */}
