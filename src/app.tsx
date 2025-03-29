@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, Outlet } from "react-router-dom";
 import Preloader from "./preloader";
+import Chatbot from "./chatbot"; // adjust path if needed
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -28,7 +29,14 @@ const App: React.FC = () => {
     return () => window.removeEventListener("load", handleLoad);
   }, [location.key]);
 
-  return loading ? <Preloader /> : <Outlet />;
+  if (loading) return <Preloader />;
+
+  return (
+    <>
+      <Outlet />
+      <Chatbot /> {/* Global Chatbot visible on all pages */}
+    </>
+  );
 };
 
 export default App;

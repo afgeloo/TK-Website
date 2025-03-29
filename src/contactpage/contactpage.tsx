@@ -2,7 +2,6 @@
 import Header from "../header";
 import EmailUs from "./emailus";
 import GetInTouch from "./getintouch";
-import Contact from "./tryemail";
 
 function ContactPage(){
     return (
