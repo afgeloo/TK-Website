@@ -6,19 +6,20 @@ import timeiconwhite from "../assets/logos/time.png";
 import authoriconwhite from "../assets/logos/authorwhiteicon.png"
 import timeblack from "../assets/logos/timeblack.png"
 import authorblack from "../assets/logos/pencilblack.jpg"
-import { useNavigate } from "react-router-dom"; // Import navigation function
+import { useNavigate } from "react-router-dom"; 
+import Preloader from "../preloader";
 
 
 interface Blog {
-    blog_id: number;
+    blog_id: string;
     title: string;
     image_url: string;
     category: string;
     created_at: string;
     author: string;
+    blog_status?: string; 
 }
 
-const placeholderImage = "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Zilean_0.jpg";
 
 function BlogsPage() {
     const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -28,13 +29,29 @@ function BlogsPage() {
     const [showAllBlogs, setShowAllBlogs] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    const navigate = useNavigate(); 
+
+    const handleBlogClick = (blog_id: string) => {
+        navigate(`/blog/${blog_id}`); 
+    };
+
+    const categories = ["ALL", "KALUSUGAN", "KALIKASAN", "KARUNUNGAN", "KULTURA", "KASARIAN"];
+
+    // Filter blogs by search query
+    const filteredBlogs = blogs.filter(blog =>
+        blog.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const displayedBlogs = showAllBlogs ? filteredBlogs : filteredBlogs.slice(0, 4);
+
     const fetchBlogs = async (category: string) => {
         setLoading(true);
         try {
             const response = await fetch(
-                `http://localhost:8000/api/blogs.php?category=${category}`
+                `http://localhost/tkwebsites/TK-website/backend/api/blogs.php?category=${category}`
             );
             const data = await response.json();
+        
             if (data && data.pinned && data.blogs) {
                 setPinnedBlogs(data.pinned);
                 setBlogs(data.blogs);
@@ -47,25 +64,62 @@ function BlogsPage() {
         setLoading(false);
     };
     
-
-    const navigate = useNavigate(); // Initialize navigation function
-
-    const handleBlogClick = (blog_id: number) => {
-        navigate(`/blog/${blog_id}`); // Navigate to the individual blog page
-    };
-    // Fetch blogs when component mounts or category changes
+    
     useEffect(() => {
         fetchBlogs(selectedCategory === "ALL" ? "ALL" : selectedCategory);
     }, [selectedCategory]);
 
-    const categories = ["ALL", "KALUSUGAN", "KALIKASAN", "KARUNUNGAN", "KULTURA", "KASARIAN"];
-
-    // Filter blogs by search query
-    const filteredBlogs = blogs.filter(blog =>
-        blog.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    const displayedBlogs = showAllBlogs ? filteredBlogs : filteredBlogs.slice(0, 4);
+    
+    useEffect(() => {
+        
+        if (displayedBlogs.length > 0 && !loading) {
+            const equalizeRowHeights = () => {
+                
+                const grid = document.querySelector('.blogs-page-blogs-grid');
+                if (!grid) return;
+                
+                // Get all blog items
+                const items = Array.from(document.querySelectorAll('.blogs-page-blog-item'));
+                
+                // Reset heights to auto first to measure natural height
+                items.forEach(item => {
+                    (item as HTMLElement).style.height = 'auto';
+                });
+                
+                // We know we have 2 columns from the CSS
+                const columnCount = 2;
+                
+                // Group items by row and set equal heights
+                for (let i = 0; i < items.length; i += columnCount) {
+                    // Get items in current row (could be 1 or 2 items)
+                    const rowItems = items.slice(i, Math.min(i + columnCount, items.length));
+                    
+                    // Find tallest item in this row
+                    let maxHeight = 0;
+                    rowItems.forEach(item => {
+                        maxHeight = Math.max(maxHeight, (item as HTMLElement).offsetHeight);
+                    });
+                    
+                    // Set all items in this row to the tallest height
+                    rowItems.forEach(item => {
+                        (item as HTMLElement).style.height = `${maxHeight}px`;
+                    });
+                }
+            };
+            
+            // Run once after render
+            // Add a small delay to ensure all content is fully rendered
+            setTimeout(equalizeRowHeights, 100);
+            
+            // Also run when window resizes
+            window.addEventListener('resize', equalizeRowHeights);
+            
+            // Clean up event listener when component unmounts
+            return () => {
+                window.removeEventListener('resize', equalizeRowHeights);
+            };
+        }
+    }, [displayedBlogs, loading, showAllBlogs]); // Dependencies
 
     return (
         <div className="blogs-page">
@@ -74,13 +128,7 @@ function BlogsPage() {
             {/* Pinned Blogs Header (Title + Search Bar) */}
             <div className="blogs-page-pinned-header">
                 <h2>Pinned Blogs</h2>
-                <input
-                    type="text"
-                    className="blogs-page-search-bar"
-                    placeholder="tanggalin na tong search bar"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                />
+                
             </div>
 
             {/* Pinned Blogs Section */}
@@ -89,7 +137,7 @@ function BlogsPage() {
                     <div className="blogs-page-pinned-container">
                         <div
                             className="blogs-page-pinned-main"
-                            style={{ "--bg-image": `url(${pinnedBlogs[0].image_url || placeholderImage})` } as React.CSSProperties}
+                            style={{ "--bg-image": `url(${pinnedBlogs[0].image_url })` } as React.CSSProperties}
                             onClick={() => handleBlogClick(pinnedBlogs[0].blog_id)} // Make pinned blog clickable
                         >
                             <div className="blogs-page-pinned-overlay">
@@ -113,7 +161,7 @@ function BlogsPage() {
                                 <div
                                     key={blog.blog_id}
                                     className="blogs-page-pinned-item"
-                                    style={{ "--bg-image": `url(${blog.image_url || placeholderImage})` } as React.CSSProperties}
+                                    style={{ "--bg-image": `url(${blog.image_url })` } as React.CSSProperties}
                                     onClick={() => handleBlogClick(blog.blog_id)} // Make side pinned blogs clickable
                                 >
                                     <div className="blogs-page-pinned-overlay">
@@ -139,7 +187,7 @@ function BlogsPage() {
 
            {/* Blog Categories Section */}
            <div className="blogs-page-blog-categories">
-                <h2 className="blogs-page-blogs-header">Blogs</h2>
+           <h2 style={{ fontFamily: "'Bogart Trial', sans-serif" }} className="blogs-page-blogs-header">Blogs</h2>
                 <div className="blogs-page-category-list">
                     {categories.map(category => (
                         <span
@@ -157,22 +205,22 @@ function BlogsPage() {
             {/* Latest Blogs Section */}
             <div className="blogs-page-blogs-list">
                 {loading ? (
-                    <p>Loading blogs...</p>
+                    <Preloader/>
                 ) : displayedBlogs.length > 0 ? (
                     <div className="blogs-page-blogs-grid">
                         {displayedBlogs.map((blog) => (
                             <div key={blog.blog_id} className="blogs-page-blog-item">
                                 <img 
-                                    src={blog.image_url || placeholderImage} 
+                                    src={blog.image_url } 
                                     alt={blog.title} 
-                                    onClick={() => handleBlogClick(blog.blog_id)} // Click event for image
-                                    style={{ cursor: "pointer" }} // Make it visually clickable
+                                    onClick={() => handleBlogClick(blog.blog_id)} 
+                                    style={{ cursor: "pointer" }} 
                                 />
                                 <div className="blogs-page-pinned-overlay">
                                     <p className="blogs-page-pinned-category-3">{blog.category}</p>
                                     <h3 
                                         className="blogs-page-pinned-title-3"
-                                        onClick={() => handleBlogClick(blog.blog_id)} // Click event for title
+                                        onClick={() => handleBlogClick(blog.blog_id)} 
                                         style={{ cursor: "pointer" }}
                                     >
                                         {blog.title}

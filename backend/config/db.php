@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$dbname = "tkwebsitedb";
+$dbname = "tk_webapp"; 
 
 $conn = new mysqli($host, $user, $pass, $dbname);
 
