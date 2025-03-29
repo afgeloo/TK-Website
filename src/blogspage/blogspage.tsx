@@ -138,7 +138,7 @@ function BlogsPage() {
                         <div
                             className="blogs-page-pinned-main"
                             style={{ "--bg-image": `url(${pinnedBlogs[0].image_url })` } as React.CSSProperties}
-                            onClick={() => handleBlogClick(pinnedBlogs[0].blog_id)} // Make pinned blog clickable
+                            onClick={() => handleBlogClick(pinnedBlogs[0].blog_id)} 
                         >
                             <div className="blogs-page-pinned-overlay">
                                 <p className="blogs-page-pinned-category-1">{pinnedBlogs[0].category}</p>
