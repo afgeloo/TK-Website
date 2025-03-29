@@ -64,15 +64,17 @@
 
 .event-locationdetails
 {
-    font-size: 16px;
-    color: #7A7676;
-    margin-top: -3px;
+    font-size: 14px;
+    color: gray;
+    display: flex;
+    align-items: center;
+
 }
 
 .locationevent-icon-details
 {
-    height: 20px;
-    width: 20px;
+    height: 25px;
+    width: 25px;
 }
 
 
@@ -135,16 +137,17 @@ color: #000;
 margin-bottom: 10px;
 align-self: flex-start;
 text-align: left; /* Ensures labels are left-aligned */
-
+font-weight: bold;
 }
 
 .location-header-event{
-    font-size: 16px;
-    font-family: "Helvetica Now Text "sans-serif;
+font-size: 16px;
+font-family: "Helvetica Now Text "sans-serif;
 color: #000;
 text-align: left; /* Ensures labels are left-aligned */
 margin-top: 50px;
 margin-bottom: 10px;
+font-weight: bold;
 }
 
 .event-map-container{

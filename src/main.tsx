@@ -10,6 +10,8 @@ const AboutPage = lazy(() => import("./aboutpage/aboutpage"));
 const ContactPage = lazy(() => import("./contactpage/contactpage"));
 const BlogsPage = lazy(() => import("./blogspage/blogspage"));
 const SingleBlog = lazy(() => import("./blogspage/singleblog"));
+const EventDetails  = lazy(() => import("./eventspage/eventpage-details")); 
+
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,7 @@ const router = createBrowserRouter([
       { path: "about", element: <AboutPage /> },
       { path: "contact", element: <ContactPage /> },
       { path: "events", element: <EventsPage /> },
+      { path: "events/:id", element: <EventDetails /> },
       { path: "blogs", element: <BlogsPage /> },
       { path: "blog/:id", element: <SingleBlog /> },
     ],

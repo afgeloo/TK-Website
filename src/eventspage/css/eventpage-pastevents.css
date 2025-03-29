@@ -3,6 +3,7 @@
   margin: auto;
   padding-left: 150px; 
   padding-right: 150px; 
+  
 }
 
 .past-events-header {
@@ -24,6 +25,7 @@
   border-top: 2px solid #E5E7EB;
   width: 100%;
   margin: 16px 0;
+  align-self: center; /* Center the divider */
 }
 
 .search-wrapper {
@@ -110,8 +112,9 @@
 }
 
 .past-event-date-weekday {
-  font-size: 14px;
+  font-size: 17px;
   color: gray;
+  margin-top: -15px;
 }
 
 .past-event-details {
@@ -119,6 +122,7 @@
   padding-left: 150px;
   width: 1000px; /* Adjust width to utilize space */
   position: relative;
+  
 }
 
 .past-event-details::before {

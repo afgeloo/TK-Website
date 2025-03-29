@@ -1,11 +1,12 @@
 .eventsrsvp-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
-    gap: 0px;
+    gap: 5px;
     padding-left: 150px;
     padding-right: 150px;
     padding-bottom: 150px;
     justify-content: center;
+   
 }
 
 .event-card {
@@ -23,7 +24,7 @@
 /* Hover effect */
 .event-card:hover {
     box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.2);
-    transform: scale(1.05); /* Slightly enlarges the card */
+    transform: scale(1.03); /* Slightly enlarges the card */
 }
 
 /* Image Styling */
@@ -188,3 +189,11 @@
     background: #ff3b6a; /* Darker pink */
 }
 
+.custom-divider-pagination {
+    border-top: 2px solid #E5E7EB;
+    width: 100%;
+    margin: 16px 0;
+    align-self: center; /* Center the divider */
+    padding-left: 20px;
+    padding-right: 20px;
+  }

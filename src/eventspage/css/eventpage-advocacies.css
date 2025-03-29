@@ -33,8 +33,6 @@
     
 }
 
-
-
 .advocacies-slider {
   display: flex;
   flex-wrap: wrap;
@@ -218,6 +216,6 @@
 }
 
 .events-page {
-  padding-left: 150px; 
+  padding-left: 100px; 
   padding-right: 150px; /* Add padding to align with other components */
 }

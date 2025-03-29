@@ -11,6 +11,7 @@ export default function PastEvents() {
   const [year, setYear] = useState("");
   const [category, setCategory] = useState("");
   const [showAll, setShowAll] = useState(false);
+  
 
   useEffect(() => {
     fetchEvents().then((data) => {
@@ -86,6 +87,7 @@ export default function PastEvents() {
           ))}
         </div>
       </div>
+
 
       {/* See More / See Less Button */}
       <button 
