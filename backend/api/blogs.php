@@ -5,10 +5,17 @@ header("Content-Type: application/json");
 include '../config/db.php';
 
 if (isset($_GET['blog_id'])) {
-    $blog_id = intval($_GET['blog_id']); 
-    $query = "SELECT * FROM blogs WHERE blog_id = ?";
+    $blog_id = $_GET['blog_id'];
+    
+    $query = "SELECT b.blog_id, b.blog_title as title, b.blog_content as content, 
+              b.blog_image as image_url, b.blog_category as category, 
+              b.created_at, u.user_name as author, b.blog_status 
+              FROM tk_webapp.blogs b
+              LEFT JOIN tk_webapp.users u ON b.blog_author_id = u.user_id
+              WHERE b.blog_id = ?";
+              
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $blog_id);
+    $stmt->bind_param("s", $blog_id);
 
     if ($stmt->execute()) {
         $result = $stmt->get_result();
@@ -38,7 +45,15 @@ $response = [
     "blogs" => []
 ];
 
-$pinnedQuery = "SELECT * FROM blogs WHERE pinned = 1 ORDER BY created_at DESC LIMIT 3";
+// Fetch pinned blogs
+$pinnedQuery = "SELECT b.blog_id, b.blog_title as title, b.blog_content as content, 
+                b.blog_image as image_url, b.blog_category as category, 
+                b.created_at, u.user_name as author
+                FROM tk_webapp.blogs b
+                LEFT JOIN tk_webapp.users u ON b.blog_author_id = u.user_id
+                WHERE b.blog_status = 'PINNED' 
+                ORDER BY b.created_at DESC LIMIT 3";
+                
 $pinnedResult = $conn->query($pinnedQuery);
 if ($pinnedResult) {
     $response["pinned"] = $pinnedResult->fetch_all(MYSQLI_ASSOC);
@@ -48,11 +63,23 @@ if ($pinnedResult) {
     exit;
 }
 
+// Fetch all blogs, including pinned
 if ($category === 'ALL') {
-    $query = "SELECT * FROM blogs ORDER BY created_at DESC";
+    $query = "SELECT b.blog_id, b.blog_title as title, b.blog_content as content, 
+              b.blog_image as image_url, b.blog_category as category, 
+              b.created_at, u.user_name as author, b.blog_status
+              FROM tk_webapp.blogs b
+              LEFT JOIN tk_webapp.users u ON b.blog_author_id = u.user_id
+              ORDER BY b.created_at DESC";
     $stmt = $conn->prepare($query);
 } else {
-    $query = "SELECT * FROM blogs WHERE category = ? ORDER BY created_at DESC";
+    $query = "SELECT b.blog_id, b.blog_title as title, b.blog_content as content, 
+              b.blog_image as image_url, b.blog_category as category, 
+              b.created_at, u.user_name as author, b.blog_status
+              FROM tk_webapp.blogs b
+              LEFT JOIN tk_webapp.users u ON b.blog_author_id = u.user_id
+              WHERE b.blog_category = ?
+              ORDER BY b.created_at DESC";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $category);
 }
