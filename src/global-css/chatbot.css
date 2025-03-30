@@ -1,34 +1,49 @@
 /* chatbot CSS */
 
-@mixin fancy-background() {
+/* Custom scrollbar */
+.fancy-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.fancy-scrollbar::-webkit-scrollbar-track {
+    border-radius: 6px;
+    background-color: rgba(25, 147, 147, 0.1);
+}
+.fancy-scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-color: #FFF9F0;
+}
+
+/* Background gradient (mimicking fancy-background) */
+.fancy-background {
     background: -moz-linear-gradient(-45deg, #183850 0, #183850 25%, #192C46 50%, #22254C 75%, #22254C 100%);
     background: -webkit-linear-gradient(-45deg, #183850 0, #183850 25%, #192C46 50%, #22254C 75%, #22254C 100%);
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
 
-@mixin fancy-scrollbar() {
-    &::-webkit-scrollbar {
-        width: $scrollbar-width;
-    }
-    &::-webkit-scrollbar-track {
-        border-radius: $scrollbar-width;
-        background-color: rgba(25, 147, 147, 0.1);
-    }
-    &::-webkit-scrollbar-thumb {
-        border-radius: $scrollbar-width;
-        background-color: $chat-thread-bgd-color;
-    }
-}
-
-@mixin scrolling-shadows($background-color: transparent, $shadow-intensity: 0.5, $shadow-color: $default-shadow-color, $cover-size: 40px, $shadow-size: 14px) {
-    background: linear-gradient($background-color 30%, rgba($background-color, 0)), linear-gradient(rgba($background-color, 0), $background-color 70%) 0 100%, radial-gradient(50% 0, farthest-side, rgba($shadow-color, $shadow-intensity), rgba($shadow-color, 0)), radial-gradient(50% 100%, farthest-side, rgba($shadow-color, $shadow-intensity), rgba($shadow-color, 0)) 0 100%;
-    background: linear-gradient($background-color 30%, rgba($background-color, 0)), linear-gradient(rgba($background-color, 0), $background-color 70%) 0 100%, radial-gradient(farthest-side at 50% 0, rgba($shadow-color, $shadow-intensity), rgba($shadow-color, 0));
+/* Scrolling shadow (simplified version) */
+.scrolling-shadows {
+    background: linear-gradient(#FFF9F0 30%, rgba(255, 249, 240, 0)),
+                linear-gradient(rgba(255, 249, 240, 0), #FFF9F0 70%) 0 100%,
+                radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
     background-repeat: no-repeat;
-    background-color: $background-color;
-    background-size: 100% $cover-size, 100% $cover-size, 100% $shadow-size, 100% $shadow-size;
+    background-color: #FFF9F0;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
     background-attachment: local, local, scroll, scroll;
 }
+
+/* The rest of your CSS (unchanged because it’s already plain CSS) */
+.disabled-button {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+    background-color: #cccccc !important;
+}
+.disabled-button:hover {
+    background-color: #cccccc !important;
+}
+
+/* (The rest of your `.floating-chat`, `.chat`, `.messages`, etc.) */
+/* Since this part is already plain CSS, you can keep everything after the mixins as-is */
 
 .disabled-button {
     opacity: 0.5;
