@@ -6,6 +6,7 @@
     padding-right: 150px;
     padding-bottom: 150px;
     justify-content: center;
+
    
 }
 
@@ -16,8 +17,9 @@
     padding: 10px; /* Space around the content */
     text-align: left; /* Align text to the left */
     width: 280px; /* Set width similar to your image */
-    display: flex;
+    display: flex;  
     flex-direction: column;
+    justify-content: space-between;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 

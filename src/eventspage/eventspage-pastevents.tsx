@@ -1,8 +1,18 @@
 import { useState, useEffect } from "react";
-import { fetchEvents } from "./mockServer"; // Assuming you have a function to fetch events
-import "./css/eventpage-pastevents.css"; // Import CSS file
-import locationIconeventspage from "../assets/eventspage/Location-eventspage.png"; // Import location icon
-import searchIconEventspage from "../assets/eventspage/Search-icon-events.png"; // Import search icon
+import { fetchEvents, formatDate, IMAGE_BASE_URL } from "./mockServer";
+import "./css/eventpage-pastevents.css";
+import locationIconeventspage from "../assets/eventspage/Location-eventspage.png";
+import searchIconEventspage from "../assets/eventspage/Search-icon-events.png";
+
+// ✅ Time conversion function
+const convertTo12HourFormat = (time) => {
+  if (!time || typeof time !== "string") return "Invalid Time";
+  let [hours, minutes] = time.split(":").map(Number);
+  if (isNaN(hours) || isNaN(minutes)) return "Invalid Time";
+  const period = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12 || 12;
+  return `${hours}:${minutes.toString().padStart(2, "0")} ${period}`;
+};
 
 export default function PastEvents() {
   const [events, setEvents] = useState([]);
@@ -11,13 +21,18 @@ export default function PastEvents() {
   const [year, setYear] = useState("");
   const [category, setCategory] = useState("");
   const [showAll, setShowAll] = useState(false);
-  
+   const [selectedCategory, setSelectedCategory] = useState("ALL");
 
-  useEffect(() => {
-    fetchEvents().then((data) => {
-      setEvents(data);
-    });
-  }, []);
+
+    useEffect(() => {
+        fetchEvents().then((data) => {
+          const upcoming = Array.isArray(data)
+            ? data.filter(event => event.event_status === "Done")
+            : [];
+          setEvents(upcoming);
+        });
+      }, [selectedCategory]);
+      
 
   const displayedEvents = showAll ? events : events.slice(0, 3);
 
@@ -25,7 +40,7 @@ export default function PastEvents() {
     <div className="past-events-container">
       <div className="past-events-header">
         <h1 className="past-events-title">Past Events</h1>
-        <div className="custom-divider"></div> {/* Add divider */}
+        <div className="custom-divider"></div>
         <div className="search-wrapper">
           <img src={searchIconEventspage} alt="Search" className="search-icon-eventspage" />
           <input
@@ -61,25 +76,27 @@ export default function PastEvents() {
           {displayedEvents.map((event, index) => (
             <div key={index} className="past-event-item">
               <div className="past-event-date">
-                <p className="past-event-date-day">{event.date}</p>
-                <p className="past-event-date-weekday">{event.day}</p>
+                <p>{formatDate(event.event_date)}</p>
+                <p className="past-event-date-weekday">{event.event_day}</p>
               </div>
               <div className="past-event-details">
                 <div className="past-event-card">
                   <div className="past-event-card-content">
                     <div className="past-event-card-text">
-                      <p className="past-event-time">{event.time}</p>
-                      <p className="past-event-title">{event.title}</p>
-                      <p className="past-event-category">{event.category}</p>
+                      <p className="past-event-time">
+                        {convertTo12HourFormat(event.event_start_time)} - {convertTo12HourFormat(event.event_end_time)}
+                      </p>
+                      <p className="past-event-title">{event.event_title}</p>
+                      <p className="past-event-category">{event.event_category}</p>
                       <p className="past-event-location">
                         <img src={locationIconeventspage} alt="Location" className="locationevent-icon" />
-                        {event.location}
+                        {event.event_venue}
                       </p>
                       <p className="past-event-guests">
-                        👥 {event.guests} guests
+                        👥 {event.event_going || 0} guests
                       </p>
                     </div>
-                    <img src={event.image_url} alt={event.title} className="past-event-image" />
+                    <img src={`${IMAGE_BASE_URL}${event.event_image}`} alt={event.event_title} className="past-event-image" />
                   </div>
                 </div>
               </div>
@@ -88,14 +105,12 @@ export default function PastEvents() {
         </div>
       </div>
 
-
-      {/* See More / See Less Button */}
-      <button 
-  className={`see-more-button ${showAll ? "see-less" : ""}`} 
-  onClick={() => setShowAll(!showAll)}
->
-  {showAll ? "See Less" : "See More"}
-</button>
+      <button
+        className={`see-more-button ${showAll ? "see-less" : ""}`}
+        onClick={() => setShowAll(!showAll)}
+      >
+        {showAll ? "See Less" : "See More"}
+      </button>
     </div>
   );
 }

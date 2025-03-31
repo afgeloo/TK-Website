@@ -10,22 +10,30 @@ function EventDetails() {
     const [event, setEvent] = useState(null);
 
     useEffect(() => {
-        fetchEvents().then((data) => {
-            const found = data.find((e) => e.id.toString() === id);
-            setEvent(found || null);
-        });
+        if (!id) return;
+    
+        const fetchEvent = async () => {
+            try {
+                const response = await fetch(`http://localhost/TK-ced-branch/TK-Website/backend/api/get_event.php?id=${id}`);
+                const data = await response.json();
+                setEvent(data);
+            } catch (error) {
+                console.error("Failed to fetch event details:", error);
+            }
+        };
+    
+        fetchEvent();
     }, [id]);
-
-    if (!event) return <h1>Event Not Found</h1>;
+    
 
     return (
         <div className="event-soledetails-container">
             {/* Left side: Image */}
             <div className="event-image-container">
-                <img src={event.image_url} alt={event.title} className="event-details-image" />
+                <img src={event.event_image} alt={event.event_title} className="event-details-image" />
                 <p className="event-speaker"><strong>Speaker/s:</strong></p>
                 <div className="custom-divider-details2"></div>
-                <p className="event-speakernames">{event?.speaker || 'To be announced'}</p>
+                <p className="event-speakernames">{event?.event_speakers || 'To be announced'}</p>
                 <p className="event-going">{event.going} <strong>Going</strong></p>
                 <div className="custom-divider-details2"></div>
                 <p className="location-header-event">Location:</p>
@@ -39,7 +47,7 @@ function EventDetails() {
                 >
                     <div className="event-map-container">
                         <iframe
-                            src={`https://www.google.com/maps?q=${encodeURIComponent(event?.location || 'Default Location')}&z=18&output=embed`}
+                            src={`https://www.google.com/maps?q=${encodeURIComponent(event?.event_venue || 'Default Location')}&z=18&output=embed`}
                             width="300"
                             height="300"
                             style={{ border: 0 }}
@@ -52,18 +60,20 @@ function EventDetails() {
 
             {/* Right side: Title + Info */}
             <div className="event-content">
-                <h1 className="event-details-title">{event.title}</h1>
-                <p className="event-date-details">{event.date}, {event.day}</p>
-                <p className="event-details-time">{event.starttime} - {event.endtime}</p>
+                <h1 className="event-details-title">{event.event_title}</h1>
+                <p className="event-date-details">{event.event_date}, {event.event_day}</p>
+                <p className="event-details-time">
+                    {event.event_start_time} - {event.event_end_time}
+                </p>
                 <p className="event-locationdetails">
                     <img src={locationIconeventspageDetails} alt="Location" className="locationevent-icon-details" />
-                    {event.location}
+                    {event.event_venue}
                 </p>
 
                 {/* About */}
                 <p className="about-details-event-title">About the Event</p>
                 <div className="custom-divider-details"></div>
-                <p className="event-details-about">{event.about}</p>
+                <p className="event-details-about">{event.event_content}</p>
 
                 <button className="eventrsvp-button-details">RSVP</button>
             </div>
