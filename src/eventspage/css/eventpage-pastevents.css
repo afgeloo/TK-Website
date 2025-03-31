@@ -1,10 +1,7 @@
 .past-events-container {
-  width: 100%; 
-  margin: auto;
   padding-left: 150px; 
   padding-right: 150px; 
-  
-  
+  max-width: 100%; /* Ensures full width */
 }
 
 .past-events-header {
@@ -22,10 +19,11 @@
   margin-top: 50px;
 }
 
-.custom-divider {
-  border-top: 2px solid #E5E7EB;
+.custom-divider-pastevents {
+  border-top: 2px solid #3c1212;
   width: 100%;
-  margin: 16px 0;
+  margin: 16px;
+  margin-bottom: 30px;
   align-self: center; /* Center the divider */
 }
 
@@ -33,7 +31,7 @@
   display: flex;
   align-items: center;
   gap: 10px; /* Space between elements */
-  margin-bottom: 50px; /* Space below search bar */
+  margin-bottom: 5px; /* Space below search bar */
   justify-content: flex-start; /* Align search bar to the left */
   margin-top: 40px;
   margin-right: 150px;
@@ -105,6 +103,8 @@
 .past-event-date {
   text-align: left;
   width: 170px;
+
+ 
 }
 
 .past-event-date-day {
@@ -115,7 +115,7 @@
 .past-event-date-weekday {
   font-size: 17px;
   color: gray;
-  margin-top: -15px;
+  margin-top: 3px;
 }
 
 .past-event-details {
@@ -146,6 +146,12 @@
   max-width: 650px; /* Limit the width of the card */
   display: flex;
   justify-content: space-between;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.past-event-card:hover {
+  box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.01); /* Slightly enlarges the card */
 }
 
 .past-event-card-content {
@@ -233,3 +239,7 @@
 .see-more-button:active {
   transform: scale(0.95);
 }
+
+
+
+

@@ -1,13 +1,34 @@
+
+.events-page-rsvp {
+    padding-left: 100px; 
+    padding-right: 150px;
+    max-width: 100%; /* Ensures full width */
+}
+
 .eventsrsvp-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
-    gap: 5px;
-    padding-left: 150px;
-    padding-right: 150px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
     padding-bottom: 150px;
-    justify-content: center;
+    justify-content: start; /* Aligns items to the left */
+}
+/* Adjust grid for smaller screens */
+@media (max-width: 1300px) {
+    .eventsrsvp-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
 
-   
+@media (max-width: 1024px) {
+    .eventsrsvp-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 800px) {
+    .eventsrsvp-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .event-card {
@@ -196,6 +217,4 @@
     width: 100%;
     margin: 16px 0;
     align-self: center; /* Center the divider */
-    padding-left: 20px;
-    padding-right: 20px;
   }

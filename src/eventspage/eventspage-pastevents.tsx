@@ -1,18 +1,10 @@
-import { useState, useEffect } from "react";
-import { fetchEvents, formatDate, IMAGE_BASE_URL } from "./mockServer";
+import { useState, useEffect, } from "react";
+import { fetchEvents, formatDatePast, IMAGE_BASE_URL, convertTo12HourFormat } from "./mockServer";
 import "./css/eventpage-pastevents.css";
 import locationIconeventspage from "../assets/eventspage/Location-eventspage.png";
 import searchIconEventspage from "../assets/eventspage/Search-icon-events.png";
+import { useNavigate, useParams } from "react-router-dom";
 
-// ✅ Time conversion function
-const convertTo12HourFormat = (time) => {
-  if (!time || typeof time !== "string") return "Invalid Time";
-  let [hours, minutes] = time.split(":").map(Number);
-  if (isNaN(hours) || isNaN(minutes)) return "Invalid Time";
-  const period = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12 || 12;
-  return `${hours}:${minutes.toString().padStart(2, "0")} ${period}`;
-};
 
 export default function PastEvents() {
   const [events, setEvents] = useState([]);
@@ -21,26 +13,68 @@ export default function PastEvents() {
   const [year, setYear] = useState("");
   const [category, setCategory] = useState("");
   const [showAll, setShowAll] = useState(false);
-   const [selectedCategory, setSelectedCategory] = useState("ALL");
+  const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState("ALL");
 
 
-    useEffect(() => {
-        fetchEvents().then((data) => {
-          const upcoming = Array.isArray(data)
-            ? data.filter(event => event.event_status === "Done")
-            : [];
-          setEvents(upcoming);
-        });
-      }, [selectedCategory]);
-      
 
-  const displayedEvents = showAll ? events : events.slice(0, 3);
+  useEffect(() => {
+    fetchEvents().then((data) => {
+      const upcoming = Array.isArray(data)
+        ? data.filter(event => event.event_status === "Done")
+        : [];
+      setEvents(upcoming);
+    });
+  }, [selectedCategory]);
+
+
+  // Helper to extract month from date string
+  const getMonthName = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleString('default', { month: 'long' });
+  };
+
+  // Helper to extract year
+  const getYear = (dateStr) => {
+    return new Date(dateStr).getFullYear().toString();
+  };
+
+  // 🔎 Filter events based on searchTerm, month, year, and category
+  const filteredEvents = events.filter((event) => {
+    const matchesSearch = event.event_title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesMonth = !month || getMonthName(event.event_date) === month;
+    const matchesYear = !year || getYear(event.event_date) === year;
+    const matchesCategory = !category || event.event_category === category;
+    return matchesSearch && matchesMonth && matchesYear && matchesCategory;
+  });
+  const monthOptions = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const categoryOptions = [
+    "Kalusugan", "Kalikasan", "Karunungan", "Kultura", "Kasarian"];
+
+  const displayedEvents = showAll ? filteredEvents : filteredEvents.slice(0, 3);
+
+  const currentYear = new Date().getFullYear();
+
+  // Get earliest year from event list
+  const earliestYear = events.length > 0
+    ? Math.min(...events.map(e => new Date(e.event_date).getFullYear()))
+    : currentYear;
+
+  // Generate list of years from earliest to current
+  const yearOptions = [];
+  for (let year = earliestYear; year <= currentYear; year++) {
+    yearOptions.push(year.toString());
+  }
 
   return (
     <div className="past-events-container">
       <div className="past-events-header">
         <h1 className="past-events-title">Past Events</h1>
-        <div className="custom-divider"></div>
+
         <div className="search-wrapper">
           <img src={searchIconEventspage} alt="Search" className="search-icon-eventspage" />
           <input
@@ -52,35 +86,44 @@ export default function PastEvents() {
           />
           <select className="search-dropdown" value={month} onChange={(e) => setMonth(e.target.value)}>
             <option value="">Month</option>
-            <option value="January">January</option>
-            <option value="February">February</option>
-            {/* Add other months */}
+            {monthOptions.map((m) => (
+              <option key={m} value={m}>{m}</option>
+            ))}
           </select>
           <select className="search-dropdown" value={year} onChange={(e) => setYear(e.target.value)}>
             <option value="">Year</option>
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-            {/* Add other years */}
+            {yearOptions.map((y) => (
+              <option key={y} value={y}>{y}</option>
+            ))}
           </select>
-          <select className="search-dropdown" value={category} onChange={(e) => setCategory(e.target.value)}>
+          <select
+            className="search-dropdown"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
             <option value="">Category</option>
-            <option value="Karunungan">Karunungan</option>
-            <option value="Kalikasan">Kalikasan</option>
-            {/* Add other categories */}
+            {categoryOptions.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
           </select>
         </div>
+        <div className="custom-divider-pastevents"></div>
       </div>
 
       <div className="past-events-list">
-        <div className="past-events-box">
-          {displayedEvents.map((event, index) => (
+      <div className={`past-events-box transition-wrapper ${showAll ? "expanded" : "collapsed"}`}>
+      {displayedEvents.map((event, index) => (
             <div key={index} className="past-event-item">
               <div className="past-event-date">
-                <p>{formatDate(event.event_date)}</p>
+                <div className="past-event-date-day">{formatDatePast(event.event_date)},</div>
                 <p className="past-event-date-weekday">{event.event_day}</p>
               </div>
               <div className="past-event-details">
-                <div className="past-event-card">
+                <div className="past-event-card"
+                  onClick={() => navigate(`/events/${event.event_id}?from=past`)}
+                  style={{ cursor: "pointer" }}>
                   <div className="past-event-card-content">
                     <div className="past-event-card-text">
                       <p className="past-event-time">

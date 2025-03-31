@@ -21,6 +21,24 @@ export const formatDate = (dateString: string): string => {
   });
 };
 
+export const formatDatePast = (dateString: string): string => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+  });
+};
+
+export const formatDateDetails = (dateString: string): string => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+
+  });
+};
+
 export const convertTo12HourFormat = (timeString: string): string => {
   const [hour, minute] = timeString.split(":").map(Number);
   const period = hour >= 12 ? "PM" : "AM";
