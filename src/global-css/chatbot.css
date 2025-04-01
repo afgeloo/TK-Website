@@ -91,12 +91,11 @@
 
 .floating-chat.expand {
     width: 350px; /* Increased width */
-    max-height: 500px; /* Increased height */
-    height: 500px; /* Increased height */
+    max-height: 520px; /* Increased height */
+    height: 520px; /* Increased height */
     border-radius: 5px;
     cursor: auto;
     opacity: 1;
-    bottom: 20px; /* Ensure it stays in sight when expanded */
     right: 20px; /* Ensure it stays in sight when expanded */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Added drop shadow */
 }
@@ -136,7 +135,11 @@
 .floating-chat .chat.enter {
     opacity: 1;
     border-radius: 0;
-    margin: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-bottom: -20px;
     width: auto;
     height: auto;
 }
@@ -326,6 +329,7 @@
 .floating-chat .chat .footerchat button:hover {
     background-color: #e682a3; /* Darker shade on hover */
 }
+
 
 .floating-chat .chat .predefined-messages button {
     color: #FFF9F0;
