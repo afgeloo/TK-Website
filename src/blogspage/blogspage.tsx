@@ -23,7 +23,7 @@ interface Blog {
 
 function BlogsPage() {
     const [blogs, setBlogs] = useState<Blog[]>([]);
-    const [allBlogs, setAllBlogs] = useState<Blog[]>([]); // New state to store all blogs
+    const [allBlogs, setAllBlogs] = useState<Blog[]>([]); 
     const [pinnedBlogs, setPinnedBlogs] = useState<Blog[]>([]);
     const [selectedCategory, setSelectedCategory] = useState("ALL");
     const [searchQuery, setSearchQuery] = useState("");
@@ -137,64 +137,126 @@ function BlogsPage() {
     return (
         <div className="blogs-page">
             <Header />
-            {/* Pinned Blogs Header (Title + Search Bar) */}
-            <div className="blogs-page-pinned-header">
-                <h2>Pinned Blogs</h2>  
-            </div>
+            
+            {/* Only show Pinned Blogs section if there are pinned blogs */}
+            {pinnedBlogs.length > 0 && (
+                <>
+                    {/* Pinned Blogs Header */}
+                    <div className="blogs-page-pinned-header">
+                        <h2>Pinned Blogs</h2>  
+                    </div>
 
-            {/* Pinned Blogs Section */}
-            <div className="blogs-page-pinned-blogs">
-                {pinnedBlogs.length > 0 && (
-                    <div className="blogs-page-pinned-container">
-                        <div
-                            className="blogs-page-pinned-main"
-                            style={{ "--bg-image": `url(${pinnedBlogs[0].image_url })` } as React.CSSProperties}
-                            onClick={() => handleBlogClick(pinnedBlogs[0].blog_id)} 
-                        >
-                            <div className="blogs-page-pinned-overlay">
-                                <p className="blogs-page-pinned-category-1">{pinnedBlogs[0].category}</p>
-                                <h3 className="blogs-page-pinned-title-1">{pinnedBlogs[0].title}</h3>
-                                <p className="blogs-page-pinned-meta-1">
-                                    <img src={timeiconwhite} className="blogs-page-timeiconwhite" />
-                                    {new Date(pinnedBlogs[0].created_at).toLocaleDateString("en-US", { 
-                                        year: "numeric", 
-                                        month: "long", 
-                                        day: "numeric" 
-                                    })} 
-                                    <img src={authoriconwhite} className="blogs-page-authoriconwhite" />
-                                    {pinnedBlogs[0].author}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="blogs-page-pinned-side">
-                            {pinnedBlogs.slice(1, 3).map((blog) => (
+                    {/* Pinned Blogs Section */}
+                    <div className="blogs-page-pinned-blogs">
+                        {/* Case 1: Only 1 pinned blog */}
+                        {pinnedBlogs.length === 1 && (
+                            <div className="blogs-page-pinned-container blogs-page-pinned-single">
                                 <div
-                                    key={blog.blog_id}
-                                    className="blogs-page-pinned-item"
-                                    style={{ "--bg-image": `url(${blog.image_url })` } as React.CSSProperties}
-                                    onClick={() => handleBlogClick(blog.blog_id)} // Make side pinned blogs clickable
+                                    className="blogs-page-pinned-full"
+                                    style={{ "--bg-image": `url(${pinnedBlogs[0].image_url})` } as React.CSSProperties}
+                                    onClick={() => handleBlogClick(pinnedBlogs[0].blog_id)}
                                 >
                                     <div className="blogs-page-pinned-overlay">
-                                        <p className="blogs-page-pinned-category-2">{blog.category}</p>
-                                        <h3 className="blogs-page-pinned-title-2">{blog.title}</h3>
-                                        <p className="blogs-page-pinned-meta-2">
+                                        <p className="blogs-page-pinned-category-1">{pinnedBlogs[0].category}</p>
+                                        <h3 className="blogs-page-pinned-title-1">{pinnedBlogs[0].title}</h3>
+                                        <p className="blogs-page-pinned-meta-1">
                                             <img src={timeiconwhite} className="blogs-page-timeiconwhite" />
-                                            {new Date(blog.created_at).toLocaleDateString("en-US", { 
+                                            {new Date(pinnedBlogs[0].created_at).toLocaleDateString("en-US", { 
                                                 year: "numeric", 
                                                 month: "long", 
                                                 day: "numeric" 
                                             })} 
                                             <img src={authoriconwhite} className="blogs-page-authoriconwhite" />
-                                            {blog.author}
+                                            {pinnedBlogs[0].author}
                                         </p>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
+                            </div>
+                        )}
+
+                        {/* Case 2: Exactly 2 pinned blogs */}
+                        {pinnedBlogs.length === 2 && (
+                            <div className="blogs-page-pinned-container blogs-page-pinned-double">
+                                {pinnedBlogs.map((blog) => (
+                                    <div
+                                        key={blog.blog_id}
+                                        className="blogs-page-pinned-half"
+                                        style={{ "--bg-image": `url(${blog.image_url})` } as React.CSSProperties}
+                                        onClick={() => handleBlogClick(blog.blog_id)}
+                                    >
+                                        <div className="blogs-page-pinned-overlay">
+                                            <p className="blogs-page-pinned-category-1">{blog.category}</p>
+                                            <h3 className="blogs-page-pinned-title-1">{blog.title}</h3>
+                                            <p className="blogs-page-pinned-meta-1">
+                                                <img src={timeiconwhite} className="blogs-page-timeiconwhite" />
+                                                {new Date(blog.created_at).toLocaleDateString("en-US", { 
+                                                    year: "numeric", 
+                                                    month: "long", 
+                                                    day: "numeric" 
+                                                })} 
+                                                <img src={authoriconwhite} className="blogs-page-authoriconwhite" />
+                                                {blog.author}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Case 3: 3 or more pinned blogs (original layout) */}
+                        {pinnedBlogs.length >= 3 && (
+                            <div className="blogs-page-pinned-container">
+                                <div
+                                    className="blogs-page-pinned-main"
+                                    style={{ "--bg-image": `url(${pinnedBlogs[0].image_url})` } as React.CSSProperties}
+                                    onClick={() => handleBlogClick(pinnedBlogs[0].blog_id)} 
+                                >
+                                    <div className="blogs-page-pinned-overlay">
+                                        <p className="blogs-page-pinned-category-1">{pinnedBlogs[0].category}</p>
+                                        <h3 className="blogs-page-pinned-title-1">{pinnedBlogs[0].title}</h3>
+                                        <p className="blogs-page-pinned-meta-1">
+                                            <img src={timeiconwhite} className="blogs-page-timeiconwhite" />
+                                            {new Date(pinnedBlogs[0].created_at).toLocaleDateString("en-US", { 
+                                                year: "numeric", 
+                                                month: "long", 
+                                                day: "numeric" 
+                                            })} 
+                                            <img src={authoriconwhite} className="blogs-page-authoriconwhite" />
+                                            {pinnedBlogs[0].author}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="blogs-page-pinned-side">
+                                    {pinnedBlogs.slice(1, 3).map((blog) => (
+                                        <div
+                                            key={blog.blog_id}
+                                            className="blogs-page-pinned-item"
+                                            style={{ "--bg-image": `url(${blog.image_url})` } as React.CSSProperties}
+                                            onClick={() => handleBlogClick(blog.blog_id)} 
+                                        >
+                                            <div className="blogs-page-pinned-overlay">
+                                                <p className="blogs-page-pinned-category-2">{blog.category}</p>
+                                                <h3 className="blogs-page-pinned-title-2">{blog.title}</h3>
+                                                <p className="blogs-page-pinned-meta-2">
+                                                    <img src={timeiconwhite} className="blogs-page-timeiconwhite" />
+                                                    {new Date(blog.created_at).toLocaleDateString("en-US", { 
+                                                        year: "numeric", 
+                                                        month: "long", 
+                                                        day: "numeric" 
+                                                    })} 
+                                                    <img src={authoriconwhite} className="blogs-page-authoriconwhite" />
+                                                    {blog.author}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
-                )}
-            </div>
+                </>
+            )}
 
            {/* Blog Categories Section */}
            <div className="blogs-page-blog-categories">
