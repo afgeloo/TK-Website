@@ -8,6 +8,7 @@ call npm install react-scroll-parallax
 call npm install framer-motion
 call npm install react-player
 call npm install @emailjs/browser
+call npm install @ionic/react
 
 echo Installation complete!
 pause

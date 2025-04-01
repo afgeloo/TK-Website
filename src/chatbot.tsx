@@ -3,7 +3,6 @@ import $ from 'jquery';
 import "./global-css/chatbot.css";
 import { IonIcon } from '@ionic/react';
 import { chatbubblesOutline, personCircleOutline } from 'ionicons/icons'; // Import person icon
-import cowIcon from './src/assets/chatbot/CowIconChat.png'; // Import cow icon
 
 const Chatbot: React.FC = () => {
     const [isExpanded, setIsExpanded] = useState(false);
