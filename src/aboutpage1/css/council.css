@@ -44,7 +44,7 @@
     grid-template-columns: repeat(1, 1fr);
     gap: 10px;
     justify-content: center;
-    padding: 20px;
+    margin-bottom: -60px;
 }
 
 .council-grid {
@@ -52,8 +52,8 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
     justify-content: center;
-    padding: 0;
-    margin-bottom: 120px;
+    padding: 80px;
+    margin-bottom: 20px;
 }
 
 .council-card {

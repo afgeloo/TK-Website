@@ -9,25 +9,26 @@ const App: React.FC = () => {
 
   useEffect(() => {
     setLoading(true);
-
+  
     const MIN_LOAD_TIME = 3000; 
     const startTime = performance.now();
-
+  
     const handleLoad = () => {
       const elapsed = performance.now() - startTime;
       const delay = Math.max(0, MIN_LOAD_TIME - elapsed);
-
+  
       requestAnimationFrame(() => setTimeout(() => setLoading(false), delay));
     };
-
+  
     if (document.readyState === "complete") {
       handleLoad();
     } else {
       window.addEventListener("load", handleLoad, { once: true });
     }
-
+  
     return () => window.removeEventListener("load", handleLoad);
-  }, [location.key]);
+  }, []); 
+  
 
   if (loading) return <Preloader />;
 
