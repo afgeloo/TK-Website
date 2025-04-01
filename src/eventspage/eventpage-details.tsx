@@ -35,7 +35,7 @@ function EventDetails() {
 
         const fetchEvent = async () => {
             try {
-                const response = await fetch('http://localhost/TK-ced-branch/TK-Website/backend/api/events.php');
+                const response = await fetch('http://localhost/tara-kabataan-webapp/backend/api/events.php');
                 const data = await response.json();
                 const selected = data.find((e: Event) => e.event_id === id);
                 if (selected) {
