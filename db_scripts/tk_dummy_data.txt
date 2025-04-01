@@ -33,17 +33,17 @@ INSERT INTO tk_webapp.roles (role_name, role_description) VALUES
 ('Creatives', 'Designs visual content, branding materials, and multimedia outputs for the organization.'),
 ('Internals', 'Ensures internal coordination, member welfare, and team-building initiatives.');
 
-INSERT INTO tk_webapp.users (user_name, user_email, password_hash, role_id) VALUES
-('Ferdinand Sanchez II', 'ferdinance@tkwebapp.com', SHA2('ferdinandpass', 256), NULL),
-('Marion Navarro', 'marion@tkwebapp.com', SHA2('marionpass', 256), NULL),
-('Joshua Barbo', 'joshua@tkwebapp.com', SHA2('joshuapass', 256), NULL),
-('Mildred Collado', 'mildred@tkwebapp.com', SHA2('mildredpass', 256), NULL),
-('Eunice Santiago', 'eunice@tkwebapp.com', SHA2('eunicepass', 256), NULL),
-('Isaac Hernandez', 'isaac@tkwebapp.com', SHA2('isaacpass', 256), NULL),
-('Raf Ranin', 'raf@tkwebapp.com', SHA2('rafpass', 256), NULL),
-('Chester Carreon', 'chester@tkwebapp.com', SHA2('chesterpass', 256), NULL),
-('Aaron Sumampong', 'aaron@tkwebapp.com', SHA2('aaronpass', 256), NULL),
-('Enrico Villegas', 'enrico@tkwebapp.com', SHA2('enricopass', 256), NULL);
+INSERT INTO tk_webapp.users (user_name, user_image, user_email, password_hash, role_id) VALUES
+('Ferdinand Sanchez II', './src/assets/aboutpage/council/president.jpg', 'ferdinance@tkwebapp.com', SHA2('ferdinandpass', 256), 'roles-2025-000001'),
+('Marion Navarro', './src/assets/aboutpage/council/partnerships.jpg', 'marion@tkwebapp.com', SHA2('marionpass', 256), 'roles-2025-000002'),
+('Joshua Barbo', NULL, 'joshua@tkwebapp.com', SHA2('joshuapass', 256), 'roles-2025-000003'),
+('Mildred Collado', NULL, 'mildred@tkwebapp.com', SHA2('mildredpass', 256), 'roles-2025-000004'),
+('Eunice Santiago', NULL, 'eunice@tkwebapp.com', SHA2('eunicepass', 256), 'roles-2025-000005'),
+('Isaac Hernandez', NULL, 'isaac@tkwebapp.com', SHA2('isaacpass', 256), 'roles-2025-000006'),
+('Raf Ranin', './src/assets/aboutpage/council/pne.jpg', 'raf@tkwebapp.com', SHA2('rafpass', 256), 'roles-2025-000007'),
+('Chester Carreon', NULL, 'chester@tkwebapp.com', SHA2('chesterpass', 256), 'roles-2025-000008'),
+('Aaron Sumampong', NULL, 'aaron@tkwebapp.com', SHA2('aaronpass', 256), 'roles-2025-000009'),
+('Enrico Villegas', NULL, 'enrico@tkwebapp.com', SHA2('enricopass', 256), 'roles-2025-00000A');
 
 INSERT INTO tk_webapp.blogs (blog_image, blog_category, blog_title, blog_author_id, blog_content, blog_status) VALUES 
 (
