@@ -23,6 +23,7 @@ interface Blog {
 
 function BlogsPage() {
     const [blogs, setBlogs] = useState<Blog[]>([]);
+    const [allBlogs, setAllBlogs] = useState<Blog[]>([]); // New state to store all blogs
     const [pinnedBlogs, setPinnedBlogs] = useState<Blog[]>([]);
     const [selectedCategory, setSelectedCategory] = useState("ALL");
     const [searchQuery, setSearchQuery] = useState("");
@@ -44,39 +45,49 @@ function BlogsPage() {
 
     const displayedBlogs = showAllBlogs ? filteredBlogs : filteredBlogs.slice(0, 4);
 
-    const fetchBlogs = async (category: string) => {
+    // Modified fetchBlogs function that only loads data once
+    const fetchBlogs = async () => {
         setLoading(true);
         try {
             const response = await fetch(
-                `http://localhost/tara-kabataan-webapp/backend/api/blogs.php?category=${category}`
+                `http://localhost/tkwebsites/TK-website/backend/api/blogs.php?category=ALL`
             );
             const data = await response.json();
         
             if (data && data.pinned && data.blogs) {
                 setPinnedBlogs(data.pinned);
-                setBlogs(data.blogs);
+                setAllBlogs(data.blogs); // Store all blogs for future filtering
+                setBlogs(data.blogs);    // Initial set of all blogs
             } else {
                 console.error("Unexpected API response format:", data);
             }
-            setLoading(false); 
-            } catch (error) {
+            setLoading(false);
+        } catch (error) {
             console.error("Error fetching blogs:", error);
             setLoading(false); 
-            }
-        
+        }
     };
     
-    
+    // Only fetch all blogs once on component mount
     useEffect(() => {
-        fetchBlogs(selectedCategory === "ALL" ? "ALL" : selectedCategory);
-    }, [selectedCategory]);
+        fetchBlogs();
+    }, []);
 
+    // Filter blogs when category changes (client-side filtering)
+    useEffect(() => {
+        if (allBlogs.length > 0) {
+            if (selectedCategory === "ALL") {
+                setBlogs(allBlogs);
+            } else {
+                const filtered = allBlogs.filter(blog => blog.category === selectedCategory);
+                setBlogs(filtered);
+            }
+        }
+    }, [selectedCategory, allBlogs]);
     
     useEffect(() => {
-        
         if (displayedBlogs.length > 0 && !loading) {
             const equalizeRowHeights = () => {
-                
                 const grid = document.querySelector('.blogs-page-blogs-grid');
                 if (!grid) return;
                 

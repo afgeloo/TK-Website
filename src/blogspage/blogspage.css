@@ -268,19 +268,47 @@
     font-size: 32px;
     font-family: 'helvetic';
     margin: 10px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3; /* Standard property for future compatibility */
+    -webkit-box-orient: vertical;
+    box-orient: vertical; /* Standard property for future compatibility */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 115px; /* Approximately 3 lines at 32px font size */
 }
+
 .blogs-page-pinned-title-2 {
     font-size: 24px;
     font-family: 'helvetic';
     margin: 10px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2; /* Standard property for future compatibility */
+    -webkit-box-orient: vertical;
+    box-orient: vertical; /* Standard property for future compatibility */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 60px; /* Approximately 2 lines at 24px font size */
 }
+
 .blogs-page-pinned-title-3 {
     font-size: 32px;
     font-family: 'helvetic';
     margin: 10px 0;
     margin-left: 0px;
     margin-top: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3; /* Standard property for future compatibility */
+    -webkit-box-orient: vertical;
+    box-orient: vertical; /* Standard property for future compatibility */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 115px; /* Approximately 3 lines at 32px font size */
 }
+
+
 .blogs-page-pinned-category-1{
     font-size: 24px;
     font-family: 'helvetic';
@@ -366,3 +394,4 @@
     font-style: bold;
     margin-top: -50px;
 }
+

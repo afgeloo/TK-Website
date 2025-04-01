@@ -5,7 +5,9 @@ import Footer from "../footer";
 import "./singleblog.css";
 import silverPencil from "../assets/logos/silverPencil.png";
 import silverTime from "../assets/logos/silverTime.jpg";
+import attachIcon from "../assets/logos/attachicon.jpg";
 import Preloader from "../preloader";
+
 // Update the interface
 interface Blog {
     blog_id: string;
@@ -26,7 +28,7 @@ function SingleBlog() {
     useEffect(() => {
         const fetchBlog = async () => {
             try {
-                const response = await fetch(`http://localhost/tara-kabataan-webapp/backend/api/blogs.php?blog_id=${id}`);
+                const response = await fetch(`http://localhost/tkwebsites/TK-website/backend/api/blogs.php?blog_id=${id}`);
                 const data = await response.json();
                 if (data && data.blog_id) {
                     setBlog(data);
@@ -81,16 +83,12 @@ function SingleBlog() {
     
                 <p className="single-blog-blog-content">{blog.content}</p>
                 
-                {/* Copy Link to Blog section */}
+                {/* Copy Link to Blog section - Updated */}
                 <div className="single-blog-copy-link-container">
                     <span className="single-blog-copy-link-text">Copy Link to Blog</span>
                     <div className="single-blog-copy-link-icon-container" onClick={copyBlogLink}>
                         <div className="single-blog-copy-link-icon">
-                            {/* This would be your link icon */}
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10 13C10.87 14.14 12.13 15 13.5 15C14.87 15 16.13 14.14 17 13L20.25 9.75C21.32 8.68 21.32 7.01 20.25 5.94C19.18 4.87 17.51 4.87 16.44 5.94L14.5 7.88" stroke="#FF5A89" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M14 11C13.13 9.86 11.87 9 10.5 9C9.13 9 7.87 9.86 7 11L3.75 14.25C2.68 15.32 2.68 16.99 3.75 18.06C4.82 19.13 6.49 19.13 7.56 18.06L9.5 16.12" stroke="#FF5A89" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
+                            <img src={attachIcon} alt="Copy link" className="single-blog-attach-icon" />
                         </div>
                     </div>
                 </div>
