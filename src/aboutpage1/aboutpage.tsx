@@ -1,5 +1,6 @@
 import Footer from "../footer";
 import Header from "../header";
+import AboutAdvocacies from "./advocacies-sec";
 import BriefBg from "./briefbg-sec";
 import CoreValue from "./coreval-sec";
 import Council from "./council";
@@ -14,6 +15,7 @@ function AboutPage(){
                 <VideoSec />
                 <CoreValue />
                 <Council />
+                <AboutAdvocacies />
             </div>
             <div>
                 <Footer />

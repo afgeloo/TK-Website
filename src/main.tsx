@@ -6,7 +6,7 @@ import App from "./app";
 
 const HomePage = lazy(() => import("./homepage/homepage"));
 const EventsPage = lazy(() => import("./eventspage/eventspagehome"));
-const AboutPage = lazy(() => import("./aboutpage/aboutpage"));
+const AboutPage = lazy(() => import("./aboutpage1/aboutpage"));
 const ContactPage = lazy(() => import("./contactpage/contactpage"));
 const BlogsPage = lazy(() => import("./blogspage/blogspage"));
 const SingleBlog = lazy(() => import("./blogspage/singleblog"));

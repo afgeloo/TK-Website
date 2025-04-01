@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from "react";
-
-import "./css/eventpage-advocacies.css";
-import searchIconEventspage from "../assets/eventspage/Search-icon-events.png";
+import "./css/advocacies-sec.css";
 import healthIconDefault from "../assets/eventspage/health-icon.png";
 import healthIconHover from "../assets/eventspage/health-hover.png";
 import natureIconDefault from "../assets/eventspage/nature-icon.png";
@@ -46,38 +43,28 @@ const slidesadvocacies = [
     },
 ];
 
-function EventsPageadvocacies() {
+function AboutAdvocacies() {
     return (
-        <div className="events-page">
-
-
-            <div className="eventspage-content">
-                <h1 className="eventspage-header">EVENTS AND ADVOCACIES</h1>
-
-                
-
-                <div className="advocacies-slider">
-                    {slidesadvocacies.map((slide, index) => (
-                        <div
-                            className={`advocacy-card ${slide.category.toLowerCase()}`}
-                            key={index}
-                        >
-                            <div className="advocacy-icon-container">
-                                <img src={slide.defaultImage} alt={slide.category} className="default-icon" />
-                                <img src={slide.hoverImage} alt={slide.category} className="hover-icon" />
-                            </div>
-                            <h2 className="advocacy-category">{slide.category}</h2>
-                            <p className="advocacy-title">{slide.title}</p>
-                        </div>
-                    ))}
+        <div>
+            <hr className="advocacies-line" />
+            <h1 className="advocacies-header">ADVOCACIES</h1>
+            <div className="advocacies-slider">
+            {slidesadvocacies.map((slide, index) => (
+                <div
+                    className={`advocacy-card ${slide.category.toLowerCase()}`}
+                    key={index}
+                >
+                    <div className="advocacy-icon-container">
+                        <img src={slide.defaultImage} alt={slide.category} className="default-icon" />
+                        <img src={slide.hoverImage} alt={slide.category} className="hover-icon" />
+                    </div>
+                    <h2 className="advocacy-category">{slide.category}</h2>
+                    <p className="advocacy-title">{slide.title}</p>
                 </div>
-                <div className="custom-divider"></div>
-
-                
+            ))}
             </div>
-
         </div>
     );
 }
 
-export default EventsPageadvocacies;
+export default AboutAdvocacies;

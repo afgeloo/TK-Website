@@ -12,25 +12,29 @@
     font-style: normal;
   }
 
-  
-  .eventspage-header-container {
-    display: flex;
-    justify-content: space-between; /* Ensures items go to opposite sides */
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 10px 20px;
-}
 
-.eventspage-header {
+  @font-face {
+    font-family: 'Bogart Trial';
+    src: url('../assets/fonts/Bogart-Extrabold-trial.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+.advocacies-line {
+  border: none;
+  height: 1px;
+  background-color: #BFBFBF;
+  margin-bottom: 50px;
+  width: 90%; 
+}
+  
+.advocacies-header {
     font-family: 'Bogart Trial', sans-serif;
-    font-size: 25px;
+    font-size: 35px;
     font-weight: bold;
-    margin-left: 150px;
+    margin-left: 100px;
     margin-bottom: 10px;
     margin-top: 50px;
-    
 }
 
 .advocacies-slider {
@@ -42,19 +46,17 @@
   padding: 20px 0;
   scrollbar-width: none; /* Firefox */
   justify-content: center;
-
+  margin-bottom: 80px;
 }
 
 .advocacies-slider::-webkit-scrollbar {
   height: 8px;
 }
 
-
 .advocacies-slider::-webkit-scrollbar-thumb {
   background: #ccc; /* Color of the scrollbar */
   border-radius: 10px;
 }
-
 
 .scroll-button {
   position: absolute;
@@ -69,7 +71,6 @@
   z-index: 10;
 }
 
-
 .advocacy-card {
   border-radius: 15px; /* Rounded corners */
   padding: 20px;
@@ -83,6 +84,7 @@
   gap: 10px; /* Space between elements */
   margin: 10px;
 }
+
 .advocacy-card {
   transition: all 0.3s ease-in-out; /* Smooth transition */
   transform: scale(1); /* Default size */
@@ -208,14 +210,3 @@
   height: 8px;
 }
 
-.custom-divider {
-  border-top: 2px solid #E5E7EB;
-  width: 100%;
-  margin: 16px 0;
-  align-self: center; /* Center the divider */
-}
-
-.events-page {
-  padding-left: 100px; 
-  padding-right: 150px; /* Add padding to align with other components */
-}
