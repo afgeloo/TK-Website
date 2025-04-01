@@ -91,6 +91,7 @@
     margin-bottom: 80px;
     gap: 10px;
     cursor: pointer;
+    margin-bottom: 100px;
 }
 
 .single-blog-copy-link-text {
@@ -120,4 +121,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* Add this to your singleblog.css file */
+.single-blog-attach-icon {
+    width: 24px;
+    height: 24px;
+    display: block;
 }
