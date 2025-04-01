@@ -1,9 +1,26 @@
 import { useState, useEffect, } from "react";
-import { fetchEvents, formatDatePast, IMAGE_BASE_URL, convertTo12HourFormat } from "./mockServer";
+import { fetchEvents, formatDatePast, convertTo12HourFormat } from "./mockServer";
 import "./css/eventpage-pastevents.css";
 import locationIconeventspage from "../assets/eventspage/Location-eventspage.png";
 import searchIconEventspage from "../assets/eventspage/Search-icon-events.png";
 import { useNavigate, useParams } from "react-router-dom";
+
+
+export interface Event {
+  event_id: string;
+  event_image: string;
+  event_category: string;
+  event_title: string;
+  event_date: string;       // ISO date string, e.g., "2024-04-01"
+  event_day: string;
+  event_start_time: string; // e.g., "13:00:00"
+  event_end_time: string;
+  event_venue: string;
+  event_content: string;
+  event_speakers: string;
+  event_status: string;
+  created_at: string;       // ISO datetime string
+}
 
 
 export default function PastEvents() {
@@ -113,12 +130,14 @@ export default function PastEvents() {
       </div>
 
       <div className="past-events-list">
-      <div className={`past-events-box transition-wrapper ${showAll ? "expanded" : "collapsed"}`}>
-      {displayedEvents.map((event, index) => (
+        <div className={`past-events-box transition-wrapper ${showAll ? "expanded" : "collapsed"}`}>
+          {displayedEvents.map((event, index) => (
             <div key={index} className="past-event-item">
               <div className="past-event-date">
                 <div className="past-event-date-day">{formatDatePast(event.event_date)},</div>
-                <p className="past-event-date-weekday">{event.event_day}</p>
+                <p className="past-event-date-weekday">
+                  {new Date(event.event_date).toLocaleDateString('en-US', { weekday: 'long' })}
+                </p>
               </div>
               <div className="past-event-details">
                 <div className="past-event-card"
@@ -139,7 +158,7 @@ export default function PastEvents() {
                         👥 {event.event_going || 0} guests
                       </p>
                     </div>
-                    <img src={`${IMAGE_BASE_URL}${event.event_image}`} alt={event.event_title} className="past-event-image" />
+                    <img src={event.event_image} alt={event.event_title} className="past-event-image" />
                   </div>
                 </div>
               </div>

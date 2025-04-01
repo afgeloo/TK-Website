@@ -56,4 +56,3 @@ export const formatDateRSVP = (dateString: string): string => {
   });
 };
 
-export const IMAGE_BASE_URL = "http://localhost/TK-ced-branch/TK-Website/";
