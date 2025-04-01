@@ -46,9 +46,10 @@ CREATE TABLE tk_webapp.blogs (
     blog_category VARCHAR(255),
     blog_title VARCHAR(255),
     blog_author_id VARCHAR(150),
-    created_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    updated_at TIMESTAMP NULL DEFAULT NULL,
     blog_content TEXT,
-    blog_status VARCHAR(100),
+    blog_status ENUM('DRAFT', 'PUBLISHED', 'PINNED', 'ARCHIVED'),
     FOREIGN KEY (blog_author_id) REFERENCES users(user_id)
 );
 
@@ -58,13 +59,15 @@ CREATE TABLE tk_webapp.events (
     event_category VARCHAR(255),
     event_title VARCHAR(255),
     event_date DATE,
-    event_day VARCHAR(20),
-    event_time TIME,
+    event_start_time TIME,
+    event_end_time TIME,
     event_venue VARCHAR(255),
     event_content TEXT,
     event_speakers TEXT,
-    event_status VARCHAR(100),
-    created_at TIMESTAMP
+    event_going INT,
+    event_status ENUM('UPCOMING', 'ONGOING', 'CANCELLED', 'COMPLETED'),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    updated_at TIMESTAMP NULL DEFAULT NULL
 );
 
 CREATE TABLE tk_webapp.partnerships (
@@ -80,7 +83,7 @@ CREATE TABLE tk_webapp.memberships (
     membership_id VARCHAR(150) PRIMARY KEY,
     member_id VARCHAR(150),
     membership_type VARCHAR(100),
-    status VARCHAR(100),
+    membership_status ENUM('ACTIVE', 'PENDING', 'INACTIVE', 'REJECTED', 'TERMINATED'),
     created_at TIMESTAMP,
     FOREIGN KEY (member_id) REFERENCES users(user_id)
 );

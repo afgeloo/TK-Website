@@ -30,7 +30,7 @@ function EventsPageRSVP() {
     useEffect(() => {
         fetchEvents().then((data) => {
             const upcoming = Array.isArray(data)
-                ? data.filter(event => event.event_status === "Upcoming")
+                ? data.filter(event => event.event_status === "Upcoming" || "UPCOMING" )
                 : [];
             setEvents(upcoming);
             

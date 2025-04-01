@@ -38,7 +38,7 @@ export default function PastEvents() {
   useEffect(() => {
     fetchEvents().then((data) => {
       const upcoming = Array.isArray(data)
-        ? data.filter(event => event.event_status === "Done")
+        ? data.filter(event => event.event_status === "Completed" || "COMPLETED") 
         : [];
       setEvents(upcoming);
     });
