@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Marquee from "react-fast-marquee";
 import "./css/partner-sec.css";
-
+import { Link } from "react-router-dom";
 import miami from "../assets/logos/miamilogo.png";
 import bulls from "../assets/logos/bullslogo.png";
 import lakers from "../assets/logos/lakerslogo.png";
@@ -14,12 +14,16 @@ import partnerLogo from "../assets/logos/tklogo1.png";
 import memberLogo from "../assets/logos/tklogo2.png";
 import tklogo from "../assets/logos/tklogo3.png";
 import donateicon from "../assets/logos/donateicon.png";
+import qrCode from "../assets/images/tk_qr.png"; // ✅ Add your QR image
 
 const teamLogos: string[] = [miami, celtics, bulls, lakers, spurs, thunder, suns, warriors];
 
 const PartnerSec: React.FC = () => {
+  const [showQR, setShowQR] = useState(false);
+
   return (
     <div className="partner-sec">
+      {/* Existing content (unchanged) */}
       <h1 className="PastPartnership-Text">PAST PARTNERSHIPS</h1>
       <br />
       <div>
@@ -33,9 +37,9 @@ const PartnerSec: React.FC = () => {
       </div>
       <hr className="Hr-under-pastpartnership" />
 
-      {/* Partner & Member Sections */}
+      {/* Partner & Member Sections (unchanged) */}
       <div className="partner-member-container">
-        <div className="BePartnerMemberSection">
+      <div className="BePartnerMemberSection">
           <h2 className="BePartnerMemberText">BE A PARTNER</h2>
           <div className="BePartnerMemberSection-box">
             <div className="circle-inside-be-a-partner-member">
@@ -44,8 +48,10 @@ const PartnerSec: React.FC = () => {
             <p className="text-inside-be-a-partner-member-container">
             Partnering with Tara Kabataan means joining a dedicated movement focused on empowering the youth and fostering community development. Your collaboration will support initiatives that promote education, environmental stewardship, and active civic engagement among young individuals.
             </p>
-            <button className="button-inside-be-a-partner-member">BECOME A PARTNER</button>
-          </div>
+            <Link to="/Contact" className="button-inside-be-a-partner-member">
+                BECOME A PARTNER
+            </Link>          
+        </div>
         </div>
 
         <div className="BePartnerMemberSection">
@@ -84,11 +90,30 @@ const PartnerSec: React.FC = () => {
             </p>
           </div>
         </div>
-        <button className="donate-now-section">
+        <button className="donate-now-section" onClick={() => setShowQR(true)}>
           <img src={donateicon} alt="Donate Icon" className="logo-inside-donate-now" />
           <span className="donate-now-text">DONATE NOW</span>
         </button>
       </div>
+
+      {/* ✅ QR CODE MODAL */}
+      {showQR && (
+        <div className="qr-popup-overlay" onClick={() => setShowQR(false)}>
+          <div className="qr-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="close-qr-btn" onClick={() => setShowQR(false)}>×</button>
+            <img src={tklogo} alt="QR Code" className="qr-code-img" />
+            <p>Or message us directly on Messenger:</p>
+            <a
+              href="https://m.me/yourpageusername"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="messenger-link"
+            >
+              Tara, Kabataan!
+            </a>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
