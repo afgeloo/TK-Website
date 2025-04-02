@@ -47,7 +47,7 @@
     width: 900px;
     max-height: 530px; 
     position: absolute;
-    right: 0;
+    margin-left: 550px;
     margin-right: 60px;
 }
 
@@ -55,8 +55,7 @@
     position: absolute;
     width: 100%;
     max-width: 650px;
-    right: 0;
-    margin-right: 150px;
+    margin-left: 700px;
     margin-top: 50px;
 }
 

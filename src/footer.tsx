@@ -11,6 +11,9 @@ import phoneIcon from "./assets/footer/Telephone.png";
 import emailIcon from "./assets/footer/email.png";
 import facebookIcon from "./assets/footer/facebook.png";
 import instagramIcon from "./assets/footer/instagram.png";
+import { IonIcon } from "@ionic/react";
+import { callOutline, mailOutline } from "ionicons/icons";
+
 
 function Footer() {
   const [contactNo, setContactNo] = useState<string>("Loading...");
@@ -40,13 +43,19 @@ function Footer() {
           <div className="footer-left-content">
             <img src={logo} alt="Tarakabataan Logo" className="footer-tk-logo" draggable="false" />
             <div className="footer-number">
-              <img src={phoneIcon} alt="Phone" draggable="false" />
+              <div className="footer-icon-circle">
+                <IonIcon icon={callOutline} />
+              </div>
               <p>{contactNo}</p>
             </div>
+
             <div className="footer-email">
-              <img src={emailIcon} alt="Email" draggable="false" />
+              <div className="footer-icon-circle">
+                <IonIcon icon={mailOutline} />
+              </div>
               <p>{email}</p>
             </div>
+
           </div>
 
           {/* Middle Section */}
