@@ -10,7 +10,7 @@
 }
 .fancy-scrollbar::-webkit-scrollbar-thumb {
     border-radius: 6px;
-    background-color: #FFF9F0;
+    background-color: #ffffff;
 }
 
 /* Background gradient (mimicking fancy-background) */
@@ -23,11 +23,11 @@
 
 /* Scrolling shadow (simplified version) */
 .scrolling-shadows {
-    background: linear-gradient(#FFF9F0 30%, rgba(255, 249, 240, 0)),
-                linear-gradient(rgba(255, 249, 240, 0), #FFF9F0 70%) 0 100%,
+    background: linear-gradient(#ffffff 30%, rgba(255, 249, 240, 0)),
+                linear-gradient(rgba(255, 249, 240, 0), #ffffff 70%) 0 100%,
                 radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
     background-repeat: no-repeat;
-    background-color: #FFF9F0;
+    background-color: #ffffff;
     background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
     background-attachment: local, local, scroll, scroll;
 }
@@ -127,7 +127,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #FFF9F0;
+    background-color: #ffffff;
     font-family: "Helvetica Now Text", Helvetica, sans-serif; /* Set font-family */
 }
 
@@ -156,14 +156,14 @@
     flex-grow: 1;
     flex-shrink: 1;
     padding: 0 5px;
-    color: #FFF9F0;
+    color: #ffffff;
 }
 
 .floating-chat .chat .headerchat button {
     flex-shrink: 0;
     background: transparent;
     border: none;
-    color: #FFF9F0;
+    color: #ffffff;
     font-size: 16px;
     cursor: pointer;
     padding: 0;
@@ -188,7 +188,7 @@
     overflow-x: hidden;
     flex-grow: 1;
     border-radius: 4px;
-    background: #FFF9F0;
+    background: #ffffff;
 }
 
 .floating-chat .chat .messages::-webkit-scrollbar {
@@ -286,7 +286,7 @@
     display: flex;
     padding: 10px;
     max-height: 90px;
-    background: #FFF9F0;
+    background: #ffffff;
 }
 
 .floating-chat .chat .footerchat .text-box {
@@ -296,7 +296,7 @@
     width: 100%;
     margin-right: 5px;
     color: black; /* Updated text color to black */
-    overflow-y: auto;
+    overflow-y: auto;gi
     padding: 4px;
     font-size: 12px;
     font-family: "Helvetica Now Text", Helvetica, sans-serif; /* Set font-family */
