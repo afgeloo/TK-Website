@@ -75,7 +75,7 @@
 .cow-shadow {
     width: 200px;
     height: 50px;
-    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.2), transparent);
+    background: rgba(139, 139, 139, 0.2);
     border-radius: 50%;
     position: absolute;
     bottom: 100px; 
@@ -247,7 +247,7 @@
 }
 
 .bottom-layer {
-    top: 550px;
+    top: 540px;
     min-width: 120rem;
     max-width: 120rem;
 }
