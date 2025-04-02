@@ -1,16 +1,3 @@
-@font-face {
-    font-family: 'Bogart Trial';
-    src: url('../../assets/fonts/Bogart-Extrabold-trial.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'helvetic';
-    src: url('../../assets/fonts/HelveticaNowText-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
 
 .coreval-sec {
     max-width: 100%;
@@ -20,7 +7,7 @@
 }
 
 .coreval-sec-content{
-    margin-bottom: 80px;
+    margin-bottom: 50px;
 }
 
 .coreval-header{
@@ -31,92 +18,110 @@
     font-weight: bold;
 }
 
-.coreval-bg {
-    background: linear-gradient(to bottom, #FF3B6A, #FE93B4);
-    z-index: -1;
-    min-height: 600px;
-    width: 100%;
+.coreval-outer-bg {
+    background-color: rgba(137, 43, 226, 0);
+    min-height: 500px;
     position: relative; 
-    padding: 20px 0; 
-    display: flex;
-    flex-direction: column;
-
+    overflow: hidden;
 }
 
-.coreval-bg img {
-    max-width: clamp(700px, 80rem, 900px); 
-    height: auto;
+.coreval-inner-bg {
+    background: linear-gradient(to bottom, #FF3B6A, #FE93B4);
+    min-height: 400px;
     position: absolute;
-    bottom: 0;
-    right: 0; 
+    bottom: 0; 
+    left: 0;
+    right: 0;
+    overflow: hidden;
 }
 
-.coreval-content-1, .coreval-content-2, .coreval-content-3 {
-    z-index: 1;
-    position: relative;
+.coreval-cow img {
+    max-width: 530px; 
+    height: auto; 
+    position: absolute;
+    bottom: 0; 
+    margin-left: 100px;
+}
+
+.coreval-inner-bg img {
+    width: 900px;
+    max-height: 530px; 
+    position: absolute;
+    right: 0;
+    margin-right: 60px;
+}
+
+.corevalues-cards {
+    position: absolute;
+    width: 100%;
+    max-width: 650px;
+    right: 0;
+    margin-right: 150px;
+    margin-top: 50px;
+}
+
+.slider-container {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1)
+}
+
+.slider {
     display: flex;
-    justify-content: center; 
-    align-items: center; 
+    transition: transform 0.5s ease-in-out;
     width: 100%;
 }
 
-.coreval-container-1, .coreval-container-2, .coreval-container-3 {
-    flex-direction: row;
-    align-items: center; 
-    justify-content: space-between; 
-    font-family: 'Helvetic', sans-serif;
-    padding: 0 50px 20px 50px;
-    background: rgba(255, 255, 255, 0);
-    border: 2px solid rgb(255, 255, 255);
-    border-radius: 10px;
-    width: 80%;
-    max-width: 1000px; 
-    margin: 20px auto;
-}
-
-.coreval-container-1-header, .coreval-container-2-header, .coreval-container-3-header {
-    font-family: 'Bogart Trial', sans-serif;
-    text-align: justify; 
-    font-size: 30px;
-    font-weight: bold;
-    color: rgb(255, 255, 255); 
-}
-
-.coreval-container-1-description, .coreval-container-2-description, .coreval-container-3-description {
-    font-family: 'Helvetic', sans-serif;
-    font-size: 18px;
-    margin: 0 auto;
-    text-align: justify; 
-    line-height: 1.5;
-    letter-spacing: 1px;
-    color: rgb(255, 255, 255); 
-}
-
-.mission-vision-sec {
-    max-width: 100%;
+.card {
+    flex: 0 0 100%;
+    box-sizing: border-box;
+    background: rgb(255, 255, 255);
+    font-family: 'Segoe UI', sans-serif;
+    color: #333;
+    background: #ffffff;
+    min-height: 300px;
+    padding: 30px;
+    padding-top: 10px;
     overflow: hidden;
-    gap: 5px;
-    padding: 0;
-    margin-bottom: -50px;
-    margin-top: -20px;
 }
 
-.mission-sec-content, .vision-sec-content{
-    padding: 0px 100px 50px 100px;
-}
-
-.mission-header, .vision-header{
-    font-family: 'Bogart Trial', sans-serif;
-    text-align: start;
-    font-size: 30px;
+.card h1 {
+    font-size: 28px;
+    color: #000000;
+    margin-bottom: 15px;
     font-weight: bold;
+    font-family: 'Bogart Trial', sans-serif;
 }
 
-.mission-description, .vision-description{
+.card p {
+    font-size: 16px;
     font-family: 'Helvetic', sans-serif;
-    font-size: 24px;
-    margin: 0 auto;
+    line-height: 1.5;
     text-align: justify;
-    line-height: 2;
-    letter-spacing: 1px;
+}
+
+.pagination-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    z-index: 1;
+    background: #ffffff;
+    padding-bottom: 20px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #0F82CA;
+    background-color: transparent;
+    cursor: pointer;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+
+.dot.active {
+    background-color: #0F82CA;
+    transform: scale(1.1);
 }
