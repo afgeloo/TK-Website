@@ -2,7 +2,9 @@
     position: fixed;
     bottom: 100px;
     right: 20px;
-    background-color: #fe93b4;
+    transition: all 250ms ease-out;
+    opacity: 0.75; /* Lessened opacity */
+    background: #fe93b4; /* Updated gradient color */
     color: white;
     width: 60px;
     height: 60px;
@@ -13,17 +15,16 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     cursor: pointer;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease, all 250ms ease-out; /* Match transition */
     z-index: 999;
-    transition: all 250ms ease-out;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
 .go-to-top:hover {
-    background-color: #e682a3;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); /* Match hover shadow */
+    opacity: 1; /* Full opacity on hover */
 }
 
 .go-to-top.show {
-    opacity: 1;
     visibility: visible;
 }
