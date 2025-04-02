@@ -104,7 +104,7 @@ const PartnerSec: React.FC = () => {
             <img src={tklogo} alt="QR Code" className="qr-code-img" />
             <p>Or message us directly on Messenger:</p>
             <a
-              href="https://m.me/yourpageusername"
+              href="https://www.facebook.com/messages/t/105536985395406"
               target="_blank"
               rel="noopener noreferrer"
               className="messenger-link"
