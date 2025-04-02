@@ -88,6 +88,11 @@
   gap: 10px;
   align-items: center; 
   z-index: 5;
+  text-decoration: none;
+  color: white;
+  background-color: transparent;
+  border: none;
+  font-family: 'Helvetica', sans-serif;
 }
 
 .footer-facebook img, .footer-instagram img{
