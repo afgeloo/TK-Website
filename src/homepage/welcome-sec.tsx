@@ -129,6 +129,7 @@ function WelcomeSec() {
                 <img src="./src/assets/homepage/welcome.png" alt="Welcome" />
             </div>
             <div className="cow">
+                <div className="cow-shadow" />
                 <img src="./src/assets/homepage/tk-cow-walking.gif" alt="Cow" />
             </div>
             <div className="welcome3">
