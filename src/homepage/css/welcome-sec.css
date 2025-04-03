@@ -24,7 +24,6 @@
 
 .wave-svg {
     width: 100%;
-    min-width: 100rem;
     position: absolute;
     top: 0;
     left: 0;
@@ -35,7 +34,6 @@
 .wave-container {
     position: absolute;
     width: 100%;
-    min-width: 100rem;
     height: auto;
     margin-top: 100px;
     top: 0;
@@ -51,13 +49,14 @@
 
 .welcome1 img {
     height: auto;
-    max-width: clamp(300px, 80rem, 800px); 
+    max-width: clamp(300px, 80rem, 800px);
+    width: 100%; 
     transition: transform 0.3s ease-in-out;
     margin-bottom: -70px;
 }
 
 .cow img {
-    width:800px;
+    width: clamp(250px, 90%, 800px);
     height: auto;
     transition: transform 0.3s ease-in-out;
     margin-bottom: 50px;
@@ -73,8 +72,8 @@
   }
   
 .cow-shadow {
-    width: 200px;
-    height: 50px;
+    width: clamp(80px, 20%, 200px);
+    height: clamp(20px, 6vh, 50px);
     background: rgba(139, 139, 139, 0.2);
     border-radius: 50%;
     position: absolute;
@@ -82,7 +81,6 @@
     margin-right: 20px;
     z-index: 0;
 }
-  
   
 .welcome3 img {
     max-width:clamp(300px, 80rem, 800px);
@@ -94,7 +92,6 @@
 
 .clouds-content-container {
     margin-top: -150px;
-    min-width: 100rem; 
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -102,6 +99,7 @@
     justify-content: center;
     position: relative;
     z-index: 1;
+    min-width: 100rem; 
 }
 
 .top-most-cloud {
@@ -117,9 +115,7 @@
     position: absolute;
 }
 
-
 .top-cloud {
-    min-width: 100rem; 
     width: 100%;
     height: auto;
     display: block;
@@ -128,7 +124,6 @@
 }
 
 .bot-cloud {
-    min-width: 100rem; 
     width: 100%;
     height: auto;
     display: block;
@@ -142,7 +137,6 @@
     padding: 10px 100px 0 30px;
     margin-bottom: -235px;
     margin-top: -235px;
-    min-width: 100rem; 
     width: 100%;
 }
 
@@ -227,7 +221,6 @@
 }
 
 .flower-container {
-    min-width: 120rem;
     max-width: 120rem;
     overflow: hidden;
     position: absolute;  
@@ -242,13 +235,11 @@
 .top-layer {
     top: 470px;
     z-index: -1;
-    min-width: 120rem;
     max-width: 120rem;
 }
 
 .bottom-layer {
     top: 540px;
-    min-width: 120rem;
     max-width: 120rem;
 }
 
@@ -271,104 +262,202 @@
     opacity: 0.9; 
 }
 
-@media screen and (max-width: 1024px) {
-    .content-section {
-        flex-wrap: wrap; /* Allows stacking */
-        gap: 50px;
-        padding: 20px;
-    }
-
-    .tk-logo {
-        margin-left: 0;
-        justify-content: center;
-    }
-
-    .whatsTK {
-        text-align: center;
-        margin: 0 auto;
-    }
-
-    .know-more {
-        justify-content: center;
-        margin-right: 0;
-    }
-    
-    .nav-know-more {
-        padding: 15px 50px;
-        font-size: 14px;
-    }
-}
-
 @media screen and (max-width: 768px) {
-    .welcome-sec {
-        padding: 10px;
-        gap: 20px;
+    .welcome1 img{
+        max-width: 25rem;
+        margin-bottom: -40px;
+        margin-top: 30px;
     }
-
-    .welcome1 img,
     .welcome3 img {
-        max-width: 95rem;
-        margin-bottom: -80px;
+        max-width: 25rem;
+        margin-top: 40px;
     }
 
     .cow img {
-        max-width: 70rem;
-        margin-bottom: -40px;
+        max-width: 40rem;
+        margin-bottom: -80px;
     }
 
-    .content-section h2 {
-        font-size: 1.8rem;
-    }
-
-    .content-section p {
-        font-size: 1rem;
-        padding: 0 20px;
-        text-align: center;
-    }
-
-    .nav-know-more {
-        padding: 12px 40px;
-        font-size: 13px;
-    }
-
-    .flower-container {
-        top: 50vh;
+    .cow-shadow {
+        width: 150px;
         height: 40px;
+        background: rgba(139, 139, 139, 0.2);
+        border-radius: 50%;
+        position: absolute;
+        bottom: -40px; 
+        margin-right: 20px;
+        z-index: 0;
     }
 
     .top-layer {
-        top: 48vh;
+        top: 46vh;
     }
 
     .bottom-layer {
-        top: 52vh;
+        top: 53vh;
     }
 
-    .flowers1 img,
+    .flowers1 img{
+        max-width: 30px;
+        max-height: 30px;
+    }
     .flowers2 img {
-        max-width: 20px;
+        max-width: 40px;
     }
-}
 
-@media screen and (max-width: 480px) {
-    .content-section {
+    .wave-svg {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1000;
+        pointer-events: none;
+    }
+    
+    .wave-container {
+        position: absolute;
+        width: 100%;
+        max-width: 100rem;
+        height: auto;
+        margin-top: 80px;
+        top: 0;
+        left: 0;
+        z-index: -1000;
+    }
+    
+    .wave-path {
+        fill: none;
+        stroke: #4282eae2;
+        stroke-width: 2px;
+    }
+
+    .clouds-content-container {
+        margin-top: -220px;
+        min-width: 100rem; 
+        width: 100%;
+        display: flex;
         flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .top-most-cloud {
+        max-width: 5rem;
+        height: auto;
+        display: block;
+        top: 800px; 
+        padding: 0;
+        z-index: -5;
+        transition: transform 0.3s ease-out;
+        will-change: transform;
+        position: absolute;
+    }
+    
+    .top-cloud {
+        max-width: 100rem; 
+        height: auto;
+        display: block;
+        margin: 0; 
+        padding: 0;
+    }
+    
+    .bot-cloud {
+        max-width: 100rem; 
+        height: auto;
+        display: block;
+        margin: 0; 
+        padding: 0;
+        z-index: -1;
+    }
+    
+    .content-section-main{
+        background-color: #4DB1E3; 
+        padding: 10px 100px 0 30px;
+        margin-bottom: -235px;
+        margin-top: -235px;
+        max-width: 50rem; 
+        width: 50%;
+    }
+    
+    .content-section {
+        background-color: #4DB1E3; 
         text-align: center;
-        gap: 30px;
+        color: white;
+        justify-content: center;
+        gap: 20px;
     }
-
+    
+    .content-section h2 {
+        font-family: 'Bogart Trial', sans-serif;
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+    
+    .content-section p {
+        font-family: 'helvetic', sans-serif;
+        font-size: 0.6rem;
+        max-width: 300px;
+        margin: 0 auto;
+        text-align: justify;
+        line-height: 2;
+        letter-spacing: 1px;
+    }
+    
+    .tk-logo{
+        justify-content: center;
+        align-items: center;
+        margin-left:140px;
+    }
+    
+    .tk-logo img{
+        max-width: 8rem;
+        height: auto;
+    }
+    
+    .whatsTK{
+        justify-items: left;
+        margin-right: 80px;
+    }
+    
+    .know-more{
+        display: flex;
+        margin-top: 10px;
+        margin-right: 100px;
+    }
+    
     .nav-know-more {
-        font-size: 12px;
-        padding: 10px 30px;
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      background-color: #ffffff;
+      color: rgb(0, 0, 0);
+      font-weight: bold;
+      border: none;
+      border-radius: 50px; 
+      padding: 12px 40px; 
+      font-size: 0.6rem;
+      font-family: Helvetica, sans-serif;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15); 
+      text-decoration: none;
+      gap: 8px; 
+      margin-right: 40px;
+      margin-bottom: 10px;
     }
-
-    .flower-container {
-        height: 30px;
-    }
-
-    .flowers1 img,
-    .flowers2 img {
-        max-width: 15px;
+    
+    .nav-know-more:hover {
+        background-color: #bce0fc;
+        transform: scale(1.05); 
+      }
+    
+    .nav-know-more img {
+        width: 0.6rem; 
+        height: auto;
     }
 }
+
 
