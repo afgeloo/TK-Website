@@ -1,7 +1,9 @@
 .single-blog-blog-content-wrapper {
-    max-width: 1252.8px; 
-    margin: 0 auto; 
+    max-width: 1252.8px;
+    margin: 0 auto;
     padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 @font-face {
@@ -9,27 +11,26 @@
     src: url('../assets/fonts/Bogart-Extrabold-trial.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
-  }
+}
  
-  @font-face {
+@font-face {
     font-family: 'helvetic';
     src: url('../assets/fonts/HelveticaNowText-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
-  }
-
+}
 
 .single-blog-blog-image {
     width: 100%;
-    max-width: 1252.8px;
+    max-width: 100%;
     display: block;
-    margin: 40px auto 30px auto; 
+    margin: 40px auto 30px auto;
     border-radius: 20px;
-    height: 689.4px;
+    height: auto;
+    max-height: 689.4px;
     object-fit: cover;
-    overflow: hidden; 
+    overflow: hidden;
 }
-
 
 .single-blog-blog-category {
     font-size: 32px;
@@ -40,15 +41,14 @@
     margin-bottom: 10px;
 }
 
-
 .single-blog-blog-title {
     font-size: 48px;
     text-align: left;
     margin-bottom: 10px;
     font-family: "helvetic";
     margin-top: -10px;
+    word-wrap: break-word;
 }
-
 
 .single-blog-blog-meta {
     display: flex;
@@ -60,30 +60,29 @@
     font-family: 'helvetic';
 }
 
-
 .single-blog-blog-meta img {
     height: 24px;
     width: 24px;
 }
-
 
 .single-blog-blog-content {
     font-size: 20px;
     font-family: 'helvetic';
     line-height: 1.8;
     text-align: justify;
+    word-wrap: break-word;
 }
 
-.single-blog-blog-time-icon{
-    height: 30px;
-    width: 30px;
-}
-.single-blog-blog-author-icon{
+.single-blog-blog-time-icon {
     height: 30px;
     width: 30px;
 }
 
-/* Copy Link to Blog styles */
+.single-blog-blog-author-icon {
+    height: 30px;
+    width: 30px;
+}
+
 .single-blog-copy-link-container {
     display: flex;
     align-items: center;
@@ -123,7 +122,6 @@
     align-items: center;
 }
 
-/* Add this to your singleblog.css file */
 .single-blog-attach-icon {
     width: 24px;
     height: 24px;
