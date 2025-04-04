@@ -50,7 +50,7 @@ function BlogsPage() {
         setLoading(true);
         try {
             const response = await fetch(
-                `http://localhost/tara-kabataan-webapp/backend/api/blogs.php?category=ALL`
+                `http://localhost/tkwebsites/TK-website/backend/api/blogs.php?category=ALL`
             );
             const data = await response.json();
         
@@ -141,9 +141,9 @@ function BlogsPage() {
             {/* Only show Pinned Blogs section if there are pinned blogs */}
             {pinnedBlogs.length > 0 && (
                 <>
-                    {/* Pinned Blogs Header */}
+                    {/* Pinned Blogs Header - updated to be conditional */}
                     <div className="blogs-page-pinned-header">
-                        <h2>Pinned Blogs</h2>  
+                        <h2>{pinnedBlogs.length === 1 ? "Pinned Blog" : "Pinned Blogs"}</h2>  
                     </div>
 
                     {/* Pinned Blogs Section */}
