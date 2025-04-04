@@ -7,6 +7,7 @@ import locationIconeventspageDetails from "../assets/eventspage/Location-eventsp
 import attachIcon from "../assets/logos/attachicon.jpg";
 import { ToastContainer, toast } from 'react-toastify';
 
+
 export interface Event {
     event_id: string;
     event_image: string;

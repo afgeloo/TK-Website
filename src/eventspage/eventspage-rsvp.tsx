@@ -4,7 +4,7 @@ import { fetchEvents, convertTo12HourFormat, formatDateRSVP } from "./mockServer
 import "./css/eventpage-rsvp.css";
 import locationIconeventspage from "../assets/eventspage/Location-eventspage.png";
 import searchIconEventspage from "../assets/eventspage/Search-icon-events.png";
-
+import Header from "../header";
 export interface Event {
   event_id: string;
   event_image: string;
