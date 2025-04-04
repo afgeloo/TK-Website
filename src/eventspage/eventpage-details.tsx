@@ -4,7 +4,6 @@ import { formatDateDetails, convertTo12HourFormat } from "./mockServer";
 import "./css/eventdetails.css";
 import "./css/toast.css";
 import locationIconeventspageDetails from "../assets/eventspage/Location-eventspage.png";
-import Header from "../header";
 import attachIcon from "../assets/logos/attachicon.jpg";
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -158,7 +157,22 @@ const imagePath = `http://localhost/TK-ced-branch/TK-Website/${event.event_image
             <button className="event-details-back-button" onClick={() => navigate("/events")}>
                 Go Back
             </button>
+             {/* Toast notification container */}
+         <ToastContainer
+         position="top-center"
+             autoClose={1500}
+             hideProgressBar
+             closeOnClick
+             rtl={false}
+             pauseOnFocusLoss={false}
+             pauseOnHover
+             className="custom-toast-container"
+             toastClassName="custom-toast"
+             limit={1}
+         />
+     
         </div>
+        
     );
 }
 

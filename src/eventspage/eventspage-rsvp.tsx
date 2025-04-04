@@ -4,7 +4,9 @@ import { fetchEvents, convertTo12HourFormat, formatDateRSVP } from "./mockServer
 import "./css/eventpage-rsvp.css";
 import locationIconeventspage from "../assets/eventspage/Location-eventspage.png";
 import searchIconEventspage from "../assets/eventspage/Search-icon-events.png";
-import Header from "../header";
+import CowCurrentEvent from "../assets/eventspage/no_current_event.png";
+import PreloaderEvents from "./loader-events";
+
 export interface Event {
   event_id: string;
   event_image: string;
@@ -23,13 +25,14 @@ export interface Event {
 function EventsPageRSVP() {
   const [events, setEvents] = useState<Event[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const eventsPerPage = 12;
+  const [eventsToShow, setEventsToShow] = useState(12);
   const [viewType, setViewType] = useState<"UPCOMING" | "PAST">("UPCOMING");
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState("ALL");
   const categories = ["ALL", "KALUSUGAN", "KALIKASAN", "KARUNUNGAN", "KULTURA", "KASARIAN"];
-
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loadingMore, setLoadingMore] = useState(false);
 
   // Fetch events on component mount
   useEffect(() => {
@@ -53,28 +56,34 @@ function EventsPageRSVP() {
         selectedCategory === "ALL" ||
         event.event_category.toUpperCase() === selectedCategory;
 
-      return isMatchingView && isMatchingCategory;
+      const isMatchingSearch =
+        searchQuery.trim() === "" ||
+        event.event_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.event_category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.event_venue.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        formatDateRSVP(event.event_date).toLowerCase().includes(searchQuery.toLowerCase());
+
+      return isMatchingView && isMatchingCategory && isMatchingSearch;
     });
 
     setFilteredEvents(filtered);
     setCurrentPage(1);
-  }, [viewType, selectedCategory, events]);
+  }, [viewType, selectedCategory, searchQuery, events]);
 
-  const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
-  const indexOfLastEvent = currentPage * eventsPerPage;
-  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
-  const currentEvents = filteredEvents.slice(indexOfFirstEvent, indexOfLastEvent);
+  const currentEvents = filteredEvents.slice(0, eventsToShow);
+
+  const handleSeeMore = () => {
+    setLoadingMore(true);
+    setTimeout(() => {
+      setEventsToShow((prev) => prev + 4);
+      setLoadingMore(false);
+    }, 2000); // simulate 1 second loading
+  };
 
   return (
     <div className="events-page-rsvp">
       <div className="events-header-row">
-        {/* Heading */}
-        <h1
-          className="eventspage-header-EVENTS"
-          style={{ fontFamily: "'Bogart Trial', sans-serif" }}
-        >
-          EVENTS
-        </h1>
+        <h1 className="eventspage-header-EVENTS">EVENTS</h1>
 
         {/* Toggle */}
         <div className="event-toggle-wrapper">
@@ -82,36 +91,52 @@ function EventsPageRSVP() {
             <span className={`toggle-indicator ${viewType.toLowerCase()}`}></span>
 
             <button
-              className={`toggle-segment ${viewType === "UPCOMING" ? "active" : ""
-                }`}
+              className={`toggle-segment ${viewType === "UPCOMING" ? "active" : ""}`}
               onClick={() => setViewType("UPCOMING")}
             >
               UPCOMING
             </button>
             <button
-              className={`toggle-segment ${viewType === "PAST" ? "active" : ""
-                }`}
+              className={`toggle-segment ${viewType === "PAST" ? "active" : ""}`}
               onClick={() => setViewType("PAST")}
             >
               PAST
             </button>
           </div>
         </div>
-
       </div>
-      <div className="event-category-filter">
-        {categories.map((category) => (
-          <span
-            key={category}
-            className={`category-button ${selectedCategory === category ? "active" : ""}`}
-            onClick={() => setSelectedCategory(category)}
-          >
-            {category}
-          </span>
 
-        ))}
+      <div className="event-category-search-wrapper">
+        <div className="event-category-filter">
+          {categories.map((category) => (
+            <span
+              key={category}
+              className={`category-button ${selectedCategory === category ? "active" : ""}`}
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category}
+            </span>
+          ))}
+        </div>
+
+        <div className="event-search-bar">
+          <input
+            type="text"
+            placeholder="Search events..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="event-search-input"
+          />
+          <img
+            src={searchIconEventspage}
+            alt="Search"
+            className="event-search-icon"
+          />
+        </div>
       </div>
+
       <div className="custom-divider-pagination"></div>
+
       {filteredEvents.length > 0 ? (
         <div className="eventsrsvp-grid">
           {currentEvents.map((event) => (
@@ -122,8 +147,8 @@ function EventsPageRSVP() {
               style={{ cursor: "pointer" }}
             >
               <img
-                src={event.event_image || "/path/to/default-image.png"} // Fallback for missing images
-                alt={event.event_title || "Event Image"}
+                src={event.event_image}
+                alt={event.event_title || "No image available"}
                 className="event-image"
               />
               <h3 className="event-title">{event.event_title}</h3>
@@ -142,23 +167,39 @@ function EventsPageRSVP() {
               </p>
               {viewType === "UPCOMING" && (
                 <div className="event-buttons">
-                  <button className="eventrsvp-button">RSVP</button>
                   <button
-                    className="detailsevent-button"
+                    className="eventrsvp-button"
                     onClick={(e) => {
-                      e.stopPropagation(); // prevent card click from firing too
-                      navigate(`/events/${event.event_id}?from=upcoming`);
+                      e.stopPropagation(); // Prevent event bubbling
+                      window.open("#", "_blank"); // Placeholder link
                     }}
                   >
-                    View Details
+                    RSVP
                   </button>
                 </div>
               )}
             </div>
           ))}
+          {filteredEvents.length > 0 && eventsToShow < filteredEvents.length && !loadingMore && (
+            <div className="see-more-container">
+              <button className="see-more-button" onClick={handleSeeMore}>
+                See More
+              </button>
+            </div>
+          )}
+{loadingMore && (
+  <div className="see-more-loader" style={{ gridColumn: "1 / -1" }}>
+    <PreloaderEvents inline />
+  </div>
+)}
         </div>
       ) : (
-        <p>No events found.</p>
+        <div className="no-events-container">
+          <img src={CowCurrentEvent} alt="No Events" className="no-events-image" />
+          <div className="no-events-bubble">
+            <p className="no-events-text">No events found.</p>
+          </div>
+        </div>
       )}
     </div>
   );

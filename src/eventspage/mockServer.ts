@@ -1,3 +1,6 @@
+
+
+
 export const fetchEvents = async () => {
   try {
     const res = await fetch(
@@ -55,4 +58,6 @@ export const formatDateRSVP = (dateString: string): string => {
     weekday: "long",
   });
 };
+
+
 

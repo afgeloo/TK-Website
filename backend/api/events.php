@@ -40,7 +40,7 @@ $updateUpcomingStmt->close();
 
 // ✅ Step 3: Fetch events with optional status filtering
 if ($status === 'ALL') {
-    $query = "SELECT * FROM tk_webapp.events ORDER BY created_at DESC";
+    $query = "SELECT * FROM tk_webapp.events ORDER BY event_date DESC";
     $stmt = $conn->prepare($query);
 } else {
     $query = "SELECT * FROM tk_webapp.events WHERE UPPER(event_status) = ? ORDER BY created_at DESC";

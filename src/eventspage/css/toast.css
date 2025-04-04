@@ -12,7 +12,7 @@
     min-width: 200px;
     max-width: 200px;
     max-height: 50px; /* 👈 LIMITS height */
-    font-size: 15px;
+    font-size: 16px;
     display: flex;
     align-items: center;
     overflow: hidden; /* Prevent content from spilling */
@@ -22,7 +22,7 @@
  /* Inner text spacing */
 .custom-toast-body {
     color: black;
-    font-family: 'Helvetica Neue', sans-serif;
+    font-family: 'Helvetica Now', sans-serif;
     padding: 0;
   }
   

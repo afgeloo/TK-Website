@@ -1,11 +1,18 @@
-
 @font-face {
     font-family: 'Bogart Trial';
     src: url('../assets/fonts/Bogart-Extrabold-trial.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
+   
   }
+  
  
+  @font-face {
+    font-family: 'Helvetica Now Text';
+    src: url('../assets/fonts/HelveticaNowText-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
 
 
 .events-page-rsvp {
@@ -51,10 +58,9 @@
 .eventspage-header-EVENTS {
     font-size: 25px;
     font-weight: bold;
-
-
+    font-family: 'Bogart Trial', sans-serif;
 }
-
+/* Event Past & Upcoming Toggle */
 .event-toggle-background {
     background-color: #d9d9d9; /* light gray pill background */
     border-radius: 999px;
@@ -89,8 +95,54 @@
     color: black;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   }
-  
 
+  .event-category-search-wrapper{
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+  }
+
+  /* Serach Icon */
+  .event-search-bar {
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s ease;
+    gap: 10px;
+  }
+
+  .event-search-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+
+  /* Initially hidden input */
+.event-search-input {
+    width: 0;
+    opacity: 0;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 6px 12px;
+    border-radius: 999px; /* Oblong shape */
+    font-size: 14px;
+    color: black;
+    transition: all 0.3s ease;
+  }
+
+  /* Reveal the input on hover */
+.event-search-bar:hover .event-search-input {
+    width: 200px;
+    opacity: 1;
+    background-color: white;
+    border: 1px solid #ccc;
+    margin-left: 10px;
+  }
+
+  
+  
+  
 
 .event-card {
     background: none; /* Removes background */
@@ -152,9 +204,9 @@
 
 .event-buttons {
     display: flex;
-    align-items: center;
-    gap: 30px; /* Space between buttons */
     margin-top: 10px;
+    flex-direction: column;
+    padding: 0px 20px;
 }
 
 .eventrsvp-button {
@@ -175,51 +227,13 @@
     background: #ff3b6a; /* Darker pink */
 }
 
-.detailsevent-button {
-    background: none;
-    color: #7A7676; /* Light gray color */
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    text-decoration: underline; /* Underline effect */
-    font-weight: bold;
-}
 
-.detailsevent-button:hover {
-    color: #555; /* Darker gray */
-}
+
 
 .eventsrsvp-container {
     width: 100%; /* Utilize the full width of the screen */
     margin: auto;
 }
-
-.search-wrapper-rsvp {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Space between elements */
-    margin-bottom: 20px; /* Space below search bar */
-    margin-top: 75px;
-    margin-right: 175px;
-    justify-content: flex-end; 
-}
-
-.search-icon-eventspage-rsvp {
-    width: 30px;
-    height: 30px;
-}
-
-.search-input-eventspage-rsvp {
-    width: 200px;
-    padding: 6px 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    background-color: #f9f9f9;
-    color: black;
-    font-size: 14px;
-    outline: none;
-}
-
 
 .pagination {
     display: flex;
@@ -312,4 +326,76 @@
     font-weight: 600;
   }
 
+ /* No event Section*/
+ .no-events-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .no-events-image {
+    width: 100%;
+    height: auto;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .no-events-text {
+    position: absolute;
+    top: 28%;
+    left: 63%;
+    transform: translate(-50%, -50%);
+    color: #333;
+    font-size: 1.95rem;
+    font-weight: bold;
+    font-family: 'Bogart Trial';
+    
+  }
+
+
+  .see-more-button {
+    background: #f04f88; /* Pink */
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: 2px solid #f04f88; /* Border to match background */
+    border-radius: 20px;
+    cursor: pointer;
+    display: block;
+    width: 150px;
+    text-align: center;
+    margin: 20px auto;
+    font-weight: bold;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    grid-column: 1 / -1; /* span all 4 columns */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+ 
+  }
+  
+  /* When Clicking "See Less" (White Background, Pink Text) */
+  .see-more-button.see-less {
+    background: white;
+    color: #f04f88; /* Pink text */
+    border: 2px solid #f04f88; /* Keeps border visible */
+  }
+  
+  /* Click Animation */
+  .see-more-button:active {
+    transform: scale(0.95);
+  }
+
+  .eventsrsvp-grid > .see-more-container {
+    grid-column: 1 / -1;
+  }
+  
+ 
   
