@@ -4,6 +4,7 @@ import { formatDateDetails, convertTo12HourFormat } from "./mockServer";
 import "./css/eventdetails.css";
 import "./css/toast.css";
 import locationIconeventspageDetails from "../assets/eventspage/Location-eventspage.png";
+import Header from "../header";
 import attachIcon from "../assets/logos/attachicon.jpg";
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -74,24 +75,25 @@ function EventDetails() {
 
     if (!event) return null; // Prevent crash if not loaded yet
 const imagePath = `http://localhost/TK-ced-branch/TK-Website/${event.event_image}`;
-return (
-    <div className="event-soledetails-container">
-        {/* Left side: Image */}
-        <div className="event-image-container">
-            <img
-                src={imagePath}
-                alt={imagePath}
-                className="event-details-image"
-            />
-            <p className="event-speaker"><strong>Speaker/s:</strong></p>
-            <div className="custom-divider-details2"></div>
-            <p className="event-speakernames">{event.event_speakers || "To be announced"}</p>
-            <p className="event-going">
-                {event.event_going} <strong>{from === "past" ? "Went" : "Going"}</strong>
-            </p>
-            <div className="custom-divider-details2"></div>
-            <p className="location-header-event">Location:</p>
-            <div className="custom-divider-details2"></div>
+    return (
+        <div className="event-soledetails-container">
+            {/* Left side: Image */}
+            <div className="event-image-container">
+
+                <img
+                    src={imagePath}
+                    alt={imagePath}
+                    className="event-details-image"
+                />
+                <p className="event-speaker"><strong>Speaker/s:</strong></p>
+                <div className="custom-divider-details2"></div>
+                <p className="event-speakernames">{event.event_speakers || "To be announced"}</p>
+                <p className="event-going">
+                    {event.event_going} <strong>{from === "past" ? "Went" : "Going"}</strong>
+                </p>
+                <div className="custom-divider-details2"></div>
+                <p className="location-header-event">Location:</p>
+                <div className="custom-divider-details2"></div>
 
             <a
                 href={event.map_url}
@@ -153,25 +155,11 @@ return (
             )}
         </div>
 
-        <button className="event-details-back-button" onClick={() => navigate("/events")}>
-            Go Back
-        </button>
-
-        {/* Toast notification container */}
-        <ToastContainer
-        position="top-center"
-            autoClose={1500}
-            hideProgressBar
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss={false}
-            pauseOnHover
-            className="custom-toast-container"
-            toastClassName="custom-toast"
-            limit={1}
-        />
-    </div>
-);
+            <button className="event-details-back-button" onClick={() => navigate("/events")}>
+                Go Back
+            </button>
+        </div>
+    );
 }
 
 export default EventDetails;

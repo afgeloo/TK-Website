@@ -2,9 +2,10 @@ import Footer from "../footer";
 import Header from "../header";
 import AboutAdvocacies from "./advocacies-sec";
 import BriefBg from "./briefbg-sec";
-import CoreValue from "./coreval-sec";
+import MissionVision from "./missionvision";
 import Council from "./council";
 import VideoSec from "./video-sec";
+import CoreValue from "./coreval-sec";
 
 function AboutPage(){
     return (
@@ -14,6 +15,7 @@ function AboutPage(){
                 <BriefBg />
                 <VideoSec />
                 <CoreValue />
+                <MissionVision />
                 <Council />
                 <AboutAdvocacies />
             </div>

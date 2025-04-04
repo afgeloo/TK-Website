@@ -32,13 +32,15 @@ function GetInTouch() {
         {/* Left Contact Info */}
         <div className="getintouch-left">
           <div className="contact-telephone">
-            <div className="contact-telephone-icon">
-              <img
-                src="./src/assets/contactpage/telephone.png"
-                alt="Telephone Icon"
-                draggable="false"
-              />
-            </div>
+            <a href={`tel:${contactNo}`} target="_blank" rel="noopener noreferrer">
+              <div className="contact-telephone-icon">
+                <img
+                  src="./src/assets/contactpage/telephone.png"
+                  alt="Telephone Icon"
+                  draggable="false"
+                />
+              </div>
+            </a>
             <div className="contact-telephone-details">
               <h1 className="contact-telephone-header">Telephone</h1>
               <p className="contact-telephone-no">{contactNo}</p>
@@ -46,13 +48,15 @@ function GetInTouch() {
           </div>
 
           <div className="contact-email">
-            <div className="contact-email-icon">
-              <img
-                src="./src/assets/contactpage/email.png"
-                alt="Email Icon"
-                draggable="false"
-              />
-            </div>
+            <a href={`mailto:${email}`} target="_blank" rel="noopener noreferrer">
+              <div className="contact-email-icon">
+                <img
+                  src="./src/assets/contactpage/email.png"
+                  alt="Email Icon"
+                  draggable="false"
+                />
+              </div>
+            </a>
             <div className="contact-email-details">
               <h1 className="contact-email-header">Email</h1>
               <p className="contact-email">{email}</p>
@@ -62,22 +66,36 @@ function GetInTouch() {
 
         {/* Right Socials */}
         <div className="getintouch-right">
-          <h1 className="getintouch-right-header">Social Media</h1>
-          <div className="contact-facebook">
-            <img
-              src="./src/assets/contactpage/facebook.png"
-              alt="Facebook Icon"
-              draggable="false"
-            />
-            <p>Tara Kabataan</p>
+          <div className="contact-telephone">
+            <a href="https://www.facebook.com/TaraKabataanMNL" target="_blank" rel="noopener noreferrer">
+              <div className="contact-telephone-icon">
+                <img
+                  src="./src/assets/contactpage/facebook.png"
+                  alt="Facebook Icon"
+                  draggable="false"
+                />
+              </div>
+            </a>
+            <div className="contact-telephone-details">
+              <h1 className="contact-telephone-header">Facebook</h1>
+              <p className="contact-telephone-no">Tara Kabataan</p>
+            </div>
           </div>
-          <div className="contact-instagram">
-            <img
-              src="./src/assets/contactpage/instargram.png"
-              alt="Instagram Icon"
-              draggable="false"
-            />
-            <p>@tarakabataan</p>
+
+          <div className="contact-email">
+            <a href="https://www.instagram.com/tarakabataan" target="_blank" rel="noopener noreferrer">
+              <div className="contact-email-icon">
+                <img
+                  src="./src/assets/contactpage/instagram.png"
+                  alt="Instagram Icon"
+                  draggable="false"
+                />
+              </div>
+            </a>
+            <div className="contact-email-details">
+              <h1 className="contact-email-header">Instagram</h1>
+              <p className="contact-email">@tarakabataan</p>
+            </div>
           </div>
         </div>
       </div>

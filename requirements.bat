@@ -9,6 +9,7 @@ call npm install framer-motion
 call npm install react-player
 call npm install @emailjs/browser
 call npm install @ionic/react
+call npm install react-icons
 call npm install react-toastify
 echo Installation complete!
 pause

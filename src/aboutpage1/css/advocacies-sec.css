@@ -43,10 +43,10 @@
   gap: 20px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 20px 0;
-  scrollbar-width: none; /* Firefox */
+  padding: 50px;
+  scrollbar-width: none; 
   justify-content: center;
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 }
 
 .advocacies-slider::-webkit-scrollbar {
@@ -72,25 +72,25 @@
 }
 
 .advocacy-card {
-  border-radius: 15px; /* Rounded corners */
+  border-radius: 15px; 
   padding: 20px;
-  width: 300px; /* Adjust width as needed */
+  width: 350px; 
   color: white;
   font-family: 'Arial', sans-serif;
   box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Align items to the left */
-  gap: 10px; /* Space between elements */
+  align-items: flex-start; 
+  gap: 10px; 
   margin: 10px;
+  align-content: justify;
 }
 
 .advocacy-card {
-  transition: all 0.3s ease-in-out; /* Smooth transition */
-  transform: scale(1); /* Default size */
+  transition: all 0.3s ease-in-out; 
+  transform: scale(1); 
 }
 
-/* Default Card Styles */
 .advocacy-card.kalusugan {
   background-color: white;
   color: black;
@@ -121,8 +121,6 @@
   border: 3px solid #ECE05C;
 }
 
-
-/* Hover Effect */
 .advocacy-card:hover {
   transform: scale(1.05); /* Slight enlargement */
   color: rgb(255, 255, 255) !important; /* Ensures text turns black */
@@ -204,6 +202,8 @@
   font-size: 14px;
   line-height: 1.5;
   margin-top: 5px;
+  text-align: justify;
+  font-family: 'helvetic';
 }
 
 .advocacies-slider::-webkit-scrollbar {
