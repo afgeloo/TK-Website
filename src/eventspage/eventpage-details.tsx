@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { formatDateDetails, convertTo12HourFormat } from "./mockServer";
 import "./css/eventdetails.css";
 import locationIconeventspageDetails from "../assets/eventspage/Location-eventspage.png";
+import Header from "../header";
 
 export interface Event {
     event_id: string;
@@ -57,8 +58,10 @@ function EventDetails() {
     
 
     if (!event) return null; // Prevent crash if not loaded yet
-const imagePath = `http://localhost/TK-ced-branch/TK-Website/${event.event_image}`;
+const imagePath = `http://localhost/tara-kabataan-webapp/${event.event_image}`;
     return (
+        <div>
+        <Header/>
         <div className="event-soledetails-container">
             {/* Left side: Image */}
             <div className="event-image-container">
@@ -127,6 +130,7 @@ const imagePath = `http://localhost/TK-ced-branch/TK-Website/${event.event_image
             <button className="event-details-back-button" onClick={() => navigate("/events")}>
                 Go Back
             </button>
+        </div>
         </div>
     );
 }
