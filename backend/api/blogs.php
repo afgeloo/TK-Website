@@ -13,7 +13,6 @@ if (isset($_GET['blog_id'])) {
               FROM tk_webapp.blogs b
               LEFT JOIN tk_webapp.users u ON b.blog_author_id = u.user_id
               WHERE b.blog_id = ?";
-              
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $blog_id);
 

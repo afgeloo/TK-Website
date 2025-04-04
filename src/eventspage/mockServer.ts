@@ -1,7 +1,7 @@
 export const fetchEvents = async () => {
   try {
     const res = await fetch(
-      "http://localhost/tara-kabataan-webapp/backend/api/events.php"
+      "http://localhost/TK-ced-branch/TK-Website/backend/api/events.php"
     );
     const data = await res.json();
     return Array.isArray(data) ? data : [];
