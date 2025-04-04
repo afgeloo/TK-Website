@@ -1,0 +1,12 @@
+.admin-container {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  .admin-content {
+    flex: 1;
+    padding: 40px;
+    background-color: #f5f7fa;
+  }
+  
