@@ -50,7 +50,7 @@ function BlogsPage() {
         setLoading(true);
         try {
             const response = await fetch(
-                `http://localhost/tkwebsites/TK-website/backend/api/blogs.php?category=ALL`
+                `http://localhost/tara-kabataan-webapp/backend/api/blogs.php?category=ALL`
             );
             const data = await response.json();
         
