@@ -6,6 +6,7 @@ body{
     max-width: 120rem;
     width:100%;
     overflow-x: hidden;
+    user-select: none;
 }
 
 

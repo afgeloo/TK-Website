@@ -56,8 +56,8 @@ function BlogsPage() {
         
             if (data && data.pinned && data.blogs) {
                 setPinnedBlogs(data.pinned);
-                setAllBlogs(data.blogs); // Store all blogs for future filtering
-                setBlogs(data.blogs);    // Initial set of all blogs
+                setAllBlogs(data.blogs); 
+                setBlogs(data.blogs);    
             } else {
                 console.error("Unexpected API response format:", data);
             }

@@ -1,28 +1,170 @@
-.admin-sidebar {
-    width: 200px;
-    background-color: #2c3e50;
+@font-face {
+    font-family: 'Bogart Trial';
+    src: url('../../assets/fonts/Bogart-Extrabold-trial.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  .admin-sidebar {
+    width: 18.75rem; 
+    background-color: #FE93B4;
     color: white;
-    padding: 20px;
+    padding: 1.25rem; 
     display: flex;
     flex-direction: column;
-    gap: 20px;
     position: sticky;
     top: 0;
+    left: 0;
     height: 100vh;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    gap:30px;
   }
   
   .admin-link {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
     color: white;
     text-decoration: none;
     font-weight: bold;
-    transition: color 0.3s;
+    padding: 0.6rem 1rem;
+    border-radius: 1.25rem;
+    transition: all 0.2s ease-in-out;
+    font-family: 'Bogart Trial', sans-serif;
+    font-size: 2.5rem;
   }
   
   .admin-link:hover {
-    color: #1abc9c;
+    background-color: rgba(255, 255, 255, 0.2);
   }
   
   .admin-link.active {
-    color: #1abc9c;
+    background-color: white;
+    color: #FE93B4;
+  }
+  
+  .admin-icon {
+    font-size: 2.5rem;
+    color: white;
+    transition: color 0.2s;
+  }
+  
+  .admin-link.active .admin-icon {
+    color: #FE93B4;
+  }
+  
+  .admin-sidebar-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1001;
+    background: #FE93B4;
+    color: white;
+    border: none;
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+    display: none;
+    cursor: pointer;
+  }
+  
+  .admin-sidebar-header {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .admin-logo {
+    width: 80%;
+    height: auto;
+    object-fit: contain;
+  }
+  
+  .admin-logout-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 1.25rem;
+    transition: all 0.2s ease-in-out;
+    font-family: 'Bogart Trial', sans-serif;
+    font-size: 1.75rem;
+    margin-top: auto;
+    margin-bottom: 30px;
+  }
+  
+  .admin-logout-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .admin-logout-link.active {
+    background-color: white;
+    color: #FE93B4;
+  }
+  
+  .admin-logout-icon {
+    font-size: 1.75rem;
+    color: white;
+    transition: color 0.2s;
+  }
+  
+  .admin-logout-link.active .admin-logout-icon {
+    color: #FE93B4;
+  }
+  
+  @media (max-width: 768px) {
+    .admin-sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      transform: translateX(-100%);
+      z-index: 999;
+    }
+  
+    .admin-sidebar.open {
+      transform: translateX(0);
+    }
+  
+    .admin-sidebar-toggle {
+      display: block;
+    }
+  
+    .admin-container {
+      padding-left: 0 !important;
+    }
+
+    .admin-link {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 10px 15px;
+        border-radius: 20px;
+        transition: all 0.2s ease-in-out;
+        font-family: 'Bogart Trial', sans-serif;
+        font-size: 30px;
+      }
+
+    .admin-logout-link {
+        margin-top:auto;
+        margin-bottom:30px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 8px 15px;
+        border-radius: 20px;
+        transition: all 0.2s ease-in-out;
+        font-family: 'Bogart Trial', sans-serif;
+        font-size: 24px;
+      }
   }
   
