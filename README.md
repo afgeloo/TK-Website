@@ -1,6 +1,6 @@
-# Group 1 
+<img src="https://github.com/afgeloo/TK-Website/blob/main/BANNER.gif">
 
-# Members:
+# Group Members:
 - Arcangel, Herson Fergus
 - Austero, Abdiel R.
 - Layson, Dennis S.
