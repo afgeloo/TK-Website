@@ -64,6 +64,8 @@ if (count($fields) === 0) {
     exit;
 }
 
+$fields[] = "updated_at = CURRENT_TIMESTAMP";
+
 $params[] = $blog_id;
 $types .= "s";
 

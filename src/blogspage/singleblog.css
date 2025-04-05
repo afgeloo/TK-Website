@@ -127,3 +127,20 @@
     height: 22px; 
     display: block;
 }
+
+.single-blog-blog-content {
+    white-space: pre-wrap; 
+  }
+
+.single-blog-blog-content img {
+    width: 500px;
+    height: 300px;
+    max-width: 100%;
+    border: 2px solid #ddd;
+    padding: 5px;
+    margin: 1rem auto; 
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    object-fit: cover;
+    display: block; 
+  }

@@ -527,6 +527,18 @@
     width: 80%;
 }
 
+.blogs-page-pinned-full,
+.blogs-page-pinned-main,
+.blogs-page-pinned-half,
+.blogs-page-pinned-item {
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+
 @media (max-width: 600px) {
     .blogs-page-blogs-grid {
         grid-template-columns: 1fr;

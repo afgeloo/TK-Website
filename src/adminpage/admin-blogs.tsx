@@ -4,7 +4,9 @@ import { BsThreeDots } from "react-icons/bs";
 import president from "../assets/aboutpage/council/president.jpg";
 import filter from "../assets/adminpage/blogs/filter.png";
 import select from "../assets/adminpage/blogs/select.png";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { FaBold, FaItalic, FaUnderline, FaImage, FaListUl, FaUndo, FaRedo } from "react-icons/fa";
+
 
 interface Blog {
   blog_id: string;
@@ -79,34 +81,174 @@ const AdminBlogs = () => {
     })
     .slice(0, count === -1 ? blogs.length : count);
 
-    const handleEditToggle = () => {
-      if (!isEditing) {
-        setEditableBlog({ ...selectedBlog! }); 
-      }
-      setIsEditing(!isEditing);
+    const handleEdit = () => {
+      setEditableBlog({ ...selectedBlog! });
+      setIsEditing(true);
+    };
+    
+    const handleCancel = () => {
+      setIsEditing(false);
+      setEditableBlog(null);
     };
     
     const handleSave = () => {
-      fetch("http://localhost/tara-kabataan-webapp/backend/api/update_blog.php", {
+      fetch("http://localhost/tara-kabataan-webapp/backend/api/update_blogs.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editableBlog),
       })
         .then((res) => res.json())
         .then((data) => {
-          setBlogs((prev) =>
-            prev.map((b) => (b.blog_id === editableBlog?.blog_id ? editableBlog : b))
-          );
-          setSelectedBlog(editableBlog);
-          setIsEditing(false);
+          if (data.success) {
+            setBlogs((prev) =>
+              prev.map((b) => (b.blog_id === editableBlog?.blog_id ? editableBlog : b))
+            );
+            setSelectedBlog(editableBlog);
+            setIsEditing(false);
+            setNotification("Blog updated successfully!");
+            setTimeout(() => setNotification(""), 4000);
+          } else {
+            setNotification("Failed to update blog.");
+            setTimeout(() => setNotification(""), 4000);
+          }
         })
-        .catch((err) => console.error("Failed to update:", err));
+        .catch((err) => {
+          console.error("Failed to update:", err);
+          setNotification("Error occurred while updating blog.");
+          setTimeout(() => setNotification(""), 4000);
+        });
     };
     
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file || !editableBlog) return;
+    
+      const formData = new FormData();
+      formData.append("image", file);
+    
+      try {
+        const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_blog_image.php", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+    
+        if (data.success && data.image_url) {
+          setEditableBlog({ ...editableBlog, image_url: data.image_url });
+        } else {
+          alert("Image upload failed.");
+        }
+      } catch (error) {
+        console.error("Upload error:", error);
+        alert("An error occurred during upload.");
+      }
+    };
 
+    const handleImageRemove = () => {
+      if (!editableBlog) return;
+      setEditableBlog({ ...editableBlog, image_url: "" });
+    };
+    
+    const [notification, setNotification] = useState("");
+
+    const handleDelete = () => {
+      const confirmDelete = window.confirm("Are you sure to delete this blog?");
+      if (!confirmDelete || !selectedBlog) return;
+    
+      fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_blogs.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ blog_id: selectedBlog.blog_id }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setBlogs((prev) => prev.filter((b) => b.blog_id !== selectedBlog.blog_id));
+            setNotification("Blog deleted successfully!");
+    
+            setTimeout(() => {
+              setNotification(""); 
+              setSelectedBlog(null); 
+            }, 2500);
+          } else {
+            setNotification("Failed to delete blog.");
+            setTimeout(() => setNotification(""), 4000);
+          }
+        })
+        .catch((err) => {
+          console.error("Delete error:", err);
+          setNotification("Error occurred while deleting blog.");
+          setTimeout(() => setNotification(""), 4000);
+        });
+    };    
+
+    const handleContentImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file || !editableBlog) return;
+    
+      const formData = new FormData();
+      formData.append("image", file);
+    
+      try {
+        const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_blog_image.php", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+    
+        if (data.success && data.image_url) {
+          const imageTag = `<img src="http://localhost${data.image_url}" alt="inserted image" style="max-width:100%;" />`;
+          setEditableBlog((prev) =>
+            prev
+              ? { ...prev, content: (prev.content || "") + `\n${imageTag}\n` }
+              : prev
+          );
+        } else {
+          alert("Failed to upload image to content.");
+        }
+      } catch (err) {
+        console.error("Content image upload error:", err);
+        alert("Error occurred while uploading image to content.");
+      }
+    };
+
+    const textareaRef = useRef<HTMLDivElement>(null); 
+
+    const applyFormatting = (command: 'bold' | 'italic' | 'underline') => {
+      document.execCommand(command, false);
+    };
+
+    const selectionRef = useRef<Range | null>(null);
+
+    const saveSelection = () => {
+      const sel = window.getSelection();
+      if (sel && sel.rangeCount > 0) {
+        selectionRef.current = sel.getRangeAt(0);
+      }
+    };
+  
+    const applyList = () => {
+      restoreSelection();
+      document.execCommand("insertUnorderedList", false);
+    };
+    
+    const restoreSelection = () => {
+      const sel = window.getSelection();
+      if (selectionRef.current && sel) {
+        sel.removeAllRanges();
+        sel.addRange(selectionRef.current);
+      }
+    };
+
+    useEffect(() => {
+      if (isEditing && textareaRef.current && editableBlog?.content) {
+        textareaRef.current.innerHTML = editableBlog.content;
+      }
+    }, [isEditing, editableBlog]);
+    
+    
   return (
     <div className="admin-blogs">
-      {/* Header */}
       <div className="admin-blogs-header">
         <div className="admin-blogs-search-container">
           <FaSearch className="admin-blogs-search-icon" />
@@ -283,81 +425,245 @@ const AdminBlogs = () => {
           <div className="admin-blogs-modal">
             <div className="admin-blogs-modal-content">
             <div className="admin-blogs-float-buttons">
-              {isEditing && (
-                <button className="save-btn" onClick={handleSave}>Save</button>
-              )}
-              {!isEditing ? (
-                <button className="edit-btn" onClick={handleEditToggle}>Edit</button>
-              ) : (
-                <button className="done-btn" onClick={handleEditToggle}>Done</button>
-              )}
-            </div>
-              <button className="admin-blogs-modal-close" onClick={() => setSelectedBlog(null)}>
-                ✕
-              </button>
+                {isEditing ? (
+                  <>
+                    <button className="save-btn" onClick={handleSave}>Save</button>
+                    <button className="cancel-btn" onClick={handleCancel}>Cancel</button>
+                  </>
+                ) : (
+                  <>
+                    <button className="edit-btn" onClick={handleEdit}>Edit</button>
+                    <button className="delete-btn" onClick={handleDelete}>Delete</button>
+                  </>
+                )}
+              </div>
+
+            <button
+              className="admin-blogs-modal-close"
+              onClick={() => {
+                if (isEditing) {
+                  handleCancel(); 
+                }
+                setSelectedBlog(null); 
+              }}
+            >
+              ✕
+            </button>
               <div className="admin-blogs-modal-inner-content">
-                <div className="admin-blogs-modal-left">
-                  <h2>Blog Details</h2>
-                  <div className="admin-blogs-modal-id">
-                    <p><strong>ID</strong></p>
-                    <p className="admin-blogs-modal-id-content">{selectedBlog.blog_id}</p>
+                  {notification && (
+                  <div className={`blogs-notification-message ${notification.includes("successfully") ? "success" : "error"} show`}>
+                    {notification}
                   </div>
-                  <div className="admin-blogs-modal-title">
-                    <p><strong>Title</strong></p>
-                    <p className="admin-blogs-modal-title-content">{selectedBlog.title}</p>
-                  </div>
-                  <div className="admin-blogs-modal-image">
-                    <p><strong>Image</strong></p>
-                    <img
-                      src={selectedBlog.image_url}
-                      alt="Blog"
-                      className="admin-blogs-modal-img"
-                    />
-                  </div>
-                </div>
-                <div className="admin-blogs-modal-right">
-                  <div className="admin-blogs-modal-category">
-                    <p><strong>Category</strong></p>
-                    <select
-                      className={`admin-blogs-modal-select modal-category-${selectedBlog.category.toLowerCase()}`}
-                      value={selectedBlog.category}
-                      disabled
-                    >
-                      <option value={selectedBlog.category}>{selectedBlog.category}</option>
-                      {["Kalusugan", "Kalikasan", "Karunungan", "Kultura", "Kasarian"]
-                        .filter((cat) => cat !== selectedBlog.category)
-                        .map((cat) => (
+                )}
+                <div className="admin-blogs-modal-inner-content-top">
+                  <div className="admin-blogs-modal-left">
+                    <h2>Blog Details</h2>
+                    <div className="admin-blogs-modal-id">
+                      <p><strong>ID</strong></p>
+                      <p className="admin-blogs-modal-id-content">{selectedBlog.blog_id}</p>
+                    </div>
+                    <div className="admin-blogs-modal-title">
+                      <p><strong>Title</strong></p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editableBlog?.title || ""}
+                          onChange={(e) => setEditableBlog({ ...editableBlog!, title: e.target.value })}
+                          className="admin-blogs-modal-title-content"
+                        />
+                      ) : (
+                        <p className="admin-blogs-modal-title-content">{selectedBlog.title}</p>
+                      )}
+                    </div>
+                    <div className="admin-blogs-modal-category">
+                      <p><strong>Category</strong></p>
+                      <select
+                        className={`admin-blogs-modal-select modal-category-${(isEditing ? editableBlog?.category : selectedBlog.category).toLowerCase()}`}
+                        value={isEditing ? editableBlog?.category : selectedBlog.category}
+                        disabled={!isEditing}
+                        onChange={(e) => setEditableBlog({ ...editableBlog!, category: e.target.value })}
+                      >
+                        {["KALUSUGAN", "KALIKASAN", "KARUNUNGAN", "KULTURA", "KASARIAN"].map((cat) => (
                           <option key={cat} value={cat}>{cat}</option>
                         ))}
-                    </select>
-                  </div>
-                  <div className="admin-blogs-modal-status">
-                    <p><strong>Status</strong></p>
-                    <select
-                      className={`admin-blogs-modal-select modal-status-${selectedBlog.blog_status.toLowerCase()}`}
-                      value={selectedBlog.blog_status}
-                      disabled
-                    >
-                      <option value={selectedBlog.blog_status}>{selectedBlog.blog_status}</option>
-                      {["Draft", "Published", "Pinned", "Archived"]
-                        .filter((status) => status !== selectedBlog.blog_status)
-                        .map((status) => (
+                      </select>
+                    </div>
+                    <div className="admin-blogs-modal-author">
+                      <p><strong>Author</strong></p>
+                      <p className="admin-blogs-modal-author-content">{selectedBlog.author}</p>
+                    </div> 
+                    <div className="admin-blogs-modal-status">
+                      <p><strong>Status</strong></p>
+                      <select
+                        className={`admin-blogs-modal-select modal-status-${(isEditing ? editableBlog?.blog_status : selectedBlog.blog_status).toLowerCase()}`}
+                        value={isEditing ? editableBlog?.blog_status : selectedBlog.blog_status}
+                        disabled={!isEditing}
+                        onChange={(e) => setEditableBlog({ ...editableBlog!, blog_status: e.target.value })}
+                      >
+                        {["DRAFT", "PUBLISHED", "PINNED", "ARCHIVED"].map((status) => (
                           <option key={status} value={status}>{status}</option>
                         ))}
-                    </select>
+                      </select>
+                    </div> 
                   </div>
-                  <div className="admin-blogs-modal-author">
-                    <p><strong>Author</strong></p>
-                    <p className="admin-blogs-modal-author-content">{selectedBlog.author}</p>
-                  </div>  
-                  <div className="admin-blogs-modal-date">
-                    <p><strong>Created At</strong></p>
-                    <p className="admin-blogs-modal-date-content">{formatDate(selectedBlog.created_at)}</p>
-                  </div>
+                  <div className="admin-blogs-modal-right">
+                    <div className="admin-blogs-modal-date">
+                      <p><strong>Created At</strong></p>
+                      <p className="admin-blogs-modal-date-content">{formatDate(selectedBlog.created_at)}</p>
+                    </div>
+                    <div className="admin-blogs-modal-image">
+                      <p><strong>Image</strong></p>
+                      <img
+                        src={
+                          selectedBlog &&
+                          (isEditing ? editableBlog?.image_url : selectedBlog.image_url) &&
+                          ((isEditing ? editableBlog?.image_url : selectedBlog.image_url).startsWith("http") ||
+                            (isEditing ? editableBlog?.image_url : selectedBlog.image_url).startsWith("/"))
+                            ? `http://localhost${isEditing ? editableBlog?.image_url : selectedBlog.image_url}`
+                            : (isEditing ? editableBlog?.image_url : selectedBlog.image_url) || ""
+                        }
+                      />
+                        <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: "none" }}
+                            id="upload-image-input"
+                            onChange={(e) => handleImageUpload(e)}
+                          />
+                          <div className="admin-blogs-image-buttons">
+                            <button
+                              className="upload-btn"
+                              disabled={!isEditing}
+                              onClick={() => {
+                                if (isEditing) document.getElementById("upload-image-input")?.click();
+                              }}
+                            >
+                              Upload
+                            </button>
+                            <button
+                              className="remove-btn"
+                              disabled={!isEditing}
+                              onClick={handleImageRemove}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                    </div>
+                </div>
+                </div>
+                <div className="admin-blogs-modal-inner-content-bot">
                   <div className="admin-blogs-modal-desc">
                     <p><strong>Blog Content</strong></p>
-                    <p className="admin-blogs-modal-desc-content">{selectedBlog.content}</p>
-                  </div>   
+                    {isEditing ? (
+                      <>
+                        <div className="admin-blogs-content-image-tools">
+                        <button
+                          className="format-btn undo"
+                          onMouseDown={(e) => {
+                            e.preventDefault(); // Preserve focus in contentEditable
+                            saveSelection();
+                          }}
+                          onClick={() => document.execCommand("undo", false)}
+                        >
+                          <FaUndo />
+                        </button>
+
+                        <button
+                          className="format-btn redo"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            saveSelection();
+                          }}
+                          onClick={() => document.execCommand("redo", false)}
+                        >
+                          <FaRedo />
+                        </button>
+                        <button
+                          className="format-btn bold"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            saveSelection();
+                          }}
+                          onClick={() => applyFormatting("bold")}
+                        >
+                          <FaBold />
+                        </button>
+
+                        <button
+                          className="format-btn italic"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            saveSelection();
+                          }}
+                          onClick={() => applyFormatting("italic")}
+                        >
+                          <FaItalic />
+                        </button>
+
+                        <button
+                          className="format-btn underline"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            saveSelection();
+                          }}
+                          onClick={() => applyFormatting("underline")}
+                        >
+                          <FaUnderline />
+                        </button>
+
+                        <button
+                          className="format-btn bullet"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            saveSelection();
+                          }}
+                          onClick={applyList}
+                        >
+                          <FaListUl />
+                        </button>
+
+                        <button
+                          className="format-btn image"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            saveSelection();
+                          }}
+                          onClick={() => document.getElementById("content-image-input")?.click()}
+                        >
+                          <FaImage />
+                        </button>
+
+                        <input
+                          type="file"
+                          accept="image/*"
+                          id="content-image-input"
+                          style={{ display: "none" }}
+                          onChange={handleContentImageUpload}
+                        />
+
+                        </div>
+                        <div
+                          ref={textareaRef}
+                          className="admin-blogs-modal-desc-content editable"
+                          contentEditable
+                          onBlur={() => {
+                            if (textareaRef.current) {
+                              const updatedContent = textareaRef.current.innerHTML;
+                              setEditableBlog(prev =>
+                                prev ? { ...prev, content: updatedContent } : prev
+                              );
+                            }
+                          }}
+                        />
+                      </>
+                    ) : (
+                      <div className="admin-blogs-modal-desc-content">
+                        <div className="admin-blogs-content-images-wrapper">
+                          <div dangerouslySetInnerHTML={{ __html: selectedBlog.content }} />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

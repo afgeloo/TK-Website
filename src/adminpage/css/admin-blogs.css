@@ -479,17 +479,24 @@
 
 
   .admin-blogs-modal-inner-content{
+    padding: 20px;
+  }
+
+  .admin-blogs-modal-inner-content-top{
     display: flex;
     gap: 50px;
     margin-top: -50px;
   }
-  
+
+  .admin-blogs-modal-inner-content-bot{
+    margin-top: 60px;
+  }
+
   .admin-blogs-modal-left p,
   .admin-blogs-modal-right p {
     word-wrap: break-word;
     margin-bottom: 10px;
   }
-
 
   .admin-blogs-modal-left{
     width: 50%;
@@ -497,7 +504,17 @@
 
   .admin-blogs-modal-img {
     width: 100%;
-    max-height: 400px;
+    max-height: 380px;
+    min-height: 380px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-top: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .admin-blogs-modal-image img{
+    width: 100%;
+    max-height: 380px;
     object-fit: cover;
     border-radius: 10px;
     margin-top: 8px;
@@ -578,10 +595,24 @@
     background-size: 12px;
   }
 
-  .admin-blogs-modal-desc-content{
+  .admin-blogs-modal-desc-content {
+    width: 100%;
+    font-size: 16px; 
+    line-height: 1.5;
+    padding: 15px;
+    resize: none;
+    font-family: inherit;
+    color: inherit;
+    min-height: 280px;
     text-align: justify;
   }
-
+  
+  .admin-blogs-modal-desc-content:focus {
+    outline: none;
+    border: 1px solid #ccc;
+    background-color: #fff;
+  }
+  
   .admin-blogs-modal-close {
     position: absolute;
     top: 0.8rem;
@@ -612,8 +643,11 @@
   }
   
   .edit-btn,
-  .done-btn,
-  .save-btn {
+  .save-btn,
+  .cancel-btn,
+  .upload-btn,
+  .remove-btn,
+  .delete-btn{
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 0.5rem;
@@ -624,27 +658,92 @@
     transition: all 0.25s ease;
     min-width: 100px;
   }
-  
-  .edit-btn {
-    background-color: #f9c0d8;
-    color: #fff;
+
+  .admin-blogs-content-image-tools {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 10px;
   }
   
-  .edit-btn:hover {
+  .format-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem;
+    border-radius: 12px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    transition: all 0.25s ease;
+    color: #444;
+    width: 42px;
+    height: 42px;
+  }
+  
+  .format-btn:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: scale(1.05);
+  }
+  
+  .format-btn.bold {
+    color: #28a745;
+  }
+  
+  .format-btn.italic {
+    color: #6f42c1;
+  }
+  
+  .format-btn.underline {
+    color: #ffc107;
+  }
+  
+  .format-btn.image {
+    color: #800000;
+  }
+
+  /* FONT SIZE DROPDOWN */
+.format-select {
+  padding: 0.5rem 0.8rem;
+  border-radius: 12px;
+  border: none;
+  font-size: 0.9rem;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  color: #444;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.25s ease;
+  height: 42px;
+}
+
+.format-select:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: scale(1.03);
+}
+
+.format-btn.bullet {
+  color: #17a2b8; 
+}
+
+.admin-blogs-modal-desc-content.editable ul {
+  padding-left: 1.5rem;
+  list-style: disc;
+}
+
+.admin-blogs-modal-desc-content.editable li {
+  margin-bottom: 4px;
+}
+
+  .edit-btn{
     background-color: #f58db6;
-  }
-  
-  .done-btn {
-    background-color: #86c5ff;
     color: #fff;
-  }
-  
-  .done-btn:hover {
-    background-color: #5bb2fd;
   }
 
   .save-btn {
-    background-color: #f9c0d8;
+    background-color: #f58db6;
     color: #fff;
   }
   
@@ -652,6 +751,119 @@
     background-color: #f58db6;
   }
 
+  .cancel-btn{
+    background-color: #4261c8bb;
+    color: #fff;
+  }
+
+  .cancel-btn:hover {
+    background-color: #4261c8;
+  }
+
+  .delete-btn {
+    background-color: #e06868e3;
+    color: #fff;
+  }
+
+  .delete-btn:hover {
+    background-color: #de3e3ee3;
+  }
+
+  .admin-blogs-image-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  .upload-btn {
+    background-color: #1299ED;
+    color: #fff;
+  }
+  
+  .remove-btn {
+    background-color: #64b8cb9a;
+    color: #fff;
+  }
+  
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .blogs-notification-message {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #ffb6d9, #ff5a89);
+    color: white;
+    padding: 15px 22px;
+    border-radius: 10px;
+    font-family: 'Helvetica', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    align-items: center;
+    box-shadow: 0 6px 18px rgba(255, 90, 137, 0.3);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+  }
+  
+  .blogs-notification-message.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .blogs-notification-message.success {
+    background: linear-gradient(135deg, #ffc1d9, #ff5a89);
+  }
+  
+  .blogs-notification-message.error {
+    background: linear-gradient(135deg, #ff4e4e, #b60000);
+  }
+  
+  .admin-blogs-modal-desc-content {
+    white-space: pre-wrap;
+  }
+
+  .admin-blogs-modal-desc-content img {
+    width: 500px;
+    height: 300px;
+    max-width: 100%;
+    border: 2px solid #ddd;
+    padding: 5px;
+    margin: 1rem auto; 
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    object-fit: cover;
+    display: block; 
+  }
+
+  .admin-blogs-rich-editor {
+    margin-top: 10px;
+  }
+  
+  .ql-editor img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 6px;
+    border: 2px solid #ddd;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+  
+  .ql-editor {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  
   @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -663,11 +875,6 @@
   }
 }
 
-.admin-blogs-float-buttons {
-  animation: fadeInUp 0.4s ease-out;
-}
-
-  
   
 @media (max-width: 768px) {
 .admin-blogs-header {
