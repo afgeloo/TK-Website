@@ -21,10 +21,18 @@ The decision to build a web page for Tara Kabataan stems from their exceptional 
 
 This webpage application will feature dynamic functionalities, including a blog, events management, membership and partnership opportunities, a donation platform, and emergency response coordination. The application will also incorporate a user-friendly interface for seamless interaction and an administrative backend for managing content efficiently. Their unwavering commitment to community welfare, combined with their proactive approach to addressing societal issues, makes them an ideal choice for this webpage application project.
 
-<h2> <img height=35 width=35 src="https://github.com/afgeloo/TK-Website/blob/main/tk%20sipa.png"> UI/UX Design </h2>
+<h2>
+  <img height="35" width="35" src="https://github.com/afgeloo/TK-Website/blob/main/tk%20sipa.png?raw=true">
+  UI/UX Design
+</h2>
+
 [![figma](https://img.shields.io/badge/figma-000000?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/design/427lEz2ZJ1EnQ3ppvUMCqR/Tara-Kabataan-UI?node-id=6-4124&t=5ErLtQQUcRZ8NP4T-1)
 
-<h2> <img height=35 width=35 src="https://github.com/afgeloo/TK-Website/blob/main/tk%20sipa.png"> Tara Kabataan Socials </h2>
+<h2>
+  <img height="35" width="35" src="https://github.com/afgeloo/TK-Website/blob/main/tk%20sipa.png?raw=true">
+  Tara Kabataan Socials
+</h2>
+
 [![facebook](https://img.shields.io/badge/facebook-1877f2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/TaraKabataanMNL)
 [![instagram](https://img.shields.io/badge/instagram-8134AF?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/tarakabataan/)
 
