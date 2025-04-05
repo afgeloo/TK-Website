@@ -13,6 +13,8 @@ interface Blog {
   author: string;
   blog_status: string;
   created_at: string;
+  content: string;
+  image_url: string;
 }
 
 const AdminBlogs = () => {
@@ -29,6 +31,10 @@ const AdminBlogs = () => {
   const [createdSortOrder, setCreatedSortOrder] = useState("Newest First");
 
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editableBlog, setEditableBlog] = useState<Blog | null>(null);
+
 
   const formatDate = (timestamp: string): string => {
     const date = new Date(timestamp);
@@ -61,7 +67,6 @@ const AdminBlogs = () => {
       return matchCategory && matchStatus;
     })
     .sort((a, b) => {
-      // Prioritize 'Pinned' blogs first
       const isPinnedA = a.blog_status.toLowerCase() === 'pinned';
       const isPinnedB = b.blog_status.toLowerCase() === 'pinned';
 
@@ -73,6 +78,31 @@ const AdminBlogs = () => {
       return createdSortOrder === "Newest First" ? dateB - dateA : dateA - dateB;
     })
     .slice(0, count === -1 ? blogs.length : count);
+
+    const handleEditToggle = () => {
+      if (!isEditing) {
+        setEditableBlog({ ...selectedBlog! }); 
+      }
+      setIsEditing(!isEditing);
+    };
+    
+    const handleSave = () => {
+      fetch("http://localhost/tara-kabataan-webapp/backend/api/update_blog.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editableBlog),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setBlogs((prev) =>
+            prev.map((b) => (b.blog_id === editableBlog?.blog_id ? editableBlog : b))
+          );
+          setSelectedBlog(editableBlog);
+          setIsEditing(false);
+        })
+        .catch((err) => console.error("Failed to update:", err));
+    };
+    
 
   return (
     <div className="admin-blogs">
@@ -142,80 +172,89 @@ const AdminBlogs = () => {
 
       {/* Table Header */}
       <div className="admin-blogs-main-content">
-        <div className="admin-blogs-table-header">
-          <div className="admin-blogs-id"><p>ID</p></div>
-          <div className="admin-blogs-category-dropdown">
-            <div className="admin-blogs-dropdown-trigger" onClick={() => setOpenCategory(!openCategory)}>
-              Category <span className="admin-header-dropdown-arrow">▾</span>
-              {openCategory && (
-                <div className="admin-header-dropdown-menu">
-                  {["All", "Kalusugan", "Kalikasan", "Karunungan", "Kultura", "Kasarian"].map((item) => (
-                    <div
-                      key={item}
-                      className="admin-header-dropdown-item"
-                      onClick={() => {
-                        setSelectedCategory(item);
-                        setOpenCategory(false);
-                      }}
-                    >
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="admin-blogs-title"><p>Blog Title</p></div>
-          <div className="admin-blogs-author"><p>Author</p></div>
-          <div className="admin-blogs-status-dropdown">
-            <div className="admin-blogs-dropdown-trigger" onClick={() => setOpenStatus(!openStatus)}>
-              Status <span className="admin-header-dropdown-arrow">▾</span>
-              {openStatus && (
-                <div className="admin-header-dropdown-menu">
-                  {["All", "Draft", "Published", "Pinned", "Archived"].map((status) => (
-                    <div
-                      key={status}
-                      className="admin-header-dropdown-item"
-                      onClick={() => {
-                        setSelectedStatus(status);
-                        setOpenStatus(false);
-                      }}
-                    >
-                      {status}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="admin-blogs-created-at-dropdown">
-            <div className="admin-blogs-dropdown-trigger" onClick={() => setOpenCreatedAt(!openCreatedAt)}>
-              Created At <span className="admin-header-dropdown-arrow">▾</span>
-              {openCreatedAt && (
-                <div className="admin-header-dropdown-menu">
-                  {["Newest First", "Oldest First"].map((order) => (
-                    <div
-                      key={order}
-                      className="admin-header-dropdown-item"
-                      onClick={() => {
-                        setCreatedSortOrder(order);
-                        setOpenCreatedAt(false);
-                      }}
-                    >
-                      {order}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="admin-blogs-view"><p>View</p></div>
-          <div className="admin-blogs-actions-header"><p></p></div>
-        </div>
+      <div className="admin-blogs-scrollable-table">
+        <table className="admin-blogs-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>
+                  <div className="admin-blogs-dropdown-trigger" onClick={() => setOpenCategory(!openCategory)}>
+                    Category <span className="admin-header-dropdown-arrow">▾</span>
+                    {openCategory && (
+                      <div className="admin-header-dropdown-menu">
+                        {["All", "Kalusugan", "Kalikasan", "Karunungan", "Kultura", "Kasarian"].map((item) => (
+                          <div
+                            key={item}
+                            className="admin-header-dropdown-item"
+                            onClick={() => {
+                              setSelectedCategory(item);
+                              setOpenCategory(false);
+                            }}
+                          >
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </th>
+                <th>Blog Title</th>
+                <th>Author</th>
+                <th>
+                  <div className="admin-blogs-dropdown-trigger" onClick={() => setOpenStatus(!openStatus)}>
+                    Status <span className="admin-header-dropdown-arrow">▾</span>
+                    {openStatus && (
+                      <div className="admin-header-dropdown-menu">
+                        {["All", "Draft", "Published", "Pinned", "Archived"].map((status) => (
+                          <div
+                            key={status}
+                            className="admin-header-dropdown-item"
+                            onClick={() => {
+                              setSelectedStatus(status);
+                              setOpenStatus(false);
+                            }}
+                          >
+                            {status}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </th>
+                <th>
+                  <div className="admin-blogs-dropdown-trigger" onClick={() => setOpenCreatedAt(!openCreatedAt)}>
+                    Created At <span className="admin-header-dropdown-arrow">▾</span>
+                    {openCreatedAt && (
+                      <div className="admin-header-dropdown-menu">
+                        {["Newest First", "Oldest First"].map((order) => (
+                          <div
+                            key={order}
+                            className="admin-header-dropdown-item"
+                            onClick={() => {
+                              setCreatedSortOrder(order);
+                              setOpenCreatedAt(false);
+                            }}
+                          >
+                            {order}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </th>
+                <th>View</th>
+              </tr>
+            </thead>
+            <colgroup>
+              <col style={{ width: "80px" }} />
+              <col style={{ width: "70px" }} />
+              <col style={{ width: "100px" }} />
+              <col style={{ width: "90px" }} />
+              <col style={{ width: "70px" }} />
+              <col style={{ width: "80px" }} />
+              <col style={{ width: "40px" }} />
+            </colgroup>
 
-        {/* Table Body */}
-        <div className="admin-blogs-scrollable-table">
-          <table className="admin-blogs-table">
             <tbody>
               {filteredBlogs.map((blog) => (
                 <tr className="admin-blogs-table-content" key={blog.blog_id}>
@@ -241,20 +280,88 @@ const AdminBlogs = () => {
 
       {selectedBlog && (
         <div className="admin-blogs-view-more">
-            <div className="admin-blogs-modal">
-                <div className="admin-blogs-modal-content">
-                    <button className="admin-blogs-modal-close" onClick={() => setSelectedBlog(null)}>
-                    ✕
-                    </button>
-                    <h2>Blog Details</h2>
-                    <p><strong>ID:</strong> {selectedBlog.blog_id}</p>
-                    <p><strong>Title:</strong> {selectedBlog.title}</p>
-                    <p><strong>Category:</strong> {selectedBlog.category}</p>
-                    <p><strong>Author:</strong> {selectedBlog.author}</p>
-                    <p><strong>Status:</strong> {selectedBlog.blog_status}</p>
-                    <p><strong>Created At:</strong> {formatDate(selectedBlog.created_at)}</p>
-                </div>
+          <div className="admin-blogs-modal">
+            <div className="admin-blogs-modal-content">
+            <div className="admin-blogs-float-buttons">
+              {isEditing && (
+                <button className="save-btn" onClick={handleSave}>Save</button>
+              )}
+              {!isEditing ? (
+                <button className="edit-btn" onClick={handleEditToggle}>Edit</button>
+              ) : (
+                <button className="done-btn" onClick={handleEditToggle}>Done</button>
+              )}
             </div>
+              <button className="admin-blogs-modal-close" onClick={() => setSelectedBlog(null)}>
+                ✕
+              </button>
+              <div className="admin-blogs-modal-inner-content">
+                <div className="admin-blogs-modal-left">
+                  <h2>Blog Details</h2>
+                  <div className="admin-blogs-modal-id">
+                    <p><strong>ID</strong></p>
+                    <p className="admin-blogs-modal-id-content">{selectedBlog.blog_id}</p>
+                  </div>
+                  <div className="admin-blogs-modal-title">
+                    <p><strong>Title</strong></p>
+                    <p className="admin-blogs-modal-title-content">{selectedBlog.title}</p>
+                  </div>
+                  <div className="admin-blogs-modal-image">
+                    <p><strong>Image</strong></p>
+                    <img
+                      src={selectedBlog.image_url}
+                      alt="Blog"
+                      className="admin-blogs-modal-img"
+                    />
+                  </div>
+                </div>
+                <div className="admin-blogs-modal-right">
+                  <div className="admin-blogs-modal-category">
+                    <p><strong>Category</strong></p>
+                    <select
+                      className={`admin-blogs-modal-select modal-category-${selectedBlog.category.toLowerCase()}`}
+                      value={selectedBlog.category}
+                      disabled
+                    >
+                      <option value={selectedBlog.category}>{selectedBlog.category}</option>
+                      {["Kalusugan", "Kalikasan", "Karunungan", "Kultura", "Kasarian"]
+                        .filter((cat) => cat !== selectedBlog.category)
+                        .map((cat) => (
+                          <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                    </select>
+                  </div>
+                  <div className="admin-blogs-modal-status">
+                    <p><strong>Status</strong></p>
+                    <select
+                      className={`admin-blogs-modal-select modal-status-${selectedBlog.blog_status.toLowerCase()}`}
+                      value={selectedBlog.blog_status}
+                      disabled
+                    >
+                      <option value={selectedBlog.blog_status}>{selectedBlog.blog_status}</option>
+                      {["Draft", "Published", "Pinned", "Archived"]
+                        .filter((status) => status !== selectedBlog.blog_status)
+                        .map((status) => (
+                          <option key={status} value={status}>{status}</option>
+                        ))}
+                    </select>
+                  </div>
+                  <div className="admin-blogs-modal-author">
+                    <p><strong>Author</strong></p>
+                    <p className="admin-blogs-modal-author-content">{selectedBlog.author}</p>
+                  </div>  
+                  <div className="admin-blogs-modal-date">
+                    <p><strong>Created At</strong></p>
+                    <p className="admin-blogs-modal-date-content">{formatDate(selectedBlog.created_at)}</p>
+                  </div>
+                  <div className="admin-blogs-modal-desc">
+                    <p><strong>Blog Content</strong></p>
+                    <p className="admin-blogs-modal-desc-content">{selectedBlog.content}</p>
+                  </div>   
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
