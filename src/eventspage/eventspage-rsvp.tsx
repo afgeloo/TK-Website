@@ -77,7 +77,7 @@ function EventsPageRSVP() {
     setTimeout(() => {
       setEventsToShow((prev) => prev + 4);
       setLoadingMore(false);
-    }, 2000); // simulate 1 second loading
+    }, 2000);
   };
 
   return (
@@ -171,7 +171,7 @@ function EventsPageRSVP() {
                     className="eventrsvp-button"
                     onClick={(e) => {
                       e.stopPropagation(); // Prevent event bubbling
-                      window.open("#", "_blank"); // Placeholder link
+                      window.open("https://docs.google.com/forms/d/1t6zpzidXd5fhIdotpMYwJpOhobaw0VzsYaouREs4kgg/edit", "_blank"); 
                     }}
                   >
                     RSVP
