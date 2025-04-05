@@ -56,8 +56,8 @@ function BlogsPage() {
         
             if (data && data.pinned && data.blogs) {
                 setPinnedBlogs(data.pinned);
-                setAllBlogs(data.blogs); // Store all blogs for future filtering
-                setBlogs(data.blogs);    // Initial set of all blogs
+                setAllBlogs(data.blogs); 
+                setBlogs(data.blogs);    
             } else {
                 console.error("Unexpected API response format:", data);
             }
@@ -141,9 +141,9 @@ function BlogsPage() {
             {/* Only show Pinned Blogs section if there are pinned blogs */}
             {pinnedBlogs.length > 0 && (
                 <>
-                    {/* Pinned Blogs Header */}
+                    {/* Pinned Blogs Header - updated to be conditional */}
                     <div className="blogs-page-pinned-header">
-                        <h2>Pinned Blogs</h2>  
+                        <h2>{pinnedBlogs.length === 1 ? "Pinned Blog" : "Pinned Blogs"}</h2>  
                     </div>
 
                     {/* Pinned Blogs Section */}
