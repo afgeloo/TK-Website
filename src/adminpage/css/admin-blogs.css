@@ -297,6 +297,7 @@
   .admin-blogs-title{
     margin-right: 170px;
   }
+
   .admin-blogs-title-content {
     width: 180px;
   }
@@ -432,7 +433,6 @@
     font-weight: 600;
   }
 
-  /* 3-dot button */
 .admin-blogs-more-button button {
     background: transparent;
     border: none;
@@ -477,7 +477,6 @@
     font-family: 'Bogart Trial', sans-serif;
     font-size: 24px;
   }
-
 
   .admin-blogs-modal-inner-content{
     padding: 20px;
@@ -875,7 +874,224 @@
   }
 }
 
-  
+.blogs-confirmation-popup {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: linear-gradient(145deg, #fce4ec, #f8bbd0);
+  border-radius: 20px;
+  padding: 20px 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  width: 320px;
+  z-index: 9999;
+  animation: iosSlideIn 0.35s ease-out;
+  border: 1px solid rgba(255, 182, 193, 0.3);
+  backdrop-filter: blur(12px);
+}
+
+.blogs-confirmation-popup p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #3b3b3b;
+  margin: 0 0 18px;
+  text-align: center;
+}
+
+.blogs-confirmation-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.confirm-yes,
+.confirm-no {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.confirm-yes {
+  background: linear-gradient(135deg, #ff4d88, #ff80ab);
+  color: white;
+}
+
+.confirm-no {
+  background: #fff;
+  color: #ff4d88;
+  border: 1px solid #ffb6c1;
+}
+
+.confirm-yes:hover {
+  background: linear-gradient(135deg, #ff3366, #ff66a3);
+}
+
+.confirm-no:hover {
+  background: #ffe6ef;
+}
+
+@keyframes iosSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.admin-blogs-new-blog{
+  width: 100%;
+}
+ 
+.admin-blogs-new-blog-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.admin-blogs-new-blog-modal-content{
+    background: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
+    width: 80%;
+    height: 80%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow-y: auto;
+}
+
+.admin-blogs-new-blog-modal-close{
+  position: absolute;
+  top: 0.8rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: #888;
+}
+
+.admin-blogs-new-blog-modal-inner-content{
+  padding: 20px;
+}
+
+.admin-blogs-new-blog-modal-left h2{
+  font-family: 'Bogart Trial', sans-serif;
+  font-size: 24px;
+}
+
+.admin-blogs-new-blog-modal-inner-content-top{
+  display: flex;
+  gap: 50px;
+  margin-top: -50px;
+}
+
+.admin-blogs-new-blog-modal-inner-content-bot{
+  margin-top: 60px;
+}
+
+.admin-blogs-new-blog-modal-left{
+  width: 50%;
+}
+
+.admin-blogs-new-blog-modal-right{
+  width: 50%;
+  margin-right: 10px;
+}
+
+.admin-blogs-new-blog-modal-id-content,
+.admin-blogs-new-blog-modal-title-content,
+.admin-blogs-new-blog-modal-author-content,
+.admin-blogs-new-blog-modal-date-content,
+.admin-blogs-new-blog-modal-desc-content
+{
+  width: 100%;
+  height: 100%;
+  min-height: 20px;
+  padding: 15px 10px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  color: #333;
+  background-color: white;
+  appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+}
+
+.admin-blogs-new-blog-modal-desc-content {
+  width: 100%;
+  font-size: 16px; 
+  line-height: 1.5;
+  padding: 15px;
+  resize: none;
+  font-family: inherit;
+  color: inherit;
+  min-height: 280px;
+  text-align: justify;
+}
+
+.admin-blogs-modal-desc-content:focus {
+  outline: none;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.admin-blogs-new-blog-modal-select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  color: #333;
+  background-color: white;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+}
+
+.modal-status-pinned {
+  color: #b58e00;
+  font-weight: 600;
+}
+.modal-status-published {
+  color: #2e8b57;
+  font-weight: 600;
+}
+.modal-status-draft {
+  color: #1e90ff;
+  font-weight: 600;
+}
+.modal-status-archived {
+  color: #cc3333;
+  font-weight: 600;
+}
+
+.modal-category-pink {
+  color: #FE93B4;  
+  font-weight: 600;
+}
+
 @media (max-width: 768px) {
 .admin-blogs-header {
     display: flex;

@@ -12,6 +12,7 @@ call npm install @ionic/react
 call npm install react-icons
 call npm install @tiptap/react @tiptap/starter-kit
 call npm install @tiptap/extension-underline
+call npm install jquery --legacy-peer-deps
 
 echo Installation complete!
 pause

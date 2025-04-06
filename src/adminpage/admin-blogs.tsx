@@ -33,10 +33,15 @@ const AdminBlogs = () => {
   const [createdSortOrder, setCreatedSortOrder] = useState("Newest First");
 
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
+  const [newBlogModalOpen, setNewBlogModalOpen] = useState(false);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editableBlog, setEditableBlog] = useState<Blog | null>(null);
 
+  const [newBlogTitle, setNewBlogTitle] = useState("");
+  const [newBlogCategory, setNewBlogCategory] = useState("KALUSUGAN");
+  const [newBlogStatus, setNewBlogStatus] = useState("DRAFT");
+  const [newBlogAuthor, setNewBlogAuthor] = useState("Angelo Reyes"); 
 
   const formatDate = (timestamp: string): string => {
     const date = new Date(timestamp);
@@ -151,9 +156,9 @@ const AdminBlogs = () => {
     
     const [notification, setNotification] = useState("");
 
-    const handleDelete = () => {
-      const confirmDelete = window.confirm("Are you sure to delete this blog?");
-      if (!confirmDelete || !selectedBlog) return;
+
+    const confirmDeleteBlog = () => {
+      if (!selectedBlog) return;
     
       fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_blogs.php", {
         method: "POST",
@@ -167,8 +172,8 @@ const AdminBlogs = () => {
             setNotification("Blog deleted successfully!");
     
             setTimeout(() => {
-              setNotification(""); 
-              setSelectedBlog(null); 
+              setNotification("");
+              setSelectedBlog(null);
             }, 2500);
           } else {
             setNotification("Failed to delete blog.");
@@ -180,8 +185,14 @@ const AdminBlogs = () => {
           setNotification("Error occurred while deleting blog.");
           setTimeout(() => setNotification(""), 4000);
         });
-    };    
-
+    
+      setConfirmDeleteVisible(false);
+    };
+    
+    const handleDelete = () => {
+      setConfirmDeleteVisible(true); 
+    };
+    
     const handleContentImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (!file || !editableBlog) return;
@@ -246,6 +257,8 @@ const AdminBlogs = () => {
       }
     }, [isEditing, editableBlog]);
     
+    const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+
     
   return (
     <div className="admin-blogs">
@@ -304,7 +317,7 @@ const AdminBlogs = () => {
             </button>
           </div>
           <div className="admin-blogs-lower-header-new-blog">
-            <button>
+            <button onClick={() => setNewBlogModalOpen(true)}>
               <FaPlus className="admin-icon-left" />
               Add New Blog
             </button>
@@ -419,7 +432,6 @@ const AdminBlogs = () => {
           </table>
         </div>
       </div>
-
       {selectedBlog && (
         <div className="admin-blogs-view-more">
           <div className="admin-blogs-modal">
@@ -437,24 +449,67 @@ const AdminBlogs = () => {
                   </>
                 )}
               </div>
-
-            <button
-              className="admin-blogs-modal-close"
-              onClick={() => {
-                if (isEditing) {
-                  handleCancel(); 
-                }
-                setSelectedBlog(null); 
-              }}
-            >
-              ✕
-            </button>
+              <button
+                className="admin-blogs-modal-close"
+                onClick={() => {
+                  if (isEditing) {
+                    handleCancel(); 
+                  }
+                  setSelectedBlog(null); 
+                }}
+              >
+                ✕
+              </button>
               <div className="admin-blogs-modal-inner-content">
                   {notification && (
                   <div className={`blogs-notification-message ${notification.includes("successfully") ? "success" : "error"} show`}>
                     {notification}
                   </div>
                 )}
+                {confirmDeleteVisible && (
+                  <div className="blogs-confirmation-popup show">
+                    <p>Are you sure you want to delete this blog?</p>
+                    <div className="blogs-confirmation-actions">
+                      <button
+                        className="confirm-yes"
+                        onClick={() => {
+                          fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_blogs.php", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ blog_id: selectedBlog?.blog_id }),
+                          })
+                            .then((res) => res.json())
+                            .then((data) => {
+                              if (data.success) {
+                                setBlogs((prev) => prev.filter((b) => b.blog_id !== selectedBlog?.blog_id));
+                                setNotification("Blog deleted successfully!");
+                                setTimeout(() => {
+                                  setNotification("");
+                                  setSelectedBlog(null);
+                                }, 2500);
+                              } else {
+                                setNotification("Failed to delete blog.");
+                                setTimeout(() => setNotification(""), 4000);
+                              }
+                            })
+                            .catch((err) => {
+                              console.error("Delete error:", err);
+                              setNotification("Error occurred while deleting blog.");
+                              setTimeout(() => setNotification(""), 4000);
+                            });
+
+                          setConfirmDeleteVisible(false);
+                        }}
+                      >
+                        Yes
+                      </button>
+                      <button className="confirm-no" onClick={() => setConfirmDeleteVisible(false)}>
+                        No
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 <div className="admin-blogs-modal-inner-content-top">
                   <div className="admin-blogs-modal-left">
                     <h2>Blog Details</h2>
@@ -664,6 +719,79 @@ const AdminBlogs = () => {
                       </div>
                     )}
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {newBlogModalOpen && (
+        <div className="admin-blogs-new-blog">
+          <div className="admin-blogs-new-blog-modal">
+            <div className="admin-blogs-new-blog-modal-content">
+            <div className="admin-blogs-new-blog-float-buttons">
+              
+            </div>
+              <button
+                className="admin-blogs-new-blog-modal-close"
+                onClick={() => setNewBlogModalOpen(false)}
+              >
+                ✕
+              </button>
+              <div className="admin-blogs-new-blog-modal-inner-content">
+                <div className="admin-blogs-new-blog-modal-inner-content-top">
+                  <div className="admin-blogs-new-blog-modal-left">
+                    <h2>Add New Blog</h2>
+                    <div className="admin-blogs-new-blog-modal-id">
+                      <p><strong>ID</strong></p>
+                      <p className="admin-blogs-new-blog-modal-id-content">id</p>
+                    </div>
+                    <div className="admin-blogs-new-blog-modal-title">
+                      <p><strong>Title</strong></p>
+                      <input
+                        type="text"
+                        className="admin-blogs-new-blog-modal-title-content"
+                        value={newBlogTitle}
+                        onChange={(e) => setNewBlogTitle(e.target.value)}
+                        placeholder="Enter title"
+                      />
+                    </div>
+                    <div className="admin-blogs-new-blog-modal-category">
+                      <p><strong>Category</strong></p>
+                      <select
+                        className="admin-blogs-new-blog-modal-select modal-category-pink"
+                        value={newBlogCategory}
+                        onChange={(e) => setNewBlogCategory(e.target.value)}
+                      >
+                        {["KALUSUGAN", "KALIKASAN", "KARUNUNGAN", "KULTURA", "KASARIAN"].map((cat) => (
+                          <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="admin-blogs-new-blog-modal-author">
+                      <p><strong>Author</strong></p>
+                      <p className="admin-blogs-new-blog-modal-author-content">{newBlogAuthor}</p>
+                    </div> 
+                    <div className="admin-blogs-new-blog-modal-status">
+                      <p><strong>Status</strong></p>
+                      <select
+                        className={`admin-blogs-new-blog-modal-select modal-status-${newBlogStatus.toLowerCase()}`}
+                        value={newBlogStatus}
+                        onChange={(e) => setNewBlogStatus(e.target.value)}
+                      >
+                        {["DRAFT", "PUBLISHED", "PINNED", "ARCHIVED"].map((status) => (
+                          <option key={status} value={status}>{status}</option>
+                        ))}
+                      </select>
+                    </div> 
+                  </div>
+                  
+                  <div className="admin-blogs-new-blog-modal-right">
+                    
+                  </div>
+                </div>
+                <div className="admin-blogs-new-blog-modal-inner-content-bot">
+                
                 </div>
               </div>
             </div>
