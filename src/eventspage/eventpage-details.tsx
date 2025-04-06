@@ -2,8 +2,11 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { formatDateDetails, convertTo12HourFormat } from "./mockServer";
 import "./css/eventdetails.css";
+import "./css/toast.css";
 import locationIconeventspageDetails from "../assets/eventspage/Location-eventspage.png";
-import Header from "../header";
+import attachIcon from "../assets/logos/attachicon.jpg";
+import { ToastContainer, toast } from 'react-toastify';
+
 
 export interface Event {
     event_id: string;
@@ -30,6 +33,7 @@ function EventDetails() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const from = queryParams.get("from");
+    const [canCopy, setCanCopy] = useState(true);
 
     useEffect(() => {
         if (!id) return;
@@ -54,16 +58,23 @@ function EventDetails() {
 
         fetchEvent();
     }, [id]);
-    
-    
 
-    if (!event) return null; // Prevent crash if not loaded yet
-const imagePath = `http://localhost/tara-kabataan-webapp/${event.event_image}`;
+    const copyEventLink = () => {
+        if (!canCopy) return;
+      
+        setCanCopy(false); 
+        setTimeout(() => setCanCopy(true), 2000); 
+      
+        const currentUrl = window.location.href;
+        navigator.clipboard.writeText(currentUrl)
+          .then(() => toast.success("Event link copied!"))
+          .catch(() => toast.error("Failed to copy link."));
+      };
+
+    if (!event) return null; 
+    const imagePath = `http://localhost/tara-kabataan-webapp/${event.event_image}`;
     return (
-        <div>
-        <Header/>
         <div className="event-soledetails-container">
-            {/* Left side: Image */}
             <div className="event-image-container">
 
                 <img
@@ -81,57 +92,84 @@ const imagePath = `http://localhost/tara-kabataan-webapp/${event.event_image}`;
                 <p className="location-header-event">Location:</p>
                 <div className="custom-divider-details2"></div>
 
-                <a
-                    href={event.map_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="event-map-link"
-                >
-                    <div className="event-map-container">
-                        <iframe
-                            src={`https://www.google.com/maps?q=${encodeURIComponent(event.event_venue || "Default Location")}&z=18&output=embed`}
-                            width="300"
-                            height="300"
-                            style={{ border: 0 }}
-                            loading="lazy"
-                            className="event-map-iframe"
-                        ></iframe>
-                    </div>
-                </a>
-            </div>
+            <a
+                href={event.map_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="event-map-link"
+            >
+                <div className="event-map-container">
+                    <iframe
+                        src={`https://www.google.com/maps?q=${encodeURIComponent(event.event_venue || "Default Location")}&z=18&output=embed`}
+                        width="300"
+                        height="300"
+                        style={{ border: 0 }}
+                        loading="lazy"
+                        className="event-map-iframe"
+                    ></iframe>
+                </div>
+            </a>
+        </div>
 
-            {/* Right side: Info */}
-            <div className="event-content">
-                <h1 className="event-details-title">{event.event_title}</h1>
-                <p className="event-date-details">
-                    {formatDateDetails(event.event_date)}, {event.event_day}
-                </p>
-                <p className="event-details-time">
-                    {convertTo12HourFormat(event.event_start_time)} - {convertTo12HourFormat(event.event_end_time)}
-                </p>
-                <p className="event-locationdetails">
-                    <img
-                        src={locationIconeventspageDetails}
-                        alt="Location"
-                        className="locationevent-icon-details"
-                    />
-                    {event.event_venue}
-                </p>
+        {/* Right side: Info */}
+        <div className="event-content">
+            <h1 className="event-details-title">{event.event_title}</h1>
+            <p className="event-date-details">
+                {formatDateDetails(event.event_date)}, {event.event_day}
+            </p>
+            <p className="event-details-time">
+                {convertTo12HourFormat(event.event_start_time)} - {convertTo12HourFormat(event.event_end_time)}
+            </p>
+            <p className="event-locationdetails">
+                <img
+                    src={locationIconeventspageDetails}
+                    alt="Location"
+                    className="locationevent-icon-details"
+                />
+                {event.event_venue}
+            </p>
 
+            <div className="event-details-header-row">
                 <p className="about-details-event-title">About the Event</p>
-                <div className="custom-divider-details"></div>
-                <p className="event-details-about">{event.event_content}</p>
 
-                {from === "rsvp" && (
-                    <button className="eventrsvp-button-details">RSVP</button>
-                )}
+                <div className="event-details-copy-link-container">
+                    <span className="event-details-copy-link-text">Copy Link</span>
+
+                    <div className="event-details-copy-link-icon" onClick={copyEventLink}>
+                        <img
+                            src={attachIcon}
+                            alt="Copy link"
+                            className="event-details-attach-icon"
+                        />
+                    </div>
+                </div>
             </div>
+            <div className="custom-divider-details"></div>
+            <p className="event-details-about">{event.event_content}</p>
+
+            {from === "upcoming" && (
+                <button className="eventrsvp-button-details">RSVP</button>
+            )}
+        </div>
 
             <button className="event-details-back-button" onClick={() => navigate("/events")}>
                 Go Back
             </button>
+         <ToastContainer
+         position="top-center"
+             autoClose={1500}
+             hideProgressBar
+             closeOnClick
+             rtl={false}
+             pauseOnFocusLoss={false}
+             pauseOnHover
+             className="custom-toast-container"
+             toastClassName="custom-toast"
+             limit={1}
+         />
+    
         </div>
-        </div>
+        
     );
 }
 

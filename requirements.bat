@@ -10,9 +10,6 @@ call npm install react-player
 call npm install @emailjs/browser
 call npm install @ionic/react
 call npm install react-icons
-call npm install @tiptap/react @tiptap/starter-kit
-call npm install @tiptap/extension-underline
-call npm install jquery --legacy-peer-deps
-
+call npm install react-toastify
 echo Installation complete!
 pause

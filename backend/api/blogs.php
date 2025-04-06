@@ -43,7 +43,6 @@ if (isset($_GET['blog_id'])) {
     exit;
 }
 
-
 $category = isset($_GET['category']) ? strtoupper($_GET['category']) : 'ALL';
 
 $response = [
@@ -51,7 +50,6 @@ $response = [
     "blogs" => []
 ];
 
-// Fetch pinned blogs
 $pinnedQuery = "SELECT b.blog_id, b.blog_title as title, b.blog_content as content, 
                 b.blog_image as image_url, b.blog_category as category, 
                 b.created_at, u.user_name as author
@@ -69,7 +67,6 @@ if ($pinnedResult) {
     exit;
 }
 
-// Fetch all blogs, including pinned
 if ($category === 'ALL') {
     $query = "SELECT b.blog_id, b.blog_title as title, b.blog_content as content, 
               b.blog_image as image_url, b.blog_category as category, 
