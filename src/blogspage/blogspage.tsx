@@ -54,10 +54,14 @@ function BlogsPage() {
       const data = await response.json();
 
       if (data && data.pinned && data.blogs) {
-        setPinnedBlogs(data.pinned);
-        setAllBlogs(data.blogs);
-        setBlogs(data.blogs);
-      } else {
+        const filteredAllBlogs = data.blogs.filter((blog: Blog) =>
+          blog.blog_status?.toUpperCase() === "PUBLISHED"
+        );
+        setPinnedBlogs(data.pinned); 
+        setAllBlogs(filteredAllBlogs);
+        setBlogs(filteredAllBlogs);
+      }
+       else {
         console.error("Unexpected API response format:", data);
       }
       setLoading(false);

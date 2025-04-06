@@ -41,7 +41,19 @@ const AdminBlogs = () => {
   const [newBlogTitle, setNewBlogTitle] = useState("");
   const [newBlogCategory, setNewBlogCategory] = useState("KALUSUGAN");
   const [newBlogStatus, setNewBlogStatus] = useState("DRAFT");
-  const [newBlogAuthor, setNewBlogAuthor] = useState("Angelo Reyes"); 
+  const [newBlogAuthor, setNewBlogAuthor] = useState("users-2025-000001"); 
+  const [newBlogAuthorName, setNewBlogAuthorName] = useState("");
+
+  useEffect(() => {
+    fetch(`http://localhost/tara-kabataan-webapp/backend/api/get_user_name.php?user_id=${newBlogAuthor}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.user_name) {
+          setNewBlogAuthorName(data.user_name);
+        }
+      })
+      .catch(err => console.error("Failed to fetch user name:", err));
+  }, [newBlogAuthor]);
 
   const formatDate = (timestamp: string): string => {
     const date = new Date(timestamp);
@@ -259,6 +271,164 @@ const AdminBlogs = () => {
     
     const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
 
+    const [newBlogContent, setNewBlogContent] = useState("");
+    const [newBlogImage, setNewBlogImage] = useState("");
+    
+    const handleNewBlogImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+    
+      const formData = new FormData();
+      formData.append("image", file);
+    
+      try {
+        const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_blog_image.php", {
+          method: "POST",
+          body: formData,
+        });
+    
+        const text = await res.text();
+    
+        try {
+          const data = JSON.parse(text);
+          if (data.success && data.image_url) {
+            setNewBlogImage(data.image_url);
+          } else {
+            alert("Image upload failed: " + (data.error || "Unknown error."));
+          }
+        } catch (err) {
+          console.error("Failed to parse JSON response:", text);
+          alert("Invalid server response. Check PHP file for unexpected output.");
+        }
+    
+      } catch (error) {
+        console.error("Upload error:", error);
+        alert("An error occurred during image upload.");
+      }
+    };
+    
+    const handleNewBlogSave = async () => {
+      const blogData = {
+        title: newBlogTitle,
+        content: newBlogContent,
+        category: newBlogCategory,
+        blog_status: newBlogStatus,
+        image_url: newBlogImage,
+        author: newBlogAuthor,
+      };
+    
+      try {
+        const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_blog.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(blogData),
+        });
+    
+        const text = await res.text(); 
+        const data = JSON.parse(text); 
+    
+        if (data.success && data.blog) {
+          setBlogs((prev) => [...prev, data.blog]); 
+    
+          // Refresh blogs list
+          fetch("http://localhost/tara-kabataan-webapp/backend/api/blogs.php")
+            .then((res) => res.json())
+            .then((data) => {
+              setBlogs(data.blogs);
+            })
+            .catch((err) => console.error("Failed to refresh blogs:", err));
+    
+          resetNewBlogForm();
+          setNewBlogModalOpen(false);
+        } else {
+          alert("Failed to save new blog: " + (data.error || "Unknown error"));
+        }
+      } catch (err) {
+        console.error("Save error:", err);
+        alert("Error occurred while saving blog.");
+      }
+    };
+    
+  
+    const resetNewBlogForm = () => {
+      setNewBlogTitle("");
+      setNewBlogContent("");
+      setNewBlogCategory("KALUSUGAN");
+      setNewBlogStatus("DRAFT");
+      setNewBlogImage("");
+    };
+
+    const getAuthorNameById = (authorId: string) => {
+      const authors: { [key: string]: string } = {
+        "users-2025-000001": "Yugi Revaula",
+      };
+      return authors[authorId] || authorId;
+    };
+
+  const [selectMode, setSelectMode] = useState(false);
+  const [selectedBlogIds, setSelectedBlogIds] = useState<string[]>([]);
+
+// Update the status of selected blogs
+const applyBulkStatus = async (newStatus: string) => {
+  try {
+    const response = await fetch("http://localhost/tara-kabataan-webapp/backend/api/update_bulk_blog_status.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        blog_ids: selectedBlogIds,
+        new_status: newStatus
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      setBlogs((prev) =>
+        prev.map((blog) =>
+          selectedBlogIds.includes(blog.blog_id)
+            ? { ...blog, blog_status: newStatus }
+            : blog
+        )
+      );
+      setSelectedBlogIds([]);
+      setSelectMode(false);
+    } else {
+      alert("Failed to update status.");
+    }
+  } catch (err) {
+    console.error("Bulk status update error:", err);
+    alert("Error occurred during bulk status update.");
+  }
+};
+
+  const handleBulkDelete = async () => {
+    try {
+      const response = await fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_bulk_blogs.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ blog_ids: selectedBlogIds }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setBlogs((prev) => prev.filter((blog) => !selectedBlogIds.includes(blog.blog_id)));
+        setSelectedBlogIds([]);
+        setSelectMode(false);
+      } else {
+        alert("Failed to delete blogs.");
+      }
+    } catch (err) {
+      console.error("Bulk delete error:", err);
+      alert("Error occurred during bulk delete.");
+    }
+  };
+
+  const [bulkConfirmVisible, setBulkConfirmVisible] = useState(false);
+  const [bulkActionType, setBulkActionType] = useState<"delete" | "status" | null>(null);
+  const [bulkActionStatus, setBulkActionStatus] = useState<string>("");
+
+  
     
   return (
     <div className="admin-blogs">
@@ -311,9 +481,9 @@ const AdminBlogs = () => {
           </div>
 
           <div className="admin-blogs-lower-header-select">
-            <button>
+            <button onClick={() => setSelectMode(!selectMode)}>
               <img src={select} className="admin-blogs-lower-header-select-img" />
-              Select
+              {selectMode ? "Cancel" : "Select"}
             </button>
           </div>
           <div className="admin-blogs-lower-header-new-blog">
@@ -325,11 +495,35 @@ const AdminBlogs = () => {
         </div>
       </div>
 
-      {/* Table Header */}
+      {selectMode && (
+      <div className="admin-blogs-bulk-actions">
+        {["DRAFT", "PUBLISHED", "PINNED", "ARCHIVED"].map((status) => (
+          <button
+          key={status}
+          onClick={() => {
+            setBulkActionType("status");
+            setBulkActionStatus(status);
+            setBulkConfirmVisible(true);
+          }}        
+        >
+          {status}
+        </button>      
+        ))}
+        <button
+          onClick={() => {
+            setBulkActionType("delete");
+            setBulkConfirmVisible(true);
+          }}        
+        >
+          Delete
+        </button>
+      </div>
+    )}
+
       <div className="admin-blogs-main-content">
       <div className="admin-blogs-scrollable-table">
         <table className="admin-blogs-table">
-            <thead>
+          <thead>
               <tr>
                 <th>ID</th>
                 <th>
@@ -353,8 +547,10 @@ const AdminBlogs = () => {
                     )}
                   </div>
                 </th>
+
                 <th>Blog Title</th>
                 <th>Author</th>
+
                 <th>
                   <div className="admin-blogs-dropdown-trigger" onClick={() => setOpenStatus(!openStatus)}>
                     Status <span className="admin-header-dropdown-arrow">▾</span>
@@ -376,6 +572,7 @@ const AdminBlogs = () => {
                     )}
                   </div>
                 </th>
+
                 <th>
                   <div className="admin-blogs-dropdown-trigger" onClick={() => setOpenCreatedAt(!openCreatedAt)}>
                     Created At <span className="admin-header-dropdown-arrow">▾</span>
@@ -409,10 +606,9 @@ const AdminBlogs = () => {
               <col style={{ width: "80px" }} />
               <col style={{ width: "40px" }} />
             </colgroup>
-
             <tbody>
               {filteredBlogs.map((blog) => (
-                <tr className="admin-blogs-table-content" key={blog.blog_id}>
+              <tr className="admin-blogs-table-content" key={blog.blog_id}>
                   <td className="admin-blogs-id-content">{blog.blog_id}</td>
                   <td className="admin-blogs-category-content category-tag">{blog.category}</td>
                   <td className="admin-blogs-title-content">{blog.title}</td>
@@ -422,9 +618,25 @@ const AdminBlogs = () => {
                   </td>
                   <td className="admin-blogs-created-at-content">{formatDate(blog.created_at)}</td>
                   <td className="admin-blogs-more-button">
-                    <button onClick={() => setSelectedBlog(blog)}>
-                      <BsThreeDots />
-                    </button>
+                    {selectMode ? (
+                      <input
+                        type="checkbox"
+                        checked={selectedBlogIds.includes(blog.blog_id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedBlogIds((prev) => [...prev, blog.blog_id]);
+                          } else {
+                            setSelectedBlogIds((prev) =>
+                              prev.filter((id) => id !== blog.blog_id)
+                            );
+                          }
+                        }}
+                      />
+                    ) : (
+                      <button onClick={() => setSelectedBlog(blog)}>
+                        <BsThreeDots />
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -730,7 +942,16 @@ const AdminBlogs = () => {
           <div className="admin-blogs-new-blog-modal">
             <div className="admin-blogs-new-blog-modal-content">
             <div className="admin-blogs-new-blog-float-buttons">
-              
+              <button className="save-btn" onClick={handleNewBlogSave}>Save</button>
+              <button
+                className="cancel-btn"
+                onClick={() => {
+                  resetNewBlogForm();
+                  setNewBlogModalOpen(false);
+                }}
+              >
+                Cancel
+              </button>
             </div>
               <button
                 className="admin-blogs-new-blog-modal-close"
@@ -742,10 +963,6 @@ const AdminBlogs = () => {
                 <div className="admin-blogs-new-blog-modal-inner-content-top">
                   <div className="admin-blogs-new-blog-modal-left">
                     <h2>Add New Blog</h2>
-                    <div className="admin-blogs-new-blog-modal-id">
-                      <p><strong>ID</strong></p>
-                      <p className="admin-blogs-new-blog-modal-id-content">id</p>
-                    </div>
                     <div className="admin-blogs-new-blog-modal-title">
                       <p><strong>Title</strong></p>
                       <input
@@ -770,9 +987,11 @@ const AdminBlogs = () => {
                     </div>
                     <div className="admin-blogs-new-blog-modal-author">
                       <p><strong>Author</strong></p>
-                      <p className="admin-blogs-new-blog-modal-author-content">{newBlogAuthor}</p>
-                    </div> 
-                    <div className="admin-blogs-new-blog-modal-status">
+                      <p className="admin-blogs-new-blog-modal-author-content">{newBlogAuthorName}</p>
+                    </div>
+                  </div>
+                  <div className="admin-blogs-new-blog-modal-right">    
+                  <div className="admin-blogs-new-blog-modal-status">
                       <p><strong>Status</strong></p>
                       <select
                         className={`admin-blogs-new-blog-modal-select modal-status-${newBlogStatus.toLowerCase()}`}
@@ -784,16 +1003,140 @@ const AdminBlogs = () => {
                         ))}
                       </select>
                     </div> 
-                  </div>
-                  
-                  <div className="admin-blogs-new-blog-modal-right">
-                    
-                  </div>
+                    <div className="admin-blogs-new-blog-modal-image">
+                      <p><strong>Image</strong></p>
+                      {newBlogImage && (
+                        <img
+                          src={`http://localhost${newBlogImage}`}
+                          alt="Preview"
+                        />
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        id="new-blog-image-input"
+                        onChange={handleNewBlogImageUpload}
+                      />
+                      <div className="admin-blogs-image-buttons">
+                        <button
+                          className="upload-btn"
+                          onClick={() => document.getElementById("new-blog-image-input")?.click()}
+                        >
+                          Upload
+                        </button>
+                        <button
+                          className="remove-btn"
+                          onClick={() => setNewBlogImage("")}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                </div>
                 </div>
                 <div className="admin-blogs-new-blog-modal-inner-content-bot">
-                
+                  <div className="admin-blogs-new-blog-modal-desc">
+                    <p><strong>Blog Content</strong></p>
+                    <div className="admin-blogs-new-blog-modal-desc">
+                      <div className="admin-blogs-content-image-tools">
+                        <button className="format-btn undo" onMouseDown={(e) => e.preventDefault()} onClick={() => document.execCommand("undo")}>
+                          <FaUndo />
+                        </button>
+                        <button className="format-btn redo" onMouseDown={(e) => e.preventDefault()} onClick={() => document.execCommand("redo")}>
+                          <FaRedo />
+                        </button>
+                        <button className="format-btn bold" onMouseDown={(e) => e.preventDefault()} onClick={() => document.execCommand("bold")}>
+                          <FaBold />
+                        </button>
+                        <button className="format-btn italic" onMouseDown={(e) => e.preventDefault()} onClick={() => document.execCommand("italic")}>
+                          <FaItalic />
+                        </button>
+                        <button className="format-btn underline" onMouseDown={(e) => e.preventDefault()} onClick={() => document.execCommand("underline")}>
+                          <FaUnderline />
+                        </button>
+                        <button className="format-btn bullet" onMouseDown={(e) => e.preventDefault()} onClick={() => document.execCommand("insertUnorderedList")}>
+                          <FaListUl />
+                        </button>
+                        <button className="format-btn image" onMouseDown={(e) => e.preventDefault()} onClick={() => document.getElementById("new-content-image-input")?.click()}>
+                          <FaImage />
+                        </button>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          id="new-content-image-input"
+                          style={{ display: "none" }}
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (!file) return;
+                            const formData = new FormData();
+                            formData.append("image", file);
+                            try {
+                              const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_blog_image.php", {
+                                method: "POST",
+                                body: formData,
+                              });
+                              const data = await res.json();
+                              if (data.success && data.image_url) {
+                                const img = `<img src="http://localhost${data.image_url}" alt="blog image" style="max-width:100%;" />`;
+                                const div = document.getElementById("new-blog-content-editor");
+                                if (div) div.innerHTML += img;
+                                setNewBlogContent((prev) => prev + img);
+                              } else {
+                                alert("Image upload failed.");
+                              }
+                            } catch (err) {
+                              alert("Upload failed.");
+                              console.error(err);
+                            }
+                          }}
+                        />
+                      </div>
+
+                      <div
+                        id="new-blog-content-editor"
+                        className="admin-blogs-new-blog-modal-desc-content editable"
+                        contentEditable
+                        onBlur={(e) => setNewBlogContent(e.currentTarget.innerHTML)}
+                        dangerouslySetInnerHTML={{ __html: newBlogContent }}
+                      />
+                    </div>
+
+                  </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {bulkConfirmVisible && (
+        <div className="blogs-confirmation-popup show">
+          <div className="blogs-confirmation-box">
+            <p>
+              {bulkActionType === "delete"
+                ? "Are you sure you want to delete the selected blogs?"
+                : `Do you really want to mark the selected blogs as ${bulkActionStatus}?`}
+            </p>
+            <div className="blogs-confirmation-actions">
+              <button
+                className="confirm-yes"
+                onClick={() => {
+                  if (bulkActionType === "delete") {
+                    handleBulkDelete();
+                  } else {
+                    applyBulkStatus(bulkActionStatus);
+                  }
+                  setBulkConfirmVisible(false);
+                }}
+              >
+                Yes
+              </button>
+              <button
+                className="confirm-no"
+                onClick={() => setBulkConfirmVisible(false)}
+              >
+                No
+              </button>
             </div>
           </div>
         </div>
