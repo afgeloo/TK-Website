@@ -54,17 +54,17 @@ CREATE TABLE tk_webapp.blogs (
 );
 
 CREATE TABLE tk_webapp.events (
-    event_id VARCHAR(150) PRIMARY KEY,
+    event_id VARCHAR(150) PRIMARY KEY, --
     event_image VARCHAR(255),
-    event_category VARCHAR(255),
-    event_title VARCHAR(255),
-    event_date DATE,
+    event_category VARCHAR(255), --
+    event_title VARCHAR(255), --
+    event_date DATE, --
     event_start_time TIME,
     event_end_time TIME,
-    event_venue VARCHAR(255),
+    event_venue VARCHAR(255), -- 
     event_content TEXT,
     event_speakers TEXT,
-    event_going INT,
+    event_going INT, --
     event_status ENUM('UPCOMING', 'ONGOING', 'CANCELLED', 'COMPLETED'),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     updated_at TIMESTAMP NULL DEFAULT NULL

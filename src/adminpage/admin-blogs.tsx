@@ -2,11 +2,9 @@ import "./css/admin-blogs.css";
 import { FaSearch, FaBell, FaPlus } from "react-icons/fa";
 import { BsThreeDots } from "react-icons/bs";
 import president from "../assets/aboutpage/council/president.jpg";
-import filter from "../assets/adminpage/blogs/filter.png";
 import select from "../assets/adminpage/blogs/select.png";
 import { useState, useEffect, useRef } from "react";
 import { FaBold, FaItalic, FaUnderline, FaImage, FaListUl, FaUndo, FaRedo } from "react-icons/fa";
-
 
 interface Blog {
   blog_id: string;
