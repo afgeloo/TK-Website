@@ -1,124 +1,130 @@
-import React, { useEffect, useState } from "react";
-import "./css/admin-try.css";
-
-interface Blog {
-  blog_id: string;
-  title: string;
-  content: string;
-  category: string;
-  blog_status: string;
-  image_url: string;
-}
+import "./css/admin-events.css";
+import president from "../assets/aboutpage/council/president.jpg";
+import { BsThreeDots } from "react-icons/bs";
+import { FaSearch, FaBell, FaPlus } from "react-icons/fa";
+import { useEffect, useState } from "react";
 
 const AdminEvents = () => {
-  const [blog, setBlog] = useState<Blog | null>(null);
-  const [form, setForm] = useState<Partial<Blog>>({});
-  const [isEditing, setIsEditing] = useState(false);
+
+  interface Event {
+    event_id: string;
+    image_url: string;
+    category: string;
+    title: string;
+    event_date: string;
+    event_start_time: string;
+    event_end_time: string;
+    event_venue: string;
+    content: string;
+    event_speakers: string;
+    event_going: number;
+    event_status: string;
+    created_at: string;
+    updated_at: string | null;
+  }  
+
+  const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost/tara-kabataan-webapp/backend/api/blogs.php")
+    fetch("http://localhost/tara-kabataan-webapp/backend/api/events1.php")
       .then((res) => res.json())
       .then((data) => {
-        const first = data.blogs[0];
-        setBlog(first);
-        setForm(first); // initialize form with blog
-      });
+        console.log("EVENTS DATA:", data); // 🔍 See what you get
+        setEvents(data.events || []);
+      })
+      .catch((err) => console.error("Failed to fetch events:", err));
   }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSave = async () => {
-    if (!form.blog_id) {
-      alert("Blog ID missing.");
-      return;
-    }
-
-    try {
-      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/update_blogs.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      const data = await res.json();
-        console.log("Raw response:", data);
-      if (data.success) {
-        setBlog((prev) => ({ ...prev!, ...form }));
-        alert("Updated successfully!");
-        setIsEditing(false);
-      } else {
-        console.error(data);
-        alert("Update failed: " + data.error);
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Error during update.");
-    }
-  };
-
-  if (!blog) return <p>Loading...</p>;
+  
 
   return (
-    <div className="try-container">
-      <h2>Edit Blog</h2>
+    <div className="admin-events">
+      <div className="admin-events-header">
+        <div className="admin-events-search-container">
+          <FaSearch className="admin-events-search-icon" />
+          <input type="text" placeholder="Search" />
+        </div>
+        <div className="admin-events-header-right">
+          <div className="admin-events-bell-wrapper">
+            <FaBell className="admin-events-bell-icon" />
+            <span className="admin-events-bell-dot"></span>
+          </div>
+          <div className="admin-events-loggedin-info">
+            <img src={president} className="admin-events-loggedin-avatar" />
+            <div className="admin-events-loggedin-desc">
+              <strong>Yugi Revaula</strong>
+              <p>yugirevaula@gmail.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <label>Title</label>
-      <input
-        name="title"
-        type="text"
-        value={form.title || ""}
-        disabled={!isEditing}
-        onChange={handleChange}
-      />
+      <div className="admin-events-lower-header">
+        <h1>Events</h1>
+        <div className="admin-events-lower-header-right">
+          <div className="admin-events-lower-header-show">
+            <p>Showing</p>
+            <p>{events.length}</p>
+          </div>
+          <div className="admin-events-lower-header-select">
+            <button>Select</button>
+          </div>
+          <div className="admin-events-lower-header-new-event">
+            <button>
+              <FaPlus className="admin-icon-left" />
+              Add New Event
+            </button>
+          </div>
+        </div>
+      </div>
 
-      <label>Category</label>
-      <input
-        name="category"
-        type="text"
-        value={form.category || ""}
-        disabled={!isEditing}
-        onChange={handleChange}
-      />
-
-      <label>Status</label>
-      <input
-        name="blog_status"
-        type="text"
-        value={form.blog_status || ""}
-        disabled={!isEditing}
-        onChange={handleChange}
-      />
-
-      <label>Content</label>
-      <input
-        name="content"
-        type="text"
-        value={form.content || ""}
-        disabled={!isEditing}
-        onChange={handleChange}
-      />
-
-      <label>Image URL</label>
-      <input
-        name="image_url"
-        type="text"
-        value={form.image_url || ""}
-        disabled={!isEditing}
-        onChange={handleChange}
-      />
-
-      <div className="try-buttons">
-        {!isEditing ? (
-          <button onClick={() => setIsEditing(true)}>Edit</button>
-        ) : (
-          <>
-            <button onClick={handleSave}>Save</button>
-            <button onClick={() => setIsEditing(false)}>Cancel</button>
-          </>
-        )}
+      <div className="admin-events-main-content">
+        <div className="admin-events-scrollable-table">
+          <table className="admin-events-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Category</th>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Venue</th>
+                <th>Status</th>
+                <th>View</th>
+              </tr>
+            </thead>
+            <colgroup>
+              <col style={{ width: "80px" }} />
+              <col style={{ width: "70px" }} />
+              <col style={{ width: "80px" }} />
+              <col style={{ width: "70px" }} />
+              <col style={{ width: "80px" }} />
+              <col style={{ width: "60px" }} />
+              <col style={{ width: "40px" }} />
+            </colgroup>
+            <tbody>
+              {events.length > 0 ? (
+                events.map((event) => (
+                  <tr className="admin-blogs-table-content" key={event.event_id}>
+                    <td>{event.event_id}</td>
+                    <td>{event.category}</td>
+                    <td>{event.title}</td>
+                    <td>{event.event_date}</td>
+                    <td>{event.event_venue}</td>
+                    <td>{event.event_status}</td>
+                    <td className="admin-events-more-button">
+                      <button>
+                        <BsThreeDots />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={7}>No events found.</td>
+                </tr>
+              )}
+          </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

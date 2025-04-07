@@ -328,7 +328,6 @@ const AdminBlogs = () => {
         if (data.success && data.blog) {
           setBlogs((prev) => [...prev, data.blog]); 
     
-          // Refresh blogs list
           fetch("http://localhost/tara-kabataan-webapp/backend/api/blogs.php")
             .then((res) => res.json())
             .then((data) => {
@@ -426,8 +425,6 @@ const applyBulkStatus = async (newStatus: string) => {
   const [bulkActionType, setBulkActionType] = useState<"delete" | "status" | null>(null);
   const [bulkActionStatus, setBulkActionStatus] = useState<string>("");
 
-  
-    
   return (
     <div className="admin-blogs">
       <div className="admin-blogs-header">
@@ -477,7 +474,6 @@ const applyBulkStatus = async (newStatus: string) => {
               )}
             </div>
           </div>
-
           <div className="admin-blogs-lower-header-select">
             <button onClick={() => setSelectMode(!selectMode)}>
               <img src={select} className="admin-blogs-lower-header-select-img" />
@@ -492,7 +488,6 @@ const applyBulkStatus = async (newStatus: string) => {
           </div>
         </div>
       </div>
-
       {selectMode && (
       <div className="admin-blogs-bulk-actions">
         {["DRAFT", "PUBLISHED", "PINNED", "ARCHIVED"].map((status) => (
@@ -517,7 +512,6 @@ const applyBulkStatus = async (newStatus: string) => {
         </button>
       </div>
     )}
-
       <div className="admin-blogs-main-content">
       <div className="admin-blogs-scrollable-table">
         <table className="admin-blogs-table">

@@ -44,7 +44,6 @@ $updateUpcomingStmt->bind_param("s", $today);
 $updateUpcomingStmt->execute();
 $updateUpcomingStmt->close();
 
-// ✅ Step 3: Fetch events with optional status filtering
 if ($status === 'ALL') {
     $query = "SELECT * FROM tk_webapp.events ORDER BY event_date DESC";
     $stmt = $conn->prepare($query);

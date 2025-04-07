@@ -1,5 +1,365 @@
-.admin-events {
-    font-size: 2rem;
-    color: #34495e;
+@font-face {
+  font-family: 'Bogart Trial';
+  src: url('../../assets/fonts/Bogart-Extrabold-trial.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  }
+
+.admin-events-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
   }
   
+.admin-events-search-container {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 10px 15px;
+    border-radius: 50px;
+    flex: 1 1 300px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+.admin-events-search-container input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.admin-events-search-icon {
+    color: #aaa;
+    font-size: 18px;
+}
+
+.admin-events-header-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.admin-events-bell-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+
+.admin-events-bell-icon {
+    font-size: 30px;
+    color: #333;
+}
+
+.admin-events-bell-dot {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 8px;
+    height: 8px;
+    background-color: red;
+    border-radius: 50%;
+}
+
+.admin-events-loggedin-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-events-loggedin-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.admin-events-loggedin-desc {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+}
+
+.admin-events-loggedin-desc p {
+    font-size: 13px;
+    margin: 0;
+    color: gray;
+}
+
+.admin-events-lower-header{
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.admin-events-lower-header h1{
+  font-family: 'Bogart Trial', sans-serif;
+  color: #544C4F;
+}
+
+.admin-events-lower-header-right{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  margin-left: auto;
+}
+
+.admin-events-lower-header-show {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  color: #333;
+  font-weight: 500;
+}
+
+.admin-events-lower-header-select button{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}   
+
+.admin-events-lower-header-new-event button{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #1299ED;
+  color: white;
+  border: none;
+  padding: 15px 34px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-events-lower-header-new-event button:hover {
+  background-color: #0f85cc;
+}
+
+
+.admin-events-main-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 30px;
+  overflow: hidden;
+  min-height: 480px;
+  max-height: 480px;
+}
+
+.admin-events-table-header{
+  display: flex;
+  align-items: start;
+  font-weight: bold;
+  background-color: #f8f4f6;
+  padding: 0 25px;
+  border-radius: 20px;
+  font-size: 14px;
+  overflow: hidden;
+  }
+
+.admin-events-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.admin-events-table-content td {
+  height: 40px; 
+  line-height: 40px;
+  padding: 13px 20px;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-events-table-content:last-child td {
+  border-bottom: none;
+  }
+
+.admin-events-id{
+  margin-right: 150px;
+}
+
+.admin-events-id-content {
+  width: 120px;
+}
+
+.admin-events-category-content {
+  width: 90px;
+}
+
+.admin-events-title{
+  margin-right: 170px;
+}
+
+.admin-events-title-content {
+  width: 180px;
+}
+
+.admin-events-author{
+  margin-right: 140px;
+}
+
+.admin-events-author-content {
+  width: 150px;
+}
+
+.admin-events-status,
+.admin-events-status-content{
+  width: 70px;
+}
+.admin-events-created-at,
+.admin-events-created-at-content {
+  width: 100px;
+}
+
+.admin-events-more-button{
+  width: 40px;
+}
+
+.admin-events-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  text-align: left;
+  padding: 5px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: white;
+  white-space: nowrap;
+}
+
+.admin-events-scrollable-table {
+  height: auto;
+  max-height: 400px; 
+  min-height: 500px; 
+  overflow-y: auto;
+  margin-top: 10px;
+  display: block;
+}
+
+.admin-events-scrollable-table::-webkit-scrollbar {
+  width: 6px;
+}
+.admin-events-scrollable-table::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.admin-header-dropdown-arrow {
+  position: relative;
+  font-size: 16px;    
+  color: #666;
+  align-items: center;
+}
+
+.admin-events-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  white-space: nowrap;
+  font-size: 16px;
+  position: relative;
+  cursor: pointer;
+}
+
+
+.admin-header-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  min-width: 100px;
+  max-height: 160px;
+  overflow-x: hidden;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  z-index: 1000;
+  align-items: center;
+  font-weight: normal;
+}
+
+.admin-header-dropdown-item {
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 12px;
+}
+
+.admin-header-dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.admin-header-dropdown-menu::-webkit-scrollbar {
+  width: 6px;
+}
+.admin-header-dropdown-menu::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+.status-pinned {
+  color: #b58e00;
+  font-weight: 600;
+}
+
+.status-published {
+  color: #2e8b57; 
+  font-weight: 600;
+}
+
+.status-draft {
+  color: #1e90ff; 
+  font-weight: 600;
+}
+
+.status-archived {
+  color: #cc3333; 
+  font-weight: 600;
+}
+
+.category-tag {
+  color: #FE93B4; 
+  font-weight: 600;
+}
+
+.admin-events-more-button button {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.admin-events-more-button button:hover {
+  color: #111;
+}
+
+.admin-events-view-more{
+  width: 100%;
+}
