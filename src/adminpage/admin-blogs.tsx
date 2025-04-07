@@ -21,37 +21,27 @@ const AdminBlogs = () => {
   const [count, setCount] = useState(-1);
   const [open, setOpen] = useState(false);
   const [blogs, setBlogs] = useState<Blog[]>([]);
-
   const [openCreatedAt, setOpenCreatedAt] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
   const [openStatus, setOpenStatus] = useState(false);
-
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [createdSortOrder, setCreatedSortOrder] = useState("Newest First");
-
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
   const [newBlogModalOpen, setNewBlogModalOpen] = useState(false);
-
   const [isEditing, setIsEditing] = useState(false);
   const [editableBlog, setEditableBlog] = useState<Blog | null>(null);
-
   const [newBlogTitle, setNewBlogTitle] = useState("");
   const [newBlogCategory, setNewBlogCategory] = useState("KALUSUGAN");
   const [newBlogStatus, setNewBlogStatus] = useState("DRAFT");
   const [newBlogAuthor, setNewBlogAuthor] = useState("users-2025-000001"); 
   const [newBlogAuthorName, setNewBlogAuthorName] = useState("");
-
-  useEffect(() => {
-    fetch(`http://localhost/tara-kabataan-webapp/backend/api/get_user_name.php?user_id=${newBlogAuthor}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.user_name) {
-          setNewBlogAuthorName(data.user_name);
-        }
-      })
-      .catch(err => console.error("Failed to fetch user name:", err));
-  }, [newBlogAuthor]);
+  const [bulkConfirmVisible, setBulkConfirmVisible] = useState(false);
+  const [bulkActionType, setBulkActionType] = useState<"delete" | "status" | null>(null);
+  const [bulkActionStatus, setBulkActionStatus] = useState<string>("");
+  const [selectMode, setSelectMode] = useState(false);
+  const [selectedBlogIds, setSelectedBlogIds] = useState<string[]>([]);
+  const [notification, setNotification] = useState("");
 
   const formatDate = (timestamp: string): string => {
     const date = new Date(timestamp);
@@ -62,341 +52,239 @@ const AdminBlogs = () => {
     });
   };
 
-  useEffect(() => {
-    fetch("http://localhost/tara-kabataan-webapp/backend/api/blogs.php")
-      .then((res) => res.json())
-      .then((data) => {
-        setBlogs(data.blogs);
-      })
-      .catch((err) => console.error("Failed to fetch blogs:", err));
-  }, []);
-
   const filteredBlogs = blogs
-    .filter((blog) => {
-      const matchCategory =
-        selectedCategory === "All" ||
-        blog.category.toLowerCase() === selectedCategory.toLowerCase();
+  .filter((blog) => {
+    const matchCategory =
+      selectedCategory === "All" ||
+      blog.category.toLowerCase() === selectedCategory.toLowerCase();
 
-      const matchStatus =
-        selectedStatus === "All" ||
-        blog.blog_status.toLowerCase() === selectedStatus.toLowerCase();
+    const matchStatus =
+      selectedStatus === "All" ||
+      blog.blog_status.toLowerCase() === selectedStatus.toLowerCase();
 
-      return matchCategory && matchStatus;
-    })
-    .sort((a, b) => {
-      const isPinnedA = a.blog_status.toLowerCase() === 'pinned';
-      const isPinnedB = b.blog_status.toLowerCase() === 'pinned';
+    return matchCategory && matchStatus;
+  })
+  .sort((a, b) => {
+    const isPinnedA = a.blog_status.toLowerCase() === 'pinned';
+    const isPinnedB = b.blog_status.toLowerCase() === 'pinned';
 
-      if (isPinnedA && !isPinnedB) return -1;
-      if (!isPinnedA && isPinnedB) return 1;
+    if (isPinnedA && !isPinnedB) return -1;
+    if (!isPinnedA && isPinnedB) return 1;
 
-      const dateA = new Date(a.created_at).getTime();
-      const dateB = new Date(b.created_at).getTime();
-      return createdSortOrder === "Newest First" ? dateB - dateA : dateA - dateB;
-    })
-    .slice(0, count === -1 ? blogs.length : count);
+    const dateA = new Date(a.created_at).getTime();
+    const dateB = new Date(b.created_at).getTime();
+    return createdSortOrder === "Newest First" ? dateB - dateA : dateA - dateB;
+  })
+  .slice(0, count === -1 ? blogs.length : count);
 
-    const handleEdit = () => {
-      setEditableBlog({ ...selectedBlog! });
-      setIsEditing(true);
-    };
-    
-    const handleCancel = () => {
-      setIsEditing(false);
-      setEditableBlog(null);
-    };
-    
-    const handleSave = () => {
-      fetch("http://localhost/tara-kabataan-webapp/backend/api/update_blogs.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(editableBlog),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
-            setBlogs((prev) =>
-              prev.map((b) => (b.blog_id === editableBlog?.blog_id ? editableBlog : b))
-            );
-            setSelectedBlog(editableBlog);
-            setIsEditing(false);
-            setNotification("Blog updated successfully!");
-            setTimeout(() => setNotification(""), 4000);
-          } else {
-            setNotification("Failed to update blog.");
-            setTimeout(() => setNotification(""), 4000);
-          }
-        })
-        .catch((err) => {
-          console.error("Failed to update:", err);
-          setNotification("Error occurred while updating blog.");
-          setTimeout(() => setNotification(""), 4000);
-        });
-    };
-    
-    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (!file || !editableBlog) return;
-    
-      const formData = new FormData();
-      formData.append("image", file);
-    
-      try {
-        const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_blog_image.php", {
-          method: "POST",
-          body: formData,
-        });
-        const data = await res.json();
-    
-        if (data.success && data.image_url) {
-          setEditableBlog({ ...editableBlog, image_url: data.image_url });
-        } else {
-          alert("Image upload failed.");
-        }
-      } catch (error) {
-        console.error("Upload error:", error);
-        alert("An error occurred during upload.");
-      }
-    };
-
-    const handleImageRemove = () => {
-      if (!editableBlog) return;
-      setEditableBlog({ ...editableBlog, image_url: "" });
-    };
-    
-    const [notification, setNotification] = useState("");
-
-
-    const confirmDeleteBlog = () => {
-      if (!selectedBlog) return;
-    
-      fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_blogs.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ blog_id: selectedBlog.blog_id }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
-            setBlogs((prev) => prev.filter((b) => b.blog_id !== selectedBlog.blog_id));
-            setNotification("Blog deleted successfully!");
-    
-            setTimeout(() => {
-              setNotification("");
-              setSelectedBlog(null);
-            }, 2500);
-          } else {
-            setNotification("Failed to delete blog.");
-            setTimeout(() => setNotification(""), 4000);
-          }
-        })
-        .catch((err) => {
-          console.error("Delete error:", err);
-          setNotification("Error occurred while deleting blog.");
-          setTimeout(() => setNotification(""), 4000);
-        });
-    
-      setConfirmDeleteVisible(false);
-    };
-    
-    const handleDelete = () => {
-      setConfirmDeleteVisible(true); 
-    };
-    
-    const handleContentImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (!file || !editableBlog) return;
-    
-      const formData = new FormData();
-      formData.append("image", file);
-    
-      try {
-        const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_blog_image.php", {
-          method: "POST",
-          body: formData,
-        });
-        const data = await res.json();
-    
-        if (data.success && data.image_url) {
-          const imageTag = `<img src="http://localhost${data.image_url}" alt="inserted image" style="max-width:100%;" />`;
-          setEditableBlog((prev) =>
-            prev
-              ? { ...prev, content: (prev.content || "") + `\n${imageTag}\n` }
-              : prev
-          );
-        } else {
-          alert("Failed to upload image to content.");
-        }
-      } catch (err) {
-        console.error("Content image upload error:", err);
-        alert("Error occurred while uploading image to content.");
-      }
-    };
-
-    const textareaRef = useRef<HTMLDivElement>(null); 
-
-    const applyFormatting = (command: 'bold' | 'italic' | 'underline') => {
-      document.execCommand(command, false);
-    };
-
-    const selectionRef = useRef<Range | null>(null);
-
-    const saveSelection = () => {
-      const sel = window.getSelection();
-      if (sel && sel.rangeCount > 0) {
-        selectionRef.current = sel.getRangeAt(0);
-      }
-    };
+  const handleEdit = () => {
+    setEditableBlog({ ...selectedBlog! });
+    setIsEditing(true);
+  };
   
-    const applyList = () => {
-      restoreSelection();
-      document.execCommand("insertUnorderedList", false);
-    };
-    
-    const restoreSelection = () => {
-      const sel = window.getSelection();
-      if (selectionRef.current && sel) {
-        sel.removeAllRanges();
-        sel.addRange(selectionRef.current);
-      }
-    };
-
-    useEffect(() => {
-      if (isEditing && textareaRef.current && editableBlog?.content) {
-        textareaRef.current.innerHTML = editableBlog.content;
-      }
-    }, [isEditing, editableBlog]);
-    
-    const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
-
-    const [newBlogContent, setNewBlogContent] = useState("");
-    const [newBlogImage, setNewBlogImage] = useState("");
-    
-    const handleNewBlogImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
-    
-      const formData = new FormData();
-      formData.append("image", file);
-    
-      try {
-        const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_blog_image.php", {
-          method: "POST",
-          body: formData,
-        });
-    
-        const text = await res.text();
-    
-        try {
-          const data = JSON.parse(text);
-          if (data.success && data.image_url) {
-            setNewBlogImage(data.image_url);
-          } else {
-            alert("Image upload failed: " + (data.error || "Unknown error."));
-          }
-        } catch (err) {
-          console.error("Failed to parse JSON response:", text);
-          alert("Invalid server response. Check PHP file for unexpected output.");
-        }
-    
-      } catch (error) {
-        console.error("Upload error:", error);
-        alert("An error occurred during image upload.");
-      }
-    };
-    
-    const handleNewBlogSave = async () => {
-      const blogData = {
-        title: newBlogTitle,
-        content: newBlogContent,
-        category: newBlogCategory,
-        blog_status: newBlogStatus,
-        image_url: newBlogImage,
-        author: newBlogAuthor,
-      };
-    
-      try {
-        const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_blog.php", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(blogData),
-        });
-    
-        const text = await res.text(); 
-        const data = JSON.parse(text); 
-    
-        if (data.success && data.blog) {
-          setBlogs((prev) => [...prev, data.blog]); 
-    
-          fetch("http://localhost/tara-kabataan-webapp/backend/api/blogs.php")
-            .then((res) => res.json())
-            .then((data) => {
-              setBlogs(data.blogs);
-            })
-            .catch((err) => console.error("Failed to refresh blogs:", err));
-    
-          resetNewBlogForm();
-          setNewBlogModalOpen(false);
-        } else {
-          alert("Failed to save new blog: " + (data.error || "Unknown error"));
-        }
-      } catch (err) {
-        console.error("Save error:", err);
-        alert("Error occurred while saving blog.");
-      }
-    };
-    
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditableBlog(null);
+  };
   
-    const resetNewBlogForm = () => {
-      setNewBlogTitle("");
-      setNewBlogContent("");
-      setNewBlogCategory("KALUSUGAN");
-      setNewBlogStatus("DRAFT");
-      setNewBlogImage("");
-    };
-
-    const getAuthorNameById = (authorId: string) => {
-      const authors: { [key: string]: string } = {
-        "users-2025-000001": "Yugi Revaula",
-      };
-      return authors[authorId] || authorId;
-    };
-
-  const [selectMode, setSelectMode] = useState(false);
-  const [selectedBlogIds, setSelectedBlogIds] = useState<string[]>([]);
-
-// Update the status of selected blogs
-const applyBulkStatus = async (newStatus: string) => {
-  try {
-    const response = await fetch("http://localhost/tara-kabataan-webapp/backend/api/update_bulk_blog_status.php", {
+  const handleSave = () => {
+    fetch("http://localhost/tara-kabataan-webapp/backend/api/update_blogs.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        blog_ids: selectedBlogIds,
-        new_status: newStatus
-      }),
+      body: JSON.stringify(editableBlog),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setBlogs((prev) =>
+            prev.map((b) => (b.blog_id === editableBlog?.blog_id ? editableBlog : b))
+          );
+          setSelectedBlog(editableBlog);
+          setIsEditing(false);
+          setNotification("Blog updated successfully!");
+          setTimeout(() => setNotification(""), 4000);
+        } else {
+          setNotification("Failed to update blog.");
+          setTimeout(() => setNotification(""), 4000);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to update:", err);
+        setNotification("Error occurred while updating blog.");
+        setTimeout(() => setNotification(""), 4000);
+      });
+  };
+  
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !editableBlog) return;
+  
+    const formData = new FormData();
+    formData.append("image", file);
+  
+    try {
+      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_blog_image.php", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+  
+      if (data.success && data.image_url) {
+        setEditableBlog({ ...editableBlog, image_url: data.image_url });
+      } else {
+        alert("Image upload failed.");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert("An error occurred during upload.");
+    }
+  };
+
+  const handleImageRemove = () => {
+    if (!editableBlog) return;
+    setEditableBlog({ ...editableBlog, image_url: "" });
+  };
+
+  const confirmDeleteBlog = () => {
+    if (!selectedBlog) return;
+  
+    fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_blogs.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ blog_id: selectedBlog.blog_id }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setBlogs((prev) => prev.filter((b) => b.blog_id !== selectedBlog.blog_id));
+          setNotification("Blog deleted successfully!");
+  
+          setTimeout(() => {
+            setNotification("");
+            setSelectedBlog(null);
+          }, 2500);
+        } else {
+          setNotification("Failed to delete blog.");
+          setTimeout(() => setNotification(""), 4000);
+        }
+      })
+      .catch((err) => {
+        console.error("Delete error:", err);
+        setNotification("Error occurred while deleting blog.");
+        setTimeout(() => setNotification(""), 4000);
+      });
+  
+    setConfirmDeleteVisible(false);
+  };
+  
+  const handleDelete = () => {
+    setConfirmDeleteVisible(true); 
+  };
+  
+  const handleContentImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !editableBlog) return;
+  
+    const formData = new FormData();
+    formData.append("image", file);
+  
+    try {
+      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_blog_image.php", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+  
+      if (data.success && data.image_url) {
+        const imageTag = `<img src="http://localhost${data.image_url}" alt="inserted image" style="max-width:100%;" />`;
+        setEditableBlog((prev) =>
+          prev
+            ? { ...prev, content: (prev.content || "") + `\n${imageTag}\n` }
+            : prev
+        );
+      } else {
+        alert("Failed to upload image to content.");
+      }
+    } catch (err) {
+      console.error("Content image upload error:", err);
+      alert("Error occurred while uploading image to content.");
+    }
+  };
+
+  const textareaRef = useRef<HTMLDivElement>(null); 
+
+  const applyFormatting = (command: 'bold' | 'italic' | 'underline') => {
+    document.execCommand(command, false);
+  };
+
+  const selectionRef = useRef<Range | null>(null);
+
+  const saveSelection = () => {
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0) {
+      selectionRef.current = sel.getRangeAt(0);
+    }
+  };
+
+  const applyList = () => {
+    restoreSelection();
+    document.execCommand("insertUnorderedList", false);
+  };
+  
+  const restoreSelection = () => {
+    const sel = window.getSelection();
+    if (selectionRef.current && sel) {
+      sel.removeAllRanges();
+      sel.addRange(selectionRef.current);
+    }
+  };
+
+  const resetNewBlogForm = () => {
+    setNewBlogTitle("");
+    setNewBlogContent("");
+    setNewBlogCategory("KALUSUGAN");
+    setNewBlogStatus("DRAFT");
+    setNewBlogImage("");
+  };
+
+  const getAuthorNameById = (authorId: string) => {
+    const authors: { [key: string]: string } = {
+      "users-2025-000001": "Yugi Revaula",
+    };
+    return authors[authorId] || authorId;
+  };
+
+  const applyBulkStatus = async (newStatus: string) => {
+    try {
+      const response = await fetch("http://localhost/tara-kabataan-webapp/backend/api/update_bulk_blog_status.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          blog_ids: selectedBlogIds,
+          new_status: newStatus
+        }),
     });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.success) {
-      setBlogs((prev) =>
-        prev.map((blog) =>
-          selectedBlogIds.includes(blog.blog_id)
-            ? { ...blog, blog_status: newStatus }
-            : blog
-        )
-      );
-      setSelectedBlogIds([]);
-      setSelectMode(false);
-    } else {
-      alert("Failed to update status.");
+      if (data.success) {
+        setBlogs((prev) =>
+          prev.map((blog) =>
+            selectedBlogIds.includes(blog.blog_id)
+              ? { ...blog, blog_status: newStatus }
+              : blog
+          )
+        );
+        setSelectedBlogIds([]);
+        setSelectMode(false);
+      } else {
+        alert("Failed to update status.");
+      }
+    } catch (err) {
+      console.error("Bulk status update error:", err);
+      alert("Error occurred during bulk status update.");
     }
-  } catch (err) {
-    console.error("Bulk status update error:", err);
-    alert("Error occurred during bulk status update.");
-  }
-};
+  };
 
   const handleBulkDelete = async () => {
     try {
@@ -421,9 +309,109 @@ const applyBulkStatus = async (newStatus: string) => {
     }
   };
 
-  const [bulkConfirmVisible, setBulkConfirmVisible] = useState(false);
-  const [bulkActionType, setBulkActionType] = useState<"delete" | "status" | null>(null);
-  const [bulkActionStatus, setBulkActionStatus] = useState<string>("");
+  useEffect(() => {
+    fetch(`http://localhost/tara-kabataan-webapp/backend/api/get_user_name.php?user_id=${newBlogAuthor}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.user_name) {
+          setNewBlogAuthorName(data.user_name);
+        }
+      })
+      .catch(err => console.error("Failed to fetch user name:", err));
+  }, [newBlogAuthor]);
+
+  useEffect(() => {
+    fetch("http://localhost/tara-kabataan-webapp/backend/api/blogs.php")
+      .then((res) => res.json())
+      .then((data) => {
+        setBlogs(data.blogs);
+      })
+      .catch((err) => console.error("Failed to fetch blogs:", err));
+  }, []);
+
+  useEffect(() => {
+    if (isEditing && textareaRef.current && editableBlog?.content) {
+      textareaRef.current.innerHTML = editableBlog.content;
+    }
+  }, [isEditing, editableBlog]);
+    
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  const [newBlogContent, setNewBlogContent] = useState("");
+  const [newBlogImage, setNewBlogImage] = useState("");
+    
+  const handleNewBlogImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+  
+    const formData = new FormData();
+    formData.append("image", file);
+  
+    try {
+      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_blog_image.php", {
+        method: "POST",
+        body: formData,
+      });
+  
+      const text = await res.text();
+  
+      try {
+        const data = JSON.parse(text);
+        if (data.success && data.image_url) {
+          setNewBlogImage(data.image_url);
+        } else {
+          alert("Image upload failed: " + (data.error || "Unknown error."));
+        }
+      } catch (err) {
+        console.error("Failed to parse JSON response:", text);
+        alert("Invalid server response. Check PHP file for unexpected output.");
+      }
+  
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert("An error occurred during image upload.");
+    }
+  };
+    
+  const handleNewBlogSave = async () => {
+    const blogData = {
+      title: newBlogTitle,
+      content: newBlogContent,
+      category: newBlogCategory,
+      blog_status: newBlogStatus,
+      image_url: newBlogImage,
+      author: newBlogAuthor,
+    };
+  
+    try {
+      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_blog.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(blogData),
+      });
+  
+      const text = await res.text(); 
+      const data = JSON.parse(text); 
+  
+      if (data.success && data.blog) {
+        setBlogs((prev) => [...prev, data.blog]); 
+  
+        fetch("http://localhost/tara-kabataan-webapp/backend/api/blogs.php")
+          .then((res) => res.json())
+          .then((data) => {
+            setBlogs(data.blogs);
+          })
+          .catch((err) => console.error("Failed to refresh blogs:", err));
+  
+        resetNewBlogForm();
+        setNewBlogModalOpen(false);
+      } else {
+        alert("Failed to save new blog: " + (data.error || "Unknown error"));
+      }
+    } catch (err) {
+      console.error("Save error:", err);
+      alert("Error occurred while saving blog.");
+    }
+  };
 
   return (
     <div className="admin-blogs">
@@ -446,8 +434,6 @@ const applyBulkStatus = async (newStatus: string) => {
           </div>
         </div>
       </div>
-
-      {/* Lower Header */}
       <div className="admin-blogs-lower-header">
         <h1>Blogs</h1>
         <div className="admin-blogs-lower-header-right">
@@ -539,10 +525,8 @@ const applyBulkStatus = async (newStatus: string) => {
                     )}
                   </div>
                 </th>
-
                 <th>Blog Title</th>
                 <th>Author</th>
-
                 <th>
                   <div className="admin-blogs-dropdown-trigger" onClick={() => setOpenStatus(!openStatus)}>
                     Status <span className="admin-header-dropdown-arrow">▾</span>
@@ -564,7 +548,6 @@ const applyBulkStatus = async (newStatus: string) => {
                     )}
                   </div>
                 </th>
-
                 <th>
                   <div className="admin-blogs-dropdown-trigger" onClick={() => setOpenCreatedAt(!openCreatedAt)}>
                     Created At <span className="admin-header-dropdown-arrow">▾</span>
@@ -713,7 +696,6 @@ const applyBulkStatus = async (newStatus: string) => {
                     </div>
                   </div>
                 )}
-
                 <div className="admin-blogs-modal-inner-content-top">
                   <div className="admin-blogs-modal-left">
                     <h2>Blog Details</h2>
@@ -819,14 +801,13 @@ const applyBulkStatus = async (newStatus: string) => {
                         <button
                           className="format-btn undo"
                           onMouseDown={(e) => {
-                            e.preventDefault(); // Preserve focus in contentEditable
+                            e.preventDefault(); 
                             saveSelection();
                           }}
                           onClick={() => document.execCommand("undo", false)}
                         >
                           <FaUndo />
                         </button>
-
                         <button
                           className="format-btn redo"
                           onMouseDown={(e) => {
@@ -847,7 +828,6 @@ const applyBulkStatus = async (newStatus: string) => {
                         >
                           <FaBold />
                         </button>
-
                         <button
                           className="format-btn italic"
                           onMouseDown={(e) => {
@@ -858,7 +838,6 @@ const applyBulkStatus = async (newStatus: string) => {
                         >
                           <FaItalic />
                         </button>
-
                         <button
                           className="format-btn underline"
                           onMouseDown={(e) => {
@@ -869,7 +848,6 @@ const applyBulkStatus = async (newStatus: string) => {
                         >
                           <FaUnderline />
                         </button>
-
                         <button
                           className="format-btn bullet"
                           onMouseDown={(e) => {
@@ -880,7 +858,6 @@ const applyBulkStatus = async (newStatus: string) => {
                         >
                           <FaListUl />
                         </button>
-
                         <button
                           className="format-btn image"
                           onMouseDown={(e) => {
@@ -891,7 +868,6 @@ const applyBulkStatus = async (newStatus: string) => {
                         >
                           <FaImage />
                         </button>
-
                         <input
                           type="file"
                           accept="image/*"
@@ -899,7 +875,6 @@ const applyBulkStatus = async (newStatus: string) => {
                           style={{ display: "none" }}
                           onChange={handleContentImageUpload}
                         />
-
                         </div>
                         <div
                           ref={textareaRef}
@@ -984,47 +959,47 @@ const applyBulkStatus = async (newStatus: string) => {
                   </div>
                   <div className="admin-blogs-new-blog-modal-right">    
                   <div className="admin-blogs-new-blog-modal-status">
-                      <p><strong>Status</strong></p>
-                      <select
-                        className={`admin-blogs-new-blog-modal-select modal-status-${newBlogStatus.toLowerCase()}`}
-                        value={newBlogStatus}
-                        onChange={(e) => setNewBlogStatus(e.target.value)}
-                      >
-                        {["DRAFT", "PUBLISHED", "PINNED", "ARCHIVED"].map((status) => (
-                          <option key={status} value={status}>{status}</option>
-                        ))}
-                      </select>
-                    </div> 
-                    <div className="admin-blogs-new-blog-modal-image">
-                      <p><strong>Image</strong></p>
-                      {newBlogImage && (
-                        <img
-                          src={`http://localhost${newBlogImage}`}
-                          alt="Preview"
-                        />
-                      )}
-                      <input
-                        type="file"
-                        accept="image/*"
-                        style={{ display: "none" }}
-                        id="new-blog-image-input"
-                        onChange={handleNewBlogImageUpload}
+                    <p><strong>Status</strong></p>
+                    <select
+                      className={`admin-blogs-new-blog-modal-select modal-status-${newBlogStatus.toLowerCase()}`}
+                      value={newBlogStatus}
+                      onChange={(e) => setNewBlogStatus(e.target.value)}
+                    >
+                      {["DRAFT", "PUBLISHED", "PINNED", "ARCHIVED"].map((status) => (
+                        <option key={status} value={status}>{status}</option>
+                      ))}
+                    </select>
+                  </div> 
+                  <div className="admin-blogs-new-blog-modal-image">
+                    <p><strong>Image</strong></p>
+                    {newBlogImage && (
+                      <img
+                        src={`http://localhost${newBlogImage}`}
+                        alt="Preview"
                       />
-                      <div className="admin-blogs-image-buttons">
-                        <button
-                          className="upload-btn"
-                          onClick={() => document.getElementById("new-blog-image-input")?.click()}
-                        >
-                          Upload
-                        </button>
-                        <button
-                          className="remove-btn"
-                          onClick={() => setNewBlogImage("")}
-                        >
-                          Remove
-                        </button>
-                      </div>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      id="new-blog-image-input"
+                      onChange={handleNewBlogImageUpload}
+                    />
+                    <div className="admin-blogs-image-buttons">
+                      <button
+                        className="upload-btn"
+                        onClick={() => document.getElementById("new-blog-image-input")?.click()}
+                      >
+                        Upload
+                      </button>
+                      <button
+                        className="remove-btn"
+                        onClick={() => setNewBlogImage("")}
+                      >
+                        Remove
+                      </button>
                     </div>
+                  </div>
                 </div>
                 </div>
                 <div className="admin-blogs-new-blog-modal-inner-content-bot">
@@ -1084,7 +1059,6 @@ const applyBulkStatus = async (newStatus: string) => {
                           }}
                         />
                       </div>
-
                       <div
                         id="new-blog-content-editor"
                         className="admin-blogs-new-blog-modal-desc-content editable"
@@ -1093,7 +1067,6 @@ const applyBulkStatus = async (newStatus: string) => {
                         dangerouslySetInnerHTML={{ __html: newBlogContent }}
                       />
                     </div>
-
                   </div>
                 </div>
               </div>
