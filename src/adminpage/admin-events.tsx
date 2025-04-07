@@ -47,6 +47,7 @@ const AdminEvents = () => {
   const [bulkConfirmVisible, setBulkConfirmVisible] = useState(false);
   const [bulkActionStatus, setBulkActionStatus] = useState<string>("");
   const [bulkActionType, setBulkActionType] = useState<"delete" | "status" | null>(null);
+  const [isAddingNew, setIsAddingNew] = useState(false);
   
   useEffect(() => {
     if (selectedEvent) {
@@ -365,7 +366,7 @@ const AdminEvents = () => {
             </button>
           </div>
           <div className="admin-events-lower-header-new-event">
-            <button>
+            <button onClick={() => setIsAddingNew(true)}>
               <FaPlus className="admin-icon-left" />
               Add New Event
             </button>
@@ -931,6 +932,79 @@ const AdminEvents = () => {
             >
               No
             </button>
+          </div>
+        </div>
+      </div>
+    )}
+    {isAddingNew && (
+      <div className="admin-new-event">
+        <div className="admin-new-event-modal">
+          <div className="admin-new-event-modal-content">
+            <div className="admin-new-event-float-buttons">
+              <button className="save-btn">Save</button>
+              <button className="cancel-btn">Cancel</button>
+            </div>
+            <button
+              className="admin-new-event-modal-close"
+              onClick={() => setIsAddingNew(false)}
+            >
+              ✕
+            </button>
+            <div className="admin-new-event-inner-content-modal">
+                <div className="admin-new-event-inner-content-modal-top">
+                  <div className="admin-new-event-inner-content-modal-top-left">
+                    <h2>Event Details</h2>
+                    <p><strong>Title</strong></p>
+                    <p className="admin-new-event-inner-content-modal-title-content">title</p>
+                  </div>
+                  <div className="admin-new-event-inner-content-modal-category">
+                    <p><strong>Category</strong></p>
+                    <p className="admin-new-event-inner-content-modal-category-content pink-category">category</p>
+                  </div>
+                  <div className="admin-new-event-inner-content-modal-venue">
+                    <p><strong>Venue</strong></p>
+                    <p className="admin-new-event-inner-content-modal-venue-content">venue</p>
+                  </div>
+                  <div className="admin-new-event-inner-content-modal-status">
+                    <p><strong>Status</strong></p>
+                    <p className="admin-new-event-inner-content-modal-status-content">status</p>
+                  </div>
+                  <div className="admin-new-event-inner-content-modal-top-right">
+                    <div className="admin-new-event-inner-content-modal-date">
+                      <p><strong>Date</strong></p>
+                    </div>
+                    <div className="admin-new-event-inner-content-modal-time">
+                      <div className="admin-new-event-inner-content-modal-time-start">
+                        <p><strong>Start Time:</strong></p>
+                        <p className="admin-new-event-inner-content-modal-time-start-content">start time</p>
+                      </div>
+                      <div className="admin-new-event-inner-content-modal-time-end">
+                        <p><strong>End Time:</strong></p>
+                        <p className="admin-new-event-inner-content-modal-time-end-content">end time</p>
+                      </div>
+                    </div>
+                    <div className="admin-events-inner-content-modal-speakers">
+                      <p><strong>Speaker/s</strong></p>
+                      <p className="admin-new-event-inner-content-modal-speakers-content">speakers</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="admin-new-event-inner-content-modal-bot">
+                  <div className="admin-new-event-inner-content-modal-bot-left">
+                    <div className="admin-new-event-inner-content-modal-bot-left">
+                      <div className="admin-new-event-inner-content-modal-image">
+                        <p><strong>Image</strong></p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="admin-new-event-inner-content-modal-bot-right">
+                    <div className="admin-new-event-inner-content-modal-desc">
+                      <p><strong>Event Content</strong></p>
+                      <p className="admin-new-event-inner-content-modal-desc-content">event content</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
           </div>
         </div>
       </div>
