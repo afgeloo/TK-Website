@@ -582,39 +582,47 @@ const AdminBlogs = () => {
               <col style={{ width: "40px" }} />
             </colgroup>
             <tbody>
-              {filteredBlogs.map((blog) => (
-              <tr className="admin-blogs-table-content" key={blog.blog_id}>
-                  <td className="admin-blogs-id-content">{blog.blog_id}</td>
-                  <td className="admin-blogs-category-content category-tag">{blog.category}</td>
-                  <td className="admin-blogs-title-content">{blog.title}</td>
-                  <td className="admin-blogs-author-content">{blog.author}</td>
-                  <td className={`admin-blogs-status-content status-${blog.blog_status.toLowerCase()}`}>
-                    {blog.blog_status}
-                  </td>
-                  <td className="admin-blogs-created-at-content">{formatDate(blog.created_at)}</td>
-                  <td className="admin-blogs-more-button">
-                    {selectMode ? (
-                      <input
-                        type="checkbox"
-                        checked={selectedBlogIds.includes(blog.blog_id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedBlogIds((prev) => [...prev, blog.blog_id]);
-                          } else {
-                            setSelectedBlogIds((prev) =>
-                              prev.filter((id) => id !== blog.blog_id)
-                            );
-                          }
-                        }}
-                      />
-                    ) : (
-                      <button onClick={() => setSelectedBlog(blog)}>
-                        <BsThreeDots />
-                      </button>
-                    )}
+              {filteredBlogs.length > 0 ? (
+                filteredBlogs.map((blog) => (
+                  <tr className="admin-blogs-table-content" key={blog.blog_id}>
+                    <td className="admin-blogs-id-content">{blog.blog_id}</td>
+                    <td className="admin-blogs-category-content category-tag">{blog.category}</td>
+                    <td className="admin-blogs-title-content">{blog.title}</td>
+                    <td className="admin-blogs-author-content">{blog.author}</td>
+                    <td className={`admin-blogs-status-content status-${blog.blog_status.toLowerCase()}`}>
+                      {blog.blog_status}
+                    </td>
+                    <td className="admin-blogs-created-at-content">{formatDate(blog.created_at)}</td>
+                    <td className="admin-blogs-more-button">
+                      {selectMode ? (
+                        <input
+                          type="checkbox"
+                          checked={selectedBlogIds.includes(blog.blog_id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedBlogIds((prev) => [...prev, blog.blog_id]);
+                            } else {
+                              setSelectedBlogIds((prev) =>
+                                prev.filter((id) => id !== blog.blog_id)
+                              );
+                            }
+                          }}
+                        />
+                      ) : (
+                        <button onClick={() => setSelectedBlog(blog)}>
+                          <BsThreeDots />
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr className="admin-blogs-table-content no-blogs-row">
+                  <td colSpan={7} className="no-blogs-message">
+                    No Blog Found.
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
@@ -623,7 +631,7 @@ const AdminBlogs = () => {
         <div className="admin-blogs-view-more">
           <div className="admin-blogs-modal">
             <div className="admin-blogs-modal-content">
-            <div className="admin-blogs-float-buttons">
+              <div className="admin-blogs-float-buttons">
                 {isEditing ? (
                   <>
                     <button className="save-btn" onClick={handleSave}>Save</button>
@@ -754,16 +762,14 @@ const AdminBlogs = () => {
                     </div>
                     <div className="admin-blogs-modal-image">
                       <p><strong>Image</strong></p>
-                      <img
-                        src={
-                          selectedBlog &&
-                          (isEditing ? editableBlog?.image_url : selectedBlog.image_url) &&
-                          ((isEditing ? editableBlog?.image_url : selectedBlog.image_url).startsWith("http") ||
-                            (isEditing ? editableBlog?.image_url : selectedBlog.image_url).startsWith("/"))
-                            ? `http://localhost${isEditing ? editableBlog?.image_url : selectedBlog.image_url}`
-                            : (isEditing ? editableBlog?.image_url : selectedBlog.image_url) || ""
-                        }
-                      />
+                      {(isEditing ? editableBlog?.image_url : selectedBlog.image_url) ? (
+                        <img
+                          src={`http://localhost${isEditing ? editableBlog?.image_url : selectedBlog.image_url}`}
+                          alt="Blog"
+                        />
+                      ) : (
+                        <div className="no-image-placeholder">No Blog Image</div>
+                      )}
                         <input
                             type="file"
                             accept="image/*"
