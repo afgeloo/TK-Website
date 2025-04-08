@@ -42,6 +42,7 @@ const AdminBlogs = () => {
   const [selectMode, setSelectMode] = useState(false);
   const [selectedBlogIds, setSelectedBlogIds] = useState<string[]>([]);
   const [notification, setNotification] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const formatDate = (timestamp: string): string => {
     const date = new Date(timestamp);
@@ -62,7 +63,17 @@ const AdminBlogs = () => {
       selectedStatus === "All" ||
       blog.blog_status.toLowerCase() === selectedStatus.toLowerCase();
 
-    return matchCategory && matchStatus;
+    const searchLower = searchQuery.toLowerCase();
+
+    const matchSearch =
+      (blog.title?.toLowerCase().includes(searchLower) ?? false) ||
+      (blog.category?.toLowerCase().includes(searchLower) ?? false) ||
+      (blog.author?.toLowerCase().includes(searchLower) ?? false) ||
+      (blog.blog_status?.toLowerCase().includes(searchLower) ?? false) ||
+      (blog.created_at?.toLowerCase().includes(searchLower) ?? false) ||
+      (blog.blog_id?.toLowerCase().includes(searchLower) ?? false);
+
+    return matchCategory && matchStatus && matchSearch;
   })
   .sort((a, b) => {
     const isPinnedA = a.blog_status.toLowerCase() === 'pinned';
@@ -418,7 +429,12 @@ const AdminBlogs = () => {
       <div className="admin-blogs-header">
         <div className="admin-blogs-search-container">
           <FaSearch className="admin-blogs-search-icon" />
-          <input type="text" placeholder="Search" />
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
         <div className="admin-blogs-header-right">
           <div className="admin-blogs-bell-wrapper">

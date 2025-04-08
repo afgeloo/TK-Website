@@ -499,7 +499,7 @@
   }
 
   .admin-blogs-modal-left{
-    width: 50%;
+    width: 100%;
   }
 
   .admin-blogs-modal-image img{
@@ -512,7 +512,7 @@
   }
   
   .admin-blogs-modal-right{
-    width: 50%;
+    width: 100%;
     margin-right: 10px;
   }
 
@@ -996,11 +996,11 @@
 }
 
 .admin-blogs-new-blog-modal-left{
-  width: 50%;
+  width: 100%;
 }
 
 .admin-blogs-new-blog-modal-right{
-  width: 50%;
+  width: 100%;
   margin-right: 10px;
 }
 

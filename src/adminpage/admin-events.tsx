@@ -48,6 +48,8 @@ const AdminEvents = () => {
   const [bulkActionStatus, setBulkActionStatus] = useState<string>("");
   const [bulkActionType, setBulkActionType] = useState<"delete" | "status" | null>(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
+  const [notification, setNotification] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   
   useEffect(() => {
     if (selectedEvent) {
@@ -76,25 +78,41 @@ const AdminEvents = () => {
       selectedStatus === "All" ||
       event.event_status.toLowerCase() === selectedStatus.toLowerCase();
 
-    return matchCategory && matchStatus;
+    const searchLower = searchQuery.toLowerCase();
+
+    const matchSearch =
+      event.title.toLowerCase().includes(searchLower) ||
+      event.event_venue.toLowerCase().includes(searchLower) ||
+      event.event_speakers.toLowerCase().includes(searchLower) ||
+      event.category.toLowerCase().includes(searchLower) ||
+      event.event_status.toLowerCase().includes(searchLower) ||
+      event.event_date.toLowerCase().includes(searchLower);
+
+    return matchCategory && matchStatus && matchSearch;
   })
   .sort((a, b) => {
     const dateA = new Date(a.event_date).getTime();
     const dateB = new Date(b.event_date).getTime();
     return createdSortOrder === "Newest First" ? dateB - dateA : dateA - dateB;
-  });  
+  });
 
   const formatDate = (timestamp: string): string => {
+    if (!timestamp) return "—";
     const date = new Date(timestamp);
-    return date.toLocaleDateString("en-US", {
+    return isNaN(date.getTime()) ? "—" : date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
-  };
+  };  
 
   const formatTime = (timeString: string): string => {
-    const [hour, minute] = timeString.split(":").map(Number);
+    if (!timeString) return "—";
+    const [hourStr, minuteStr] = timeString.split(":");
+    const hour = parseInt(hourStr);
+    const minute = parseInt(minuteStr);
+    if (isNaN(hour) || isNaN(minute)) return "—";
+    
     const date = new Date();
     date.setHours(hour);
     date.setMinutes(minute);
@@ -102,7 +120,7 @@ const AdminEvents = () => {
       hour: "numeric",
       minute: "2-digit",
     });
-  };
+  };  
 
   const handleEdit = () => {
     if (selectedEvent) {
@@ -145,9 +163,11 @@ const AdminEvents = () => {
           setEditableEvent(null);
           setTempImageUrl(null); // clear preview
           setIsEditing(false);
-          alert("Event updated successfully!");
+          setNotification("Event updated successfully!");
+          setTimeout(() => setNotification(""), 4000);
         } else {
-          alert("Failed to update event.");
+          setNotification("Failed to update event.");
+          setTimeout(() => setNotification(""), 4000);
         }
       })
       .catch((err) => {
@@ -156,11 +176,51 @@ const AdminEvents = () => {
       });
   };
 
-  const handleDelete = async () => {
-    if (!selectedEvent) return;
+  const handleAddNewEventSave = async () => {
+    const editor = document.getElementById("add-event-content-editor");
+    const extractedContent = editor ? editor.innerHTML.trim() : "";
   
-    const confirm = window.confirm("Are you sure you want to delete this event and all its images?");
-    if (!confirm) return;
+    const payload = {
+      ...newEvent,
+      content: extractedContent,
+      image_url: newImageUrl || ""
+    };
+  
+    try {
+      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_event.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+  
+      const data = await res.json();
+  
+      if (data.success && data.event) {
+        setEvents((prev) => [data.event, ...prev]);
+        setNotification("New event added successfully!");
+        setIsAddingNew(false);
+        resetNewEvent();
+      } else {
+        setNotification("Failed to add new event.");
+        console.error("Add error:", data.error);
+      }
+    } catch (err) {
+      console.error("Add event error:", err);
+      setNotification("An error occurred while adding the event.");
+    }
+  
+    setTimeout(() => setNotification(""), 4000);
+  };
+  
+
+  const handleDelete = () => {
+    setBulkActionType("delete");
+    setBulkActionStatus("SINGLE_DELETE");
+    setBulkConfirmVisible(true);
+  };
+
+  const confirmSingleDelete = async () => {
+    if (!selectedEvent) return;
   
     try {
       const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_event.php", {
@@ -172,17 +232,19 @@ const AdminEvents = () => {
       const data = await res.json();
   
       if (data.success) {
-        alert("Event deleted successfully!");
+        setNotification("Event deleted successfully!");
         setEvents(prev => prev.filter(e => e.event_id !== selectedEvent.event_id));
         setSelectedEvent(null);
         setIsEditing(false);
       } else {
-        alert("Failed to delete event: " + (data.message || "Unknown error"));
+        setNotification("Failed to delete event: " + (data.message || "Unknown error"));
       }
     } catch (error) {
       console.error("Delete error:", error);
-      alert("An error occurred while deleting.");
+      setNotification("An error occurred while deleting.");
     }
+  
+    setTimeout(() => setNotification(""), 4000);
   };  
   
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -308,13 +370,49 @@ const AdminEvents = () => {
     }
   };  
   
+  const [newEvent, setNewEvent] = useState({
+    title: "",
+    category: "KALUSUGAN",
+    event_date: "",
+    event_start_time: "",
+    event_end_time: "",
+    event_venue: "",
+    event_status: "UPCOMING",
+    event_speakers: "",
+    content: "",
+    image_url: ""
+  });
+  const [newImageUrl, setNewImageUrl] = useState<string | null>(null);  
+
+  const resetNewEvent = () => {
+    setNewEvent({
+      title: "",
+      category: "KALUSUGAN",
+      event_date: "",
+      event_start_time: "",
+      event_end_time: "",
+      event_venue: "",
+      event_status: "UPCOMING",
+      event_speakers: "",
+      content: "",
+      image_url: ""
+    });
+    setNewImageUrl(null);
+    const editor = document.getElementById("add-event-content-editor");
+    if (editor) editor.innerHTML = ""; 
+  };  
   
   return (
     <div className="admin-events">
       <div className="admin-events-header">
         <div className="admin-events-search-container">
           <FaSearch className="admin-events-search-icon" />
-          <input type="text" placeholder="Search" />
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
         <div className="admin-events-header-right">
           <div className="admin-events-bell-wrapper">
@@ -487,7 +585,7 @@ const AdminEvents = () => {
                   <tr className="admin-events-table-content" key={event.event_id}>
                     <td className="admin-events-id-content">{event.event_id}</td>
                     <td className="admin-events-category-content category-tag">
-                      {event.category.toUpperCase()}
+                      {event.category ? event.category.toUpperCase() : "UNSPECIFIED"}
                     </td>
                     <td className="admin-events-title-content">{event.title}</td>
                     <td className="admin-events-date-content">{formatDate(event.event_date)}</td>
@@ -558,6 +656,11 @@ const AdminEvents = () => {
               ✕
             </button>
               <div className="admin-events-inner-content-modal">
+                {notification && (
+                    <div className={`blogs-notification-message ${notification.includes("successfully") ? "success" : "error"} show`}>
+                      {notification}
+                    </div>
+                  )}
                 <div className="admin-events-inner-content-modal-top">
                   <div className="admin-events-inner-content-modal-top-left">
                     <h2>Event Details</h2>
@@ -589,7 +692,7 @@ const AdminEvents = () => {
                           setDropdownCategory(e.target.value);
                           setEditableEvent(prev => prev ? { ...prev, category: e.target.value } : prev);
                         }}
-                        disabled={!isEditing}
+                        disabled={false}
                       >
                         {["KALUSUGAN", "KALIKASAN", "KARUNUNGAN", "KULTURA", "KASARIAN"].map((cat) => (
                           <option key={cat} value={cat}>{cat}</option>
@@ -735,7 +838,7 @@ const AdminEvents = () => {
                             fontStyle: "italic",
                             border: "1px dashed #ccc"
                           }}>
-                            No Blog Image
+                            No Event Image
                           </div>
                         )}
                         <input
@@ -908,24 +1011,30 @@ const AdminEvents = () => {
       <div className="blogs-confirmation-popup show">
         <div className="blogs-confirmation-box">
           <p>
-          {bulkActionType === "delete"
+          {bulkActionType === "delete" && bulkActionStatus === "SINGLE_DELETE"
+            ? "Are you sure you want to delete this event and all its images?"
+            : bulkActionType === "delete"
             ? "Are you sure you want to delete the selected events?"
             : `Do you really want to mark the selected events as ${bulkActionStatus}?`}
           </p>
           <div className="blogs-confirmation-actions">
-            <button
-              className="confirm-yes"
-              onClick={() => {
-                if (bulkActionType === "delete") {
-                  handleBulkDelete();
+          <button
+            className="confirm-yes"
+            onClick={() => {
+              if (bulkActionType === "delete") {
+                if (bulkActionStatus === "SINGLE_DELETE") {
+                  confirmSingleDelete();
                 } else {
-                  applyBulkStatus(bulkActionStatus);
+                  handleBulkDelete();
                 }
-                setBulkConfirmVisible(false);
-              }}
-            >
-              Yes
-            </button>
+              } else {
+                applyBulkStatus(bulkActionStatus);
+              }
+              setBulkConfirmVisible(false);
+            }}
+          >
+            Yes
+          </button>
             <button
               className="confirm-no"
               onClick={() => setBulkConfirmVisible(false)}
@@ -941,66 +1050,280 @@ const AdminEvents = () => {
         <div className="admin-new-event-modal">
           <div className="admin-new-event-modal-content">
             <div className="admin-new-event-float-buttons">
-              <button className="save-btn">Save</button>
-              <button className="cancel-btn">Cancel</button>
+              <button className="save-btn" onClick={handleAddNewEventSave}>Save</button>
+              <button
+                className="cancel-btn"
+                onClick={() => {
+                  setIsAddingNew(false);
+                  resetNewEvent();
+                }}
+              >
+                Cancel
+              </button>
             </div>
             <button
               className="admin-new-event-modal-close"
-              onClick={() => setIsAddingNew(false)}
+              onClick={() => {
+                setIsAddingNew(false);
+                resetNewEvent();
+              }}              
             >
               ✕
             </button>
             <div className="admin-new-event-inner-content-modal">
+              {notification && (
+                      <div className={`blogs-notification-message ${notification.includes("successfully") ? "success" : "error"} show`}>
+                        {notification}
+                      </div>
+                    )}
                 <div className="admin-new-event-inner-content-modal-top">
                   <div className="admin-new-event-inner-content-modal-top-left">
                     <h2>Event Details</h2>
                     <p><strong>Title</strong></p>
-                    <p className="admin-new-event-inner-content-modal-title-content">title</p>
-                  </div>
-                  <div className="admin-new-event-inner-content-modal-category">
+                      <input
+                        className="admin-new-event-inner-content-modal-title-content"
+                        type="text"
+                        value={newEvent.title}
+                        onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
+                      />
+                    <div className="admin-new-event-inner-content-modal-category">
                     <p><strong>Category</strong></p>
-                    <p className="admin-new-event-inner-content-modal-category-content pink-category">category</p>
-                  </div>
-                  <div className="admin-new-event-inner-content-modal-venue">
-                    <p><strong>Venue</strong></p>
-                    <p className="admin-new-event-inner-content-modal-venue-content">venue</p>
-                  </div>
-                  <div className="admin-new-event-inner-content-modal-status">
+                      <select
+                        className="admin-events-inner-content-modal-category-content pink-category"
+                        value={newEvent.category}
+                        onChange={(e) => setNewEvent({ ...newEvent, category: e.target.value })}
+                      >
+                        {["KALUSUGAN", "KALIKASAN", "KARUNUNGAN", "KULTURA", "KASARIAN"].map((cat) => (
+                          <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                      </select>
+                    </div>
+                      <div className="admin-new-event-inner-content-modal-venue">
+                        <p><strong>Venue</strong></p>
+                        <input
+                          type="text"
+                          className="admin-new-event-inner-content-modal-venue-content"
+                          value={newEvent.event_venue}
+                          onChange={(e) =>
+                            setNewEvent({ ...newEvent, event_venue: e.target.value })
+                          }
+                        />
+                      </div>
+                    <div className="admin-new-event-inner-content-modal-status">
                     <p><strong>Status</strong></p>
-                    <p className="admin-new-event-inner-content-modal-status-content">status</p>
+                      <select
+                        className={`admin-events-inner-content-modal-status-content status-${newEvent.event_status.toLowerCase()}`}
+                        value={newEvent.event_status}
+                        onChange={(e) => setNewEvent({ ...newEvent, event_status: e.target.value })}
+                      >
+                        {["UPCOMING", "ONGOING", "COMPLETED", "CANCELLED"].map((status) => (
+                          <option key={status} value={status}>{status}</option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                   <div className="admin-new-event-inner-content-modal-top-right">
                     <div className="admin-new-event-inner-content-modal-date">
                       <p><strong>Date</strong></p>
+                      <input
+                        type="date"
+                        className="admin-new-event-inner-content-modal-date-content"
+                        value={newEvent.event_date}
+                        onChange={(e) =>
+                          setNewEvent({ ...newEvent, event_date: e.target.value })
+                        }
+                      />
                     </div>
                     <div className="admin-new-event-inner-content-modal-time">
                       <div className="admin-new-event-inner-content-modal-time-start">
                         <p><strong>Start Time:</strong></p>
-                        <p className="admin-new-event-inner-content-modal-time-start-content">start time</p>
+                        <input
+                          type="time"
+                          className="admin-new-event-inner-content-modal-time-start-content"
+                          value={newEvent.event_start_time}
+                          onChange={(e) =>
+                            setNewEvent({ ...newEvent, event_start_time: e.target.value })
+                          }
+                        />
                       </div>
                       <div className="admin-new-event-inner-content-modal-time-end">
                         <p><strong>End Time:</strong></p>
-                        <p className="admin-new-event-inner-content-modal-time-end-content">end time</p>
+                        <input
+                          type="time"
+                          className="admin-new-event-inner-content-modal-time-end-content"
+                          value={newEvent.event_end_time}
+                          onChange={(e) =>
+                            setNewEvent({ ...newEvent, event_end_time: e.target.value })
+                          }
+                        />
                       </div>
                     </div>
                     <div className="admin-events-inner-content-modal-speakers">
                       <p><strong>Speaker/s</strong></p>
-                      <p className="admin-new-event-inner-content-modal-speakers-content">speakers</p>
+                      <textarea
+                        className="admin-new-event-inner-content-modal-speakers-content"
+                        value={newEvent.event_speakers}
+                        onChange={(e) =>
+                          setNewEvent({ ...newEvent, event_speakers: e.target.value })
+                        }
+                      />
                     </div>
                   </div>
                 </div>
                 <div className="admin-new-event-inner-content-modal-bot">
                   <div className="admin-new-event-inner-content-modal-bot-left">
                     <div className="admin-new-event-inner-content-modal-bot-left">
-                      <div className="admin-new-event-inner-content-modal-image">
-                        <p><strong>Image</strong></p>
+                    <div className="admin-new-event-inner-content-modal-image">
+                      <p><strong>Image</strong></p>
+                      {getFullImageUrl(newImageUrl) ? (
+                        <img
+                          src={getFullImageUrl(newImageUrl)}
+                          alt="Event"
+                        />
+                      ) : (
+                        <div style={{
+                          width: "100%",
+                          height: "200px",
+                          maxWidth: "100%",
+                          maxHeight: "300px",
+                          backgroundColor: "#f2f2f2",
+                          color: "#888",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontStyle: "italic",
+                          border: "1px dashed #ccc"
+                        }}>
+                          No Event Image
+                        </div>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        id="new-event-image-upload"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+
+                          const formData = new FormData();
+                          formData.append("image", file);
+
+                          const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_event_image.php", {
+                            method: "POST",
+                            body: formData,
+                          });
+
+                          const data = await res.json();
+                          if (data.success && data.image_url) {
+                            setNewImageUrl(data.image_url);
+                          } else {
+                            alert("Image upload failed.");
+                          }
+                        }}
+                      />
+
+                      <div className="admin-blogs-image-buttons">
+                        <button
+                          className="upload-btn"
+                          onClick={() => document.getElementById("new-event-image-upload")?.click()}
+                        >
+                          Upload
+                        </button>
+                        <button
+                          className="remove-btn"
+                          onClick={() => setNewImageUrl(null)}
+                        >
+                          Remove
+                        </button>
                       </div>
+                    </div>
                     </div>
                   </div>
                   <div className="admin-new-event-inner-content-modal-bot-right">
-                    <div className="admin-new-event-inner-content-modal-desc">
-                      <p><strong>Event Content</strong></p>
-                      <p className="admin-new-event-inner-content-modal-desc-content">event content</p>
+                  <div className="admin-new-event-inner-content-modal-desc">
+                    <p><strong>Event Content</strong></p>
+                    <div className="admin-blogs-content-image-tools">
+                      <button className="format-btn undo"
+                        onMouseDown={(e) => { e.preventDefault(); saveSelection(); }}
+                        onClick={() => document.execCommand("undo", false)}>
+                        <FaUndo />
+                      </button>
+                      <button className="format-btn redo"
+                        onMouseDown={(e) => { e.preventDefault(); saveSelection(); }}
+                        onClick={() => document.execCommand("redo", false)}>
+                        <FaRedo />
+                      </button>
+                      <button className="format-btn bold"
+                        onMouseDown={(e) => { e.preventDefault(); saveSelection(); }}
+                        onClick={() => applyFormatting("bold")}>
+                        <FaBold />
+                      </button>
+                      <button className="format-btn italic"
+                        onMouseDown={(e) => { e.preventDefault(); saveSelection(); }}
+                        onClick={() => applyFormatting("italic")}>
+                        <FaItalic />
+                      </button>
+                      <button className="format-btn underline"
+                        onMouseDown={(e) => { e.preventDefault(); saveSelection(); }}
+                        onClick={() => applyFormatting("underline")}>
+                        <FaUnderline />
+                      </button>
+                      <button className="format-btn bullet"
+                        onMouseDown={(e) => { e.preventDefault(); saveSelection(); }}
+                        onClick={applyList}>
+                        <FaListUl />
+                      </button>
+                      <button className="format-btn image"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => document.getElementById("add-new-content-image-input")?.click()}>
+                        <FaImage />
+                      </button>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        id="add-new-content-image-input"
+                        style={{ display: "none" }}
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+                          const formData = new FormData();
+                          formData.append("image", file);
+                          try {
+                            const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_event_image.php", {
+                              method: "POST",
+                              body: formData,
+                            });
+
+                            const data = await res.json();
+                            if (data.success && data.image_url) {
+                              const img = `<img src="http://localhost${data.image_url}" alt="event image" style="max-width:100%; margin: 10px 0; display:block;" />`;
+                              const div = document.getElementById("add-event-content-editor");
+                              if (div) {
+                                div.innerHTML += img;
+                                setNewEvent(prev => ({ ...prev, content: div.innerHTML }));
+                              }
+                            } else {
+                              alert("Image upload failed.");
+                            }
+                          } catch (err) {
+                            console.error("Upload failed:", err);
+                            alert("An error occurred during upload.");
+                          }
+                        }}
+                      />
+                    </div>
+                      <div
+                        id="add-event-content-editor"
+                        className="admin-new-event-inner-content-modal-desc-content editable"
+                        contentEditable
+                        onBlur={() => {
+                          const div = document.getElementById("add-event-content-editor");
+                          if (div) {
+                            setNewEvent({ ...newEvent, content: div.innerHTML });
+                          }
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
