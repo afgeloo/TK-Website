@@ -3,6 +3,8 @@ import { FaSearch, FaBell, FaPlus } from "react-icons/fa";
 import president from "../assets/aboutpage/council/president.jpg";
 import { BsThreeDots } from "react-icons/bs";
 import { useState, useEffect } from "react";
+import select from "../assets/adminpage/blogs/select.png";
+
 
 const AdminSettings = () => {
 
@@ -25,6 +27,9 @@ const AdminSettings = () => {
     const [editImageUrl, setEditImageUrl] = useState<string | null>(null);
     const [newImageUrl, setNewImageUrl] = useState<string | null>(null);
     const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+    const [selectMode, setSelectMode] = useState(false);
+    const [selectedPartnerIds, setSelectedPartnerIds] = useState<string[]>([]);
+    const [bulkConfirmVisible, setBulkConfirmVisible] = useState(false);
 
     useEffect(() => {
     fetch("http://localhost/tara-kabataan-webapp/backend/api/partners.php")
@@ -199,7 +204,17 @@ const AdminSettings = () => {
             <h1>Settings</h1>
             <div className="admin-settings-lower-header-right">
             <div className="admin-settings-tabs-wrapper">
-                {activeTab === 2 && (
+            {activeTab === 2 && (
+                <>
+                    <div className="admin-events-lower-header-select">
+                    <button onClick={() => {
+                        setSelectMode(!selectMode);
+                        setSelectedPartnerIds([]);
+                    }}>
+                        <img src={select} className="admin-blogs-lower-header-select-img" />
+                        {selectMode ? "Cancel" : "Select"}
+                    </button>
+                    </div>
                     <button
                     className="add-new-partner-btn"
                     onClick={() => {
@@ -217,6 +232,7 @@ const AdminSettings = () => {
                     <FaPlus className="admin-icon-left" />
                     Add New Partner
                     </button>
+                </>
                 )}
                 <div className="admin-settings-tabs">
                     {tabs.map((tab, index) => (
