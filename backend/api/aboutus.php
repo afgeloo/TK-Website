@@ -4,7 +4,6 @@ header("Content-Type: application/json");
 
 include '../config/db.php';
 
-// Optional: Get by ID (if you add multiple records in the future)
 if (isset($_GET['aboutus_id'])) {
     $aboutus_id = $_GET['aboutus_id'];
     $query = "SELECT * FROM tk_webapp.aboutus WHERE aboutus_id = ?";
@@ -31,7 +30,6 @@ if (isset($_GET['aboutus_id'])) {
     exit;
 }
 
-// Default: Return first (or only) record
 $query = "SELECT * FROM tk_webapp.aboutus LIMIT 1";
 $result = $conn->query($query);
 

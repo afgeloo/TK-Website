@@ -848,7 +848,6 @@ const AdminEvents = () => {
                           id="event-image-upload"
                           onChange={handleImageUpload}
                         />
-
                         <div className="admin-blogs-image-buttons">
                           <button
                             className="upload-btn"
