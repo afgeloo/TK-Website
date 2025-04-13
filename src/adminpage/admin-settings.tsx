@@ -30,6 +30,9 @@ const AdminSettings = () => {
     const [selectMode, setSelectMode] = useState(false);
     const [selectedPartnerIds, setSelectedPartnerIds] = useState<string[]>([]);
     const [bulkConfirmVisible, setBulkConfirmVisible] = useState(false);
+    const [selectedEventIds, setSelectedEventIds] = useState<string[]>([]);
+    const [bulkActionStatus, setBulkActionStatus] = useState<string>("");
+    const [bulkActionType, setBulkActionType] = useState<"delete" | "status" | null>(null);
 
     useEffect(() => {
     fetch("http://localhost/tara-kabataan-webapp/backend/api/partners.php")
@@ -249,6 +252,19 @@ const AdminSettings = () => {
 
             </div>
         </div>
+        {selectMode && (
+        <div className="admin-events-bulk-actions">
+          <button
+            className="bulk-delete-btn"
+            onClick={() => {
+              setBulkActionType("delete"); 
+              setBulkConfirmVisible(true);
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      )}
         <div className="admin-settings-main-content">
             {activeTab === 0 && (
                 <div className="admin-settings-tab-placeholder">
@@ -291,13 +307,29 @@ const AdminSettings = () => {
                                     <td>{partner.partner_contact_email}</td>
                                     <td>{partner.partner_phone_number}</td>
                                     <td className="admin-settings-view-content">
-                                        <button onClick={() => {
-                                            setSelectedPartner(partner);
-                                            setNotification(""); 
-                                            setConfirmDeleteVisible(false); 
-                                            }}>
-                                            <BsThreeDots />
-                                        </button>
+                                        {selectMode ? (
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedEventIds.includes(partner.partner_id)}
+                                                onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    setSelectedEventIds((prev) => [...prev, partner.partner_id]);
+                                                } else {
+                                                    setSelectedEventIds((prev) =>
+                                                    prev.filter((id) => id !== partner.partner_id)
+                                                    );
+                                                }
+                                                }}
+                                            />
+                                            ) : (
+                                                <button onClick={() => {
+                                                    setSelectedPartner(partner);
+                                                    setNotification(""); 
+                                                    setConfirmDeleteVisible(false); 
+                                                    }}>
+                                                    <BsThreeDots />
+                                                </button>
+                                            )}
                                     </td>
                                 </tr>
                                 ))

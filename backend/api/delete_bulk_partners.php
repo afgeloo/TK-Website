@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
 
-ini_set('display_errors', 0); // Keep off for production
+ini_set('display_errors', 0); 
 ini_set('log_errors', 1);
 error_reporting(E_ALL);
 error_log("Starting bulk delete...");
@@ -37,7 +37,7 @@ try {
 
     while ($row = $selectStmt->fetch(PDO::FETCH_ASSOC)) {
         if (!empty($row['partner_image'])) {
-            $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/tara-kabataan-webapp' . $row['partner_image'];
+            $imagePath = realpath(__DIR__ . '/../../' . ltrim($row['partner_image'], '/'));
             if (file_exists($imagePath)) {
                 if (!unlink($imagePath)) {
                     error_log("Failed to delete image: " . $imagePath);

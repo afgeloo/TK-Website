@@ -276,7 +276,6 @@
 .admin-blogs-table-content:hover {
   background: linear-gradient(90deg, rgba(240, 248, 255, 0.6), rgba(255, 255, 255, 0.95));
   box-shadow: 0 6px 18px rgba(0, 132, 255, 0.08);
-  transform: scale(1.01);
   border-radius: 12px;
   z-index: 1;
 }
