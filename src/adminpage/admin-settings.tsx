@@ -30,7 +30,6 @@ const AdminSettings = () => {
     const [selectMode, setSelectMode] = useState(false);
     const [selectedPartnerIds, setSelectedPartnerIds] = useState<string[]>([]);
     const [bulkConfirmVisible, setBulkConfirmVisible] = useState(false);
-    const [selectedEventIds, setSelectedEventIds] = useState<string[]>([]);
     const [bulkActionStatus, setBulkActionStatus] = useState<string>("");
     const [bulkActionType, setBulkActionType] = useState<"delete" | "status" | null>(null);
 
@@ -122,12 +121,26 @@ const AdminSettings = () => {
           const data = await res.json();
       
           if (data.success && data.partner) {
-            setPartners((prev) => [data.partner, ...prev]);
+            setPartners((prev) => {
+              const exists = prev.some(p => p.partner_id === data.partner.partner_id);
+              if (exists) {
+                return prev; // 🚩 Avoid duplication
+              }
+              return [data.partner, ...prev]; // ✅ Correctly add new partner on top
+            });
+      
             setNotification("New partner added successfully!");
-            setTimeout(() => {
+      
+            // ✅ Instantly clear form and reset states clearly to avoid duplication
+            setNewPartner({
+              partner_image: "",
+              partner_name: "",
+              partner_dec: "",
+              partner_contact_email: "",
+              partner_phone_number: "",
+            });
+            setNewImageUrl(null);
             setIsAddingNewPartner(false);
-            setNotification("");
-            }, 3000); 
           } else {
             setNotification("Failed to add new partner.");
           }
@@ -137,7 +150,8 @@ const AdminSettings = () => {
         }
       
         setTimeout(() => setNotification(""), 4000);
-      };      
+      };
+      
       
       const handleImageUpload = async (
         e: React.ChangeEvent<HTMLInputElement>,
@@ -178,7 +192,67 @@ const AdminSettings = () => {
         if (mode === "edit") setEditImageUrl(null);
         else setNewImageUrl(null);
       };      
+
+      const handleSingleDelete = () => {
+        setBulkActionType("delete");
+        setBulkActionStatus("SINGLE_DELETE");
+        setBulkConfirmVisible(true);
+      };
       
+      const confirmSingleDelete = async () => {
+        if (!selectedPartner) return;
+      
+        try {
+          const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_partners.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ partner_id: selectedPartner.partner_id }),
+          });
+      
+          const data = await res.json();
+      
+          if (data.success) {
+            setNotification("Partner deleted successfully!");
+            setPartners(prev => prev.filter(p => p.partner_id !== selectedPartner.partner_id));
+            setSelectedPartner(null);
+          } else {
+            setNotification("Failed to delete partner.");
+          }
+        } catch (error) {
+          console.error("Delete error:", error);
+          setNotification("An error occurred while deleting.");
+        }
+      
+        setTimeout(() => setNotification(""), 4000);
+      };      
+
+      const handleBulkDelete = async () => {
+        try {
+          const response = await fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_bulk_partners.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ partner_ids: selectedPartnerIds }),
+          });
+      
+          const data = await response.json();
+      
+          if (data.success) {
+            setPartners(prev => prev.filter(p => !selectedPartnerIds.includes(p.partner_id)));
+            setSelectedPartnerIds([]);
+            setSelectMode(false);
+            setNotification("Partners deleted successfully!");
+          } else {
+            alert("Failed to delete partners.");
+          }
+        } catch (err) {
+          console.error("Bulk delete error:", err);
+          alert("Error occurred during bulk delete.");
+        }
+      
+        setTimeout(() => setNotification(""), 4000);
+      };      
+      
+    
     return (
     <div className="admin-settings">
         <div className="admin-settings-header">
@@ -310,16 +384,16 @@ const AdminSettings = () => {
                                         {selectMode ? (
                                             <input
                                                 type="checkbox"
-                                                checked={selectedEventIds.includes(partner.partner_id)}
+                                                checked={selectedPartnerIds.includes(partner.partner_id)}
                                                 onChange={(e) => {
-                                                if (e.target.checked) {
-                                                    setSelectedEventIds((prev) => [...prev, partner.partner_id]);
-                                                } else {
-                                                    setSelectedEventIds((prev) =>
-                                                    prev.filter((id) => id !== partner.partner_id)
-                                                    );
-                                                }
-                                                }}
+                                                    if (e.target.checked) {
+                                                        setSelectedPartnerIds((prev) => [...prev, partner.partner_id]);
+                                                    } else {
+                                                        setSelectedPartnerIds((prev) =>
+                                                            prev.filter((id) => id !== partner.partner_id)
+                                                        );
+                                                    }
+                                }}
                                             />
                                             ) : (
                                                 <button onClick={() => {
@@ -370,10 +444,7 @@ const AdminSettings = () => {
                                     >
                                     Edit
                                     </button>
-                                    <button
-                                    className="delete-btn"
-                                    onClick={() => setConfirmDeleteVisible(true)}
-                                    >
+                                    <button className="delete-btn" onClick={handleSingleDelete}>
                                     Delete
                                     </button>
                                     </>
@@ -614,62 +685,37 @@ const AdminSettings = () => {
                                 </div>
                             </div>
                             )}
-                            {confirmDeleteVisible && (
-                                <div className="blogs-confirmation-popup show">
-                                    <div className="blogs-confirmation-box">
-                                    <p>Do you really want to delete this partner and its images?</p>
-                                    <div className="blogs-confirmation-actions">
+                            {bulkConfirmVisible && (
+                            <div className="blogs-confirmation-popup show">
+                                <div className="blogs-confirmation-box">
+                                <p>
+                                    {bulkActionType === "delete" && bulkActionStatus === "SINGLE_DELETE"
+                                    ? "Are you sure you want to delete this partner and all its images?"
+                                    : "Are you sure you want to delete the selected partners?"}
+                                </p>
+                                <div className="blogs-confirmation-actions">
                                     <button
-                                        className="confirm-yes"
-                                        onClick={async () => {
-                                            const partnerIdToDelete = selectedPartner?.partner_id;
-
-                                            try {
-                                            const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_partners.php", {
-                                                method: "POST",
-                                                headers: { "Content-Type": "application/json" },
-                                                body: JSON.stringify({ partner_id: partnerIdToDelete }),
-                                            });
-
-                                            const data = await res.json();
-
-                                            if (data.success) {
-                                                setPartners((prev) =>
-                                                prev.filter((p) => p.partner_id !== partnerIdToDelete)
-                                                );
-
-                                                setNotification("Partner deleted successfully!");
-                                                setConfirmDeleteVisible(false);
-
-                                                setTimeout(() => {
-                                                if (selectedPartner?.partner_id === partnerIdToDelete) {
-                                                    setSelectedPartner(null);
-                                                    setNotification("");
-                                                }
-                                                }, 3000);
-                                            } else {
-                                                setNotification("Failed to delete partner.");
-                                                setTimeout(() => setNotification(""), 4000);
-                                            }
-                                            } catch (error) {
-                                            console.error("Delete error:", error);
-                                            setNotification("An error occurred while deleting.");
-                                            setTimeout(() => setNotification(""), 4000);
-                                            }
-                                        }}
-                                        >
-                                        Yes
-                                        </button>
-                                        <button
-                                        className="confirm-no"
-                                        onClick={() => setConfirmDeleteVisible(false)}
-                                        >
-                                        No
-                                        </button>
-                                    </div>
-                                    </div>
+                                    className="confirm-yes"
+                                    onClick={() => {
+                                        if (bulkActionType === "delete") {
+                                        if (bulkActionStatus === "SINGLE_DELETE") {
+                                            confirmSingleDelete();
+                                        } else {
+                                            handleBulkDelete();
+                                        }
+                                        }
+                                        setBulkConfirmVisible(false);
+                                    }}
+                                    >
+                                    Yes
+                                    </button>
+                                    <button className="confirm-no" onClick={() => setBulkConfirmVisible(false)}>
+                                    No
+                                    </button>
                                 </div>
-                                )}
+                                </div>
+                            </div>
+                            )}
                 </div>
             )}
         </div>
