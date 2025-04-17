@@ -41,7 +41,7 @@ const AdminSettings = () => {
   
     const formData = new FormData();
     formData.append("image", file);
-    formData.append("role_id", editableMember.role_id); 
+    formData.append("user_id", editableMember.user_id);
   
     try {
       const res = await fetch(
@@ -54,12 +54,17 @@ const AdminSettings = () => {
       const data = await res.json();
       if (data.success && data.image_url) {
         setMemberImageUrl(`${data.image_url}?t=${Date.now()}`);
+        setNotification("Member image uploaded successfully!");
       } else {
-        alert("Member image upload failed.");
+        setNotification("Member image upload failed.");
       }
+      
+      setTimeout(() => setNotification(""), 4000);
+      
     } catch (err) {
       console.error("Member image upload error:", err);
-      alert("Error occurred during member image upload.");
+      setNotification("Error occurred during member image upload.");
+      setTimeout(() => setNotification(""), 4000);
     }
   };
   
@@ -181,9 +186,9 @@ const AdminSettings = () => {
   const handleAddNewPartnerSave = async () => {
     const payload = {
       ...newPartner,
-      partner_image: newImageUrl || "",
+      partner_image: newPartner.partner_image || "",
     };
-
+  
     try {
       const res = await fetch(
         "http://localhost/tara-kabataan-webapp/backend/api/add_new_partner.php",
@@ -193,24 +198,42 @@ const AdminSettings = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),
-        },
+        }
       );
-
+  
       const data = await res.json();
-
+  
       if (data.success && data.partner) {
-        setPartners((prev) => {
-          const exists = prev.some(
-            (p) => p.partner_id === data.partner.partner_id,
-          );
-          if (exists) {
-            return prev;
+        const newId = data.partner.partner_id;
+  
+        if (newImageUrl) {
+          const imageFileInput = document.getElementById("new-partner-image-upload") as HTMLInputElement;
+          const file = imageFileInput?.files?.[0];
+  
+          if (file) {
+            const formData = new FormData();
+            formData.append("image", file);
+            formData.append("partner_id", newId);
+  
+            const imgRes = await fetch(
+              "http://localhost/tara-kabataan-webapp/backend/api/upload_partner_image.php",
+              {
+                method: "POST",
+                body: formData,
+              }
+            );
+  
+            const imgData = await imgRes.json();
+  
+            if (imgData.success && imgData.image_url) {
+              data.partner.partner_image = imgData.image_url;
+            }
           }
-          return [data.partner, ...prev];
-        });
-
+        }
+  
+        setPartners((prev) => [data.partner, ...prev]);
+  
         setNotification("New partner added successfully!");
-
         setNewPartner({
           partner_image: "",
           partner_name: "",
@@ -227,36 +250,48 @@ const AdminSettings = () => {
       console.error("Add partner error:", err);
       setNotification("An error occurred while adding the partner.");
     }
-
+  
     setTimeout(() => setNotification(""), 4000);
   };
-
+  
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    mode: "edit" | "new",
+    mode: "edit" | "new"
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
+  
+    const tempPreviewUrl = URL.createObjectURL(file);
+  
+    if (mode === "edit") {
+      setEditImageUrl(tempPreviewUrl);
+    } else {
+      setNewImageUrl(tempPreviewUrl);
+      // Don't upload yet in new mode, wait until Save
+      return;
+    }
+  
+    // Only upload immediately in edit mode
     const formData = new FormData();
     formData.append("image", file);
-
+  
+    if (editablePartner?.partner_id) {
+      formData.append("partner_id", editablePartner.partner_id);
+    }
+  
     try {
-      const res = await fetch(
-        "http://localhost/tara-kabataan-webapp/backend/api/upload_partner_image.php",
-        {
-          method: "POST",
-          body: formData,
-        },
-      );
-
+      const uploadUrl =
+        "http://localhost/tara-kabataan-webapp/backend/api/upload_partner_image.php";
+  
+      const res = await fetch(uploadUrl, {
+        method: "POST",
+        body: formData,
+      });
+  
       const data = await res.json();
       if (data.success && data.image_url) {
-        if (mode === "edit") {
-          setEditImageUrl(data.image_url);
-        } else {
-          setNewImageUrl(data.image_url);
-        }
+        const finalUrl = `${data.image_url}?t=${Date.now()}`;
+        setEditImageUrl(finalUrl);
       } else {
         alert("Image upload failed.");
       }
@@ -342,6 +377,15 @@ const AdminSettings = () => {
 
   return (
     <div className="admin-settings">
+      {notification && (
+        <div
+          className={`blogs-notification-message ${
+            notification.includes("successfully") ? "success" : "error"
+          } show`}
+        >
+          {notification}
+        </div>
+      )}
       <div className="admin-settings-header">
         <div className="admin-settings-search-container">
           <FaSearch className="admin-settings-search-icon" />
@@ -503,6 +547,15 @@ const AdminSettings = () => {
               </div>
               {isEditingMember && selectedMember && (
                 <div className="admin-member-modal">
+                  {notification && (
+                  <div
+                    className={`blogs-notification-message ${
+                      notification.includes("successfully") ? "success" : "error"
+                    } show`}
+                  >
+                    {notification}
+                  </div>
+                )}
                   <div className="admin-member-modal-content">
                     <button
                       className="admin-member-modal-close"
@@ -597,7 +650,6 @@ const AdminSettings = () => {
                               }
                             );
                             const result = await response.json();
-                        
                             if (result.success && result.user) {
                               setUsers((prev) =>
                                 prev.map((u) =>
@@ -608,10 +660,11 @@ const AdminSettings = () => {
                               setSelectedMember(null);
                               setEditableMember(null);
                               setMemberImageUrl(null);
-                              alert("Member updated successfully!");
+                              setNotification("Member updated successfully!");
                             } else {
-                              alert("Failed to update member: " + result.message);
+                              setNotification("Failed to update member: " + result.message);
                             }
+                            setTimeout(() => setNotification(""), 4000);                            
                           } catch (error) {
                             console.error("Update error:", error);
                             alert("Error occurred while updating member.");
@@ -1010,11 +1063,8 @@ const AdminSettings = () => {
                         </p>
                         <div className="admin-partners-image-wrapper">
                           <div className="admin-partners-image-preview">
-                            {getFullImageUrl(newImageUrl) ? (
-                              <img
-                                src={getFullImageUrl(newImageUrl)}
-                                alt="Partner"
-                              />
+                          {newImageUrl ? (
+                          <img src={newImageUrl} alt="Partner" />
                             ) : (
                               <div className="admin-partners-no-image">
                                 No Partner Image

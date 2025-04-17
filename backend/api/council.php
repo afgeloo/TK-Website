@@ -10,15 +10,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 include '../config/db.php';
 
-function resolveImageByRoleId($roleId) {
+function resolveImageByUserId($userId) {
     $extensions = ['jpg', 'jpeg', 'png'];
     $baseDir = realpath('../../uploads/members-images');
     $baseUrl = '/tara-kabataan-webapp/uploads/members-images/';
 
     foreach ($extensions as $ext) {
-        $file = $baseDir . '/' . $roleId . '.' . $ext;
+        $file = $baseDir . '/' . $userId . '.' . $ext;
         if (file_exists($file)) {
-            return $baseUrl . $roleId . '.' . $ext;
+            return $baseUrl . $userId . '.' . $ext;
         }
     }
 
@@ -27,6 +27,7 @@ function resolveImageByRoleId($roleId) {
 
 $query = "
     SELECT 
+        users.user_id,
         users.user_name,
         users.role_id,
         roles.role_name 
@@ -39,7 +40,7 @@ $result = $conn->query($query);
 if ($result) {
     $council = [];
     while ($row = $result->fetch_assoc()) {
-        $row['user_image'] = resolveImageByRoleId($row['role_id']);
+        $row['user_image'] = resolveImageByUserId($row['user_id']);
         $council[] = $row;
     }
 

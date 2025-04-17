@@ -29,8 +29,6 @@ function Council() {
                     dangerouslySetInnerHTML={{ __html: councilText.replace(/\n/g, "<br />") }}
                 />
             </div>
-
-            {/* President Section */}
             <div className="council-president-grid">
                 {councilData
                     .filter(member => member.role_name === "President")
@@ -40,22 +38,24 @@ function Council() {
                                 <div className="council-inner-card-2">
                                     <div className="council-member-image">
                                     <img
-                                    src={`http://localhost/tara-kabataan-webapp/uploads/members-images/${member.role_id}.jpg?t=${Date.now()}`}
+                                    src={`http://localhost/tara-kabataan-webapp/uploads/members-images/users-2025-000001.jpg?t=${Date.now()}`}
                                     onError={(e) => {
                                         const basePath = "http://localhost/tara-kabataan-webapp/uploads/members-images/";
                                         const fallbackExtensions = ["png", "jpeg"];
-                                        const attemptedSrcs = fallbackExtensions.map(ext => `${basePath}${member.role_id}.${ext}?t=${Date.now()}`);
+                                        const attemptedSrcs = fallbackExtensions.map(
+                                            ext => `${basePath}users-2025-000001.${ext}?t=${Date.now()}`
+                                        );
 
                                         if (!e.currentTarget.dataset.fallbackIndex) {
-                                        e.currentTarget.dataset.fallbackIndex = "0";
+                                            e.currentTarget.dataset.fallbackIndex = "0";
                                         }
 
                                         const index = parseInt(e.currentTarget.dataset.fallbackIndex);
                                         if (index < attemptedSrcs.length) {
-                                        e.currentTarget.src = attemptedSrcs[index];
-                                        e.currentTarget.dataset.fallbackIndex = `${index + 1}`;
+                                            e.currentTarget.src = attemptedSrcs[index];
+                                            e.currentTarget.dataset.fallbackIndex = `${index + 1}`;
                                         } else {
-                                        e.currentTarget.src = "./src/assets/aboutpage/img-placeholder-guy.png";
+                                            e.currentTarget.src = "./src/assets/aboutpage/img-placeholder-guy.png";
                                         }
                                     }}
                                     alt={member.role_name}
@@ -77,22 +77,24 @@ function Council() {
                                 <div className="council-inner-card-2">
                                 <div className="council-member-image">
                                 <img
-                                src={`http://localhost/tara-kabataan-webapp/uploads/members-images/${member.role_id}.jpg?t=${Date.now()}`}
+                                src={`http://localhost/tara-kabataan-webapp/uploads/members-images/${member.user_id}.jpg?t=${Date.now()}`}
                                 onError={(e) => {
                                     const basePath = "http://localhost/tara-kabataan-webapp/uploads/members-images/";
                                     const fallbackExtensions = ["png", "jpeg"];
-                                    const attemptedSrcs = fallbackExtensions.map(ext => `${basePath}${member.role_id}.${ext}?t=${Date.now()}`);
+                                    const attemptedSrcs = fallbackExtensions.map(
+                                        ext => `${basePath}${member.user_id}.${ext}?t=${Date.now()}`
+                                    );
 
                                     if (!e.currentTarget.dataset.fallbackIndex) {
-                                    e.currentTarget.dataset.fallbackIndex = "0";
+                                        e.currentTarget.dataset.fallbackIndex = "0";
                                     }
 
                                     const index = parseInt(e.currentTarget.dataset.fallbackIndex);
                                     if (index < attemptedSrcs.length) {
-                                    e.currentTarget.src = attemptedSrcs[index];
-                                    e.currentTarget.dataset.fallbackIndex = `${index + 1}`;
+                                        e.currentTarget.src = attemptedSrcs[index];
+                                        e.currentTarget.dataset.fallbackIndex = `${index + 1}`;
                                     } else {
-                                    e.currentTarget.src = "./src/assets/aboutpage/img-placeholder-guy.png";
+                                        e.currentTarget.src = "./src/assets/aboutpage/img-placeholder-guy.png";
                                     }
                                 }}
                                 alt={member.role_name}
