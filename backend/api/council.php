@@ -10,10 +10,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 include '../config/db.php';
 
+function resolveImageByRoleId($roleId) {
+    $extensions = ['jpg', 'jpeg', 'png'];
+    $baseDir = realpath('../../uploads/members-images');
+    $baseUrl = '/tara-kabataan-webapp/uploads/members-images/';
+
+    foreach ($extensions as $ext) {
+        $file = $baseDir . '/' . $roleId . '.' . $ext;
+        if (file_exists($file)) {
+            return $baseUrl . $roleId . '.' . $ext;
+        }
+    }
+
+    return null;
+}
+
 $query = "
     SELECT 
         users.user_name,
-        users.user_image, 
+        users.role_id,
         roles.role_name 
     FROM tk_webapp.users 
     JOIN tk_webapp.roles ON users.role_id = roles.role_id
@@ -22,7 +37,12 @@ $query = "
 $result = $conn->query($query);
 
 if ($result) {
-    $council = $result->fetch_all(MYSQLI_ASSOC);
+    $council = [];
+    while ($row = $result->fetch_assoc()) {
+        $row['user_image'] = resolveImageByRoleId($row['role_id']);
+        $council[] = $row;
+    }
+
     echo json_encode($council, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 } else {
     http_response_code(500);

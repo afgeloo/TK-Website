@@ -6,14 +6,12 @@ function Council() {
     const [councilText, setCouncilText] = useState("Loading...");
 
     useEffect(() => {
-        // Fetch council description
         fetch("http://localhost/tara-kabataan-webapp/backend/api/aboutus.php")
             .then(res => res.json())
             .then(data => {
                 setCouncilText(data.council || "No data.");
             });
 
-        // Fetch council members
         fetch("http://localhost/tara-kabataan-webapp/backend/api/council.php")
             .then(res => res.json())
             .then(data => setCouncilData(data))
@@ -41,13 +39,27 @@ function Council() {
                             <div className="council-inner-card-1-president">
                                 <div className="council-inner-card-2">
                                     <div className="council-member-image">
-                                        <img
-                                            src={member.user_image || "./src/assets/aboutpage/img-placeholder-guy.png"}
-                                            onError={(e) => {
-                                                e.currentTarget.src = "./src/assets/aboutpage/img-placeholder-guy.png";
-                                            }}
-                                            alt="./src/assets/aboutpage/img-placeholder-guy.png"
-                                        />
+                                    <img
+                                    src={`http://localhost/tara-kabataan-webapp/uploads/members-images/${member.role_id}.jpg?t=${Date.now()}`}
+                                    onError={(e) => {
+                                        const basePath = "http://localhost/tara-kabataan-webapp/uploads/members-images/";
+                                        const fallbackExtensions = ["png", "jpeg"];
+                                        const attemptedSrcs = fallbackExtensions.map(ext => `${basePath}${member.role_id}.${ext}?t=${Date.now()}`);
+
+                                        if (!e.currentTarget.dataset.fallbackIndex) {
+                                        e.currentTarget.dataset.fallbackIndex = "0";
+                                        }
+
+                                        const index = parseInt(e.currentTarget.dataset.fallbackIndex);
+                                        if (index < attemptedSrcs.length) {
+                                        e.currentTarget.src = attemptedSrcs[index];
+                                        e.currentTarget.dataset.fallbackIndex = `${index + 1}`;
+                                        } else {
+                                        e.currentTarget.src = "./src/assets/aboutpage/img-placeholder-guy.png";
+                                        }
+                                    }}
+                                    alt={member.role_name}
+                                    />
                                     </div>
                                     <h1 className="council-member-name">{member.user_name}</h1>
                                     <p className="council-member-role">{member.role_name}</p>
@@ -56,8 +68,6 @@ function Council() {
                         </div>
                     ))}
             </div>
-
-            {/* Other Members Section */}
             <div className="council-grid">
                 {councilData
                     .filter(member => member.role_name !== "President")
@@ -66,13 +76,27 @@ function Council() {
                             <div className="council-inner-card-1-members">
                                 <div className="council-inner-card-2">
                                 <div className="council-member-image">
-                                    <img
-                                        src={member.user_image || "./src/assets/aboutpage/img-placeholder-guy.png"}
-                                        onError={(e) => {
-                                            e.currentTarget.src = "./src/assets/aboutpage/img-placeholder-guy.png";
-                                        }}
-                                        alt="./src/assets/aboutpage/img-placeholder-guy.png"
-                                    />
+                                <img
+                                src={`http://localhost/tara-kabataan-webapp/uploads/members-images/${member.role_id}.jpg?t=${Date.now()}`}
+                                onError={(e) => {
+                                    const basePath = "http://localhost/tara-kabataan-webapp/uploads/members-images/";
+                                    const fallbackExtensions = ["png", "jpeg"];
+                                    const attemptedSrcs = fallbackExtensions.map(ext => `${basePath}${member.role_id}.${ext}?t=${Date.now()}`);
+
+                                    if (!e.currentTarget.dataset.fallbackIndex) {
+                                    e.currentTarget.dataset.fallbackIndex = "0";
+                                    }
+
+                                    const index = parseInt(e.currentTarget.dataset.fallbackIndex);
+                                    if (index < attemptedSrcs.length) {
+                                    e.currentTarget.src = attemptedSrcs[index];
+                                    e.currentTarget.dataset.fallbackIndex = `${index + 1}`;
+                                    } else {
+                                    e.currentTarget.src = "./src/assets/aboutpage/img-placeholder-guy.png";
+                                    }
+                                }}
+                                alt={member.role_name}
+                                />
                                 </div>
                                 <h1 className="council-member-name">{member.user_name}</h1>
                                 <p className="council-member-role">{member.role_name}</p>

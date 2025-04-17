@@ -2,15 +2,23 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-include "../config/db.php";
+$conn = new mysqli("localhost", "root", "", "tk_webapp");
 
-$result = $conn->query("SELECT * FROM users");
-$data = [];
-
-while ($row = $result->fetch_assoc()) {
-    $data[] = $row;
+if ($conn->connect_error) {
+  die(json_encode(["success" => false, "message" => "Connection failed."]));
 }
 
-echo json_encode($data);
+$sql = "SELECT users.user_id, users.user_name, users.user_image, roles.role_name, roles.role_id
+        FROM users
+        LEFT JOIN roles ON users.role_id = roles.role_id";
+
+$result = $conn->query($sql);
+
+$users = [];
+while ($row = $result->fetch_assoc()) {
+  $users[] = $row;
+}
+
+echo json_encode(["success" => true, "users" => $users]);
 $conn->close();
 ?>
