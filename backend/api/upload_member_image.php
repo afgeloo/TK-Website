@@ -9,19 +9,19 @@ if (!file_exists($uploadDir)) {
     mkdir($uploadDir, 0755, true);
 }
 
-if (isset($_FILES['image']) && isset($_POST['user_id'])) {
+if (isset($_FILES['image']) && isset($_POST['member_id'])) {
     $image = $_FILES['image'];
-    $userId = preg_replace('/[^a-zA-Z0-9\-]/', '', $_POST['user_id']);
+    $memberId = preg_replace('/[^a-zA-Z0-9\-]/', '', $_POST['member_id']);
     $extension = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
 
     $existingExtensions = ['jpg', 'jpeg', 'png'];
     foreach ($existingExtensions as $ext) {
-        $existingFile = $uploadDir . $userId . '.' . $ext;
+        $existingFile = $uploadDir . $memberId . '.' . $ext;
         if (file_exists($existingFile)) {
             unlink($existingFile); 
         }
     }
-    $imageName = $userId . '.' . $extension;
+    $imageName = $memberId . '.' . $extension;
     $imagePath = $uploadDir . $imageName;
 
     if (move_uploaded_file($image['tmp_name'], $imagePath)) {
@@ -33,6 +33,6 @@ if (isset($_FILES['image']) && isset($_POST['user_id'])) {
         echo json_encode(["success" => false, "message" => "Failed to save image."]);
     }
 } else {
-    echo json_encode(["success" => false, "message" => "Missing image or user_id."]);
+    echo json_encode(["success" => false, "message" => "Missing image or member_id."]);
 }
 ?>

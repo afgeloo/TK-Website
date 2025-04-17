@@ -10,15 +10,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 include '../config/db.php';
 
-function resolveImageByUserId($userId) {
+function resolveImageByUserId($memberId) {
     $extensions = ['jpg', 'jpeg', 'png'];
     $baseDir = realpath('../../uploads/members-images');
     $baseUrl = '/tara-kabataan-webapp/uploads/members-images/';
 
     foreach ($extensions as $ext) {
-        $file = $baseDir . '/' . $userId . '.' . $ext;
+        $file = $baseDir . '/' . $memberId . '.' . $ext;
         if (file_exists($file)) {
-            return $baseUrl . $userId . '.' . $ext;
+            return $baseUrl . $memberId . '.' . $ext;
         }
     }
 
@@ -27,12 +27,12 @@ function resolveImageByUserId($userId) {
 
 $query = "
     SELECT 
-        users.user_id,
-        users.user_name,
-        users.role_id,
+        members.member_id,
+        members.member_name,
+        members.role_id,
         roles.role_name 
-    FROM tk_webapp.users 
-    JOIN tk_webapp.roles ON users.role_id = roles.role_id
+    FROM tk_webapp.members 
+    JOIN tk_webapp.roles ON members.role_id = roles.role_id
 ";
 
 $result = $conn->query($query);
@@ -40,7 +40,7 @@ $result = $conn->query($query);
 if ($result) {
     $council = [];
     while ($row = $result->fetch_assoc()) {
-        $row['user_image'] = resolveImageByUserId($row['user_id']);
+        $row['member_image'] = resolveImageByUserId($row['member_id']);
         $council[] = $row;
     }
 

@@ -10,9 +10,7 @@
 .past-partnerships-logo {
   width: 150px;
   height: auto;
-  margin-right: 20px;
-  filter: grayscale(100%);
-  transition: filter 0.3s ease-in-out;
+  transition: filter 0.8s ease-in-out;
   -webkit-user-drag: none;
 }
 

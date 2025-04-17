@@ -7,30 +7,30 @@ import select from "../assets/adminpage/blogs/select.png";
 import placeholderImg from "../assets/aboutpage/img-placeholder-guy.png";
 
 const AdminSettings = () => {
-  interface User {
-    user_id: string;
-    user_name: string;
-    user_image: string;
+  interface Member {
+    member_id: string;
+    member_name: string;
+    member_image: string;
     role_id: string;
     role_name: string;
   }
 
-  const [users, setUsers] = useState<User[]>([]);
+  const [members, setMembers] = useState<Member[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost/tara-kabataan-webapp/backend/api/users.php")
+    fetch("http://localhost/tara-kabataan-webapp/backend/api/members.php")
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          setUsers(data.users);
+          setMembers(data.members);
         }
       })
-      .catch((err) => console.error("Failed to fetch users:", err));
+      .catch((err) => console.error("Failed to fetch members:", err));
   }, []);
 
-  const [selectedMember, setSelectedMember] = useState<User | null>(null);
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isEditingMember, setIsEditingMember] = useState(false);
-  const [editableMember, setEditableMember] = useState<User | null>(null);
+  const [editableMember, setEditableMember] = useState<Member | null>(null);
   const [memberImageUrl, setMemberImageUrl] = useState<string | null>(null);
 
   const handleMemberImageUpload = async (
@@ -41,7 +41,7 @@ const AdminSettings = () => {
   
     const formData = new FormData();
     formData.append("image", file);
-    formData.append("user_id", editableMember.user_id);
+    formData.append("member_id", editableMember.member_id);
   
     try {
       const res = await fetch(
@@ -71,6 +71,70 @@ const AdminSettings = () => {
   const handleMemberImageRemove = () => {
     setMemberImageUrl(null);
   };  
+
+  const handleAddNewMemberSave = async () => {
+    try {
+      let imageUrl = "";
+  
+      if (memberImageUrl?.startsWith("blob:")) {
+        const fileInput = document.getElementById("new-member-image-upload") as HTMLInputElement;
+        const file = fileInput?.files?.[0];
+        if (file) {
+          const formData = new FormData();
+          formData.append("image", file);
+  
+          formData.append("member_id", "temp"); 
+  
+          const uploadRes = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_member_image.php", {
+            method: "POST",
+            body: formData,
+          });
+  
+          const uploadData = await uploadRes.json();
+          if (uploadData.success && uploadData.image_url) {
+            imageUrl = uploadData.image_url;
+          }
+        }
+      }
+  
+      const payload = {
+        ...newMember,
+        member_image: imageUrl,
+      };
+  
+      const response = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_member.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      const data = await response.json();
+  
+      if (data.success && data.member) {
+        setMembers((prev) => [data.member, ...prev]);
+        setIsAddingNewMember(false);
+        setNotification("New member added successfully!");
+        setNewMember({ member_name: "", member_image: "", role_id: "" });
+        setMemberImageUrl(null);
+      } else {
+        setNotification("Failed to add member.");
+      }
+    } catch (err) {
+      console.error("Add member error:", err);
+      setNotification("An error occurred while adding the member.");
+    }
+  
+    setTimeout(() => setNotification(""), 4000);
+  };  
+
+  const [isAddingNewMember, setIsAddingNewMember] = useState(false);
+  const [newMember, setNewMember] = useState<Omit<Member, "member_id" | "role_name">>({
+    member_name: "",
+    member_image: "",
+    role_id: "",
+  });
 
   interface Partner {
     partner_id: string;
@@ -227,6 +291,16 @@ const AdminSettings = () => {
   
             if (imgData.success && imgData.image_url) {
               data.partner.partner_image = imgData.image_url;
+              await fetch("http://localhost/tara-kabataan-webapp/backend/api/update_partners.php", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  ...data.partner,
+                  partner_image: imgData.image_url,
+                }),
+              });
             }
           }
         }
@@ -481,15 +555,15 @@ const AdminSettings = () => {
           <div className="admin-settings-tab-placeholder">
             <div className="admin-settings-members">
               <div className="admin-settings-members-cards">
-                {users.map((user) => (
+                {members.map((member) => (
                   <div
-                    key={user.user_id}
+                    key={member.member_id}
                     className="admin-settings-members-cards-content"
                   >
                     <div className="admin-settings-members-cards-content-photo">
                       <img
-                        src={getFullImageUrlCouncil(user.user_image)}
-                        alt="user"
+                        src={getFullImageUrlCouncil(member.member_image)}
+                        alt="member"
                         className="admin-settings-members-cards-content-inner-photo"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
@@ -502,19 +576,19 @@ const AdminSettings = () => {
                       <div className="admin-settings-members-cards-inner-content">
                         <div className="admin-settings-members-cards-inner-desc">
                           <div className="admin-settings-members-cards-inner-content-name">
-                            {user.user_name}
+                            {member.member_name}
                           </div>
                           <div className="admin-settings-members-cards-inner-content-position">
-                            {user.role_name}
+                            {member.role_name}
                           </div>
                         </div>
                         <FaEdit
                         className="admin-settings-member-edit-icon"
                         title="Edit"
                         onClick={() => {
-                          setSelectedMember(user);
-                          setEditableMember({ ...user });
-                          setMemberImageUrl(user.user_image);
+                          setSelectedMember(member);
+                          setEditableMember({ ...member });
+                          setMemberImageUrl(member.member_image);
                           setIsEditingMember(true);
                         }}
                       />
@@ -525,7 +599,9 @@ const AdminSettings = () => {
                 <div
                   className="admin-settings-members-cards-content admin-settings-add-member-card"
                   onClick={() => {
-                    console.log("Add Member Clicked");
+                    setIsAddingNewMember(true);
+                    setNewMember({ member_name: "", member_image: "", role_id: "" });
+                    setMemberImageUrl(null);
                   }}
                 >
                   <div className="admin-settings-members-cards-content-photo add-member-photo">
@@ -598,10 +674,10 @@ const AdminSettings = () => {
                         <label>Name</label>
                         <input
                           type="text"
-                          value={editableMember?.user_name || ''}
+                          value={editableMember?.member_name || ''}
                           onChange={(e) =>
                             setEditableMember((prev) =>
-                              prev ? { ...prev, user_name: e.target.value } : prev
+                              prev ? { ...prev, member_name: e.target.value } : prev
                             )
                           }
                         />
@@ -617,14 +693,13 @@ const AdminSettings = () => {
                         />
                       </div>
                     </div>
-
                     <div className="admin-member-edit-actions">
                       <button
                         className="save-btn"
                         onClick={async () => {
                           if (!editableMember) return;
                         
-                          const originalImage = selectedMember?.user_image;
+                          const originalImage = selectedMember?.member_image;
                           const updatedImage = memberImageUrl || "";
                         
                           if (!memberImageUrl && originalImage) {
@@ -634,10 +709,9 @@ const AdminSettings = () => {
                               body: JSON.stringify({ image_url: originalImage }),
                             });
                           }
-                        
                           const updatedMember = {
                             ...editableMember,
-                            user_image: updatedImage,
+                            member_image: updatedImage,
                           };
                         
                           try {
@@ -650,10 +724,10 @@ const AdminSettings = () => {
                               }
                             );
                             const result = await response.json();
-                            if (result.success && result.user) {
-                              setUsers((prev) =>
+                            if (result.success && result.member) {
+                              setMembers((prev) =>
                                 prev.map((u) =>
-                                  u.user_id === result.user.user_id ? result.user : u
+                                  u.member_id === result.member.member_id ? result.member : u
                                 )
                               );
                               setIsEditingMember(false);
@@ -680,6 +754,93 @@ const AdminSettings = () => {
                   </div>
                 </div>
               )}
+               {isAddingNewMember && (
+              <div className="admin-member-modal">
+                {notification && (
+                  <div className={`blogs-notification-message ${notification.includes("successfully") ? "success" : "error"} show`}>
+                    {notification}
+                  </div>
+                )}
+                <div className="admin-member-modal-content">
+                  <button
+                    className="admin-member-modal-close"
+                    onClick={() => {
+                      setIsAddingNewMember(false);
+                      setNewMember({ member_name: "", member_image: "", role_id: "" });
+                      setNotification("");
+                    }}
+                  >✕</button>
+                  <h1>New Member</h1>
+                  <div className="admin-member-edit-section">
+                    <div className="admin-member-edit-image-wrapper">
+                      {memberImageUrl ? (
+                        <img
+                        src={
+                          memberImageUrl?.startsWith("blob:")
+                            ? memberImageUrl
+                            : getFullImageUrlCouncil(memberImageUrl)
+                        }
+                        alt="Preview"
+                        className="admin-member-edit-photo"
+                      />                      
+                      ) : (
+                        <div className="admin-member-no-image">No Image</div>
+                      )}
+                      <input
+                      type="file"
+                      accept="image/*"
+                      id="new-member-image-upload"  
+                      style={{ display: "none" }}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const tempUrl = URL.createObjectURL(file);
+                          setMemberImageUrl(tempUrl);
+                        }
+                      }}
+                    />
+                      <div className="admin-member-image-buttons">
+                      <button onClick={() => document.getElementById("new-member-image-upload")?.click()}>
+                        Upload
+                      </button>
+                      <button onClick={handleMemberImageRemove}>Remove</button>
+                      </div>
+                    </div>
+                    <div className="admin-member-edit-fields">
+                      <label>Name</label>
+                      <input
+                        type="text"
+                        value={newMember.member_name}
+                        onChange={(e) =>
+                          setNewMember((prev) => ({ ...prev, member_name: e.target.value }))
+                        }
+                      />
+                      <label>Role</label>
+                      <input
+                        type="text"
+                        value={newMember.role_id}
+                        onChange={(e) =>
+                          setNewMember((prev) => ({ ...prev, role_id: e.target.value }))
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="admin-member-edit-actions">
+                  <button className="save-btn" onClick={handleAddNewMemberSave}>Save</button>
+                  <button
+                      className="cancel-btn"
+                      onClick={() => {
+                        setIsAddingNewMember(false);
+                        setNewMember({ member_name: "", member_image: "", role_id: "" });
+                        setNotification("");
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
             </div>
           </div>
         )}

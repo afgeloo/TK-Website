@@ -38,12 +38,12 @@ function Council() {
                                 <div className="council-inner-card-2">
                                     <div className="council-member-image">
                                     <img
-                                    src={`http://localhost/tara-kabataan-webapp/uploads/members-images/users-2025-000001.jpg?t=${Date.now()}`}
+                                    src={`http://localhost/tara-kabataan-webapp/uploads/members-images/member-2025-000003.jpg?t=${Date.now()}`}
                                     onError={(e) => {
                                         const basePath = "http://localhost/tara-kabataan-webapp/uploads/members-images/";
                                         const fallbackExtensions = ["png", "jpeg"];
                                         const attemptedSrcs = fallbackExtensions.map(
-                                            ext => `${basePath}users-2025-000001.${ext}?t=${Date.now()}`
+                                            ext => `${basePath}member-2025-000001.${ext}?t=${Date.now()}`
                                         );
 
                                         if (!e.currentTarget.dataset.fallbackIndex) {
@@ -61,7 +61,7 @@ function Council() {
                                     alt={member.role_name}
                                     />
                                     </div>
-                                    <h1 className="council-member-name">{member.user_name}</h1>
+                                    <h1 className="council-member-name">{member.member_name}</h1>
                                     <p className="council-member-role">{member.role_name}</p>
                                 </div>
                             </div>
@@ -77,12 +77,12 @@ function Council() {
                                 <div className="council-inner-card-2">
                                 <div className="council-member-image">
                                 <img
-                                src={`http://localhost/tara-kabataan-webapp/uploads/members-images/${member.user_id}.jpg?t=${Date.now()}`}
+                                src={`http://localhost/tara-kabataan-webapp/uploads/members-images/${member.member_id}.jpg?t=${Date.now()}`}
                                 onError={(e) => {
                                     const basePath = "http://localhost/tara-kabataan-webapp/uploads/members-images/";
                                     const fallbackExtensions = ["png", "jpeg"];
                                     const attemptedSrcs = fallbackExtensions.map(
-                                        ext => `${basePath}${member.user_id}.${ext}?t=${Date.now()}`
+                                        ext => `${basePath}${member.member_id}.${ext}?t=${Date.now()}`
                                     );
 
                                     if (!e.currentTarget.dataset.fallbackIndex) {
@@ -100,7 +100,7 @@ function Council() {
                                 alt={member.role_name}
                                 />
                                 </div>
-                                <h1 className="council-member-name">{member.user_name}</h1>
+                                <h1 className="council-member-name">{member.member_name}</h1>
                                 <p className="council-member-role">{member.role_name}</p>
                                 </div>
                             </div>

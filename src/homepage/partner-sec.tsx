@@ -1,43 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Marquee from "react-fast-marquee";
 import "./css/partner-sec.css";
 import { Link } from "react-router-dom";
-import miami from "../assets/logos/miamilogo.png";
-import bulls from "../assets/logos/bullslogo.png";
-import lakers from "../assets/logos/lakerslogo.png";
-import celtics from "../assets/logos/celticslogo.png";
-import spurs from "../assets/logos/spurslogo.png";
-import suns from "../assets/logos/sunslogo.png";
-import thunder from "../assets/logos/thunderlogo.png";
-import warriors from "../assets/logos/warriorslogo.png";
 import partnerLogo from "../assets/logos/tklogo1.png";
 import memberLogo from "../assets/logos/tklogo2.png";
 import tklogo from "../assets/logos/tklogo3.png";
 import donateicon from "../assets/logos/donateicon.png";
-import qrCode from "../assets/images/tk_qr.png"; // ✅ Add your QR image
-
-const teamLogos: string[] = [miami, celtics, bulls, lakers, spurs, thunder, suns, warriors];
 
 const PartnerSec: React.FC = () => {
   const [showQR, setShowQR] = useState(false);
+  const [partnerLogos, setPartnerLogos] = useState<string[]>([]);
+
+  const displayedLogos = useMemo(() => {
+    return partnerLogos.length < 6
+      ? [...partnerLogos, ...partnerLogos]
+      : partnerLogos;
+  }, [partnerLogos]);
+
+  useEffect(() => {
+    fetch("http://localhost/tara-kabataan-webapp/backend/api/partners.php")
+      .then((res) => res.json())
+      .then((data) => {
+        const logos = (data.partners || [])
+          .map((p: any) => p.partner_image)
+          .filter((img: string) => img && img.trim() !== "")
+          .map((fullPath: string) => {
+            const parts = fullPath.split(/[/\\]/); 
+            const filename = parts[parts.length - 1];
+            return `http://localhost/tara-kabataan-webapp/uploads/partners-images/${filename}`;
+          });
+        setPartnerLogos(logos);
+      })
+      .catch((err) => console.error("Error fetching partner logos:", err));
+  }, []);  
 
   return (
     <div className="partner-sec">
-      {/* Existing content (unchanged) */}
       <h1 className="PastPartnership-Text">PAST PARTNERSHIPS</h1>
       <br />
       <div>
-        <Marquee speed={100} pauseOnHover loop={0} gradient={false}>
-          {teamLogos.map((team, index) => (
-            <div key={index} style={{ padding: "0 30px" }}>
-              <img src={team} className="past-partnerships-logo" alt={`Team ${index}`} />
-            </div>
-          ))}
-        </Marquee>
+      <Marquee key="partner-marquee" speed={60} pauseOnHover loop={0} gradient={false}>
+      {displayedLogos.map((logo, index) => (
+        <div key={index} style={{ padding: "0 20px" }}>
+          <img
+            src={logo}
+            className="past-partnerships-logo"
+            alt={`Partner ${index}`}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = "fallback-image.png";
+            }}
+          />
+        </div>
+      ))}
+    </Marquee>
       </div>
       <hr className="Hr-under-pastpartnership" />
-
-      {/* Partner & Member Sections (unchanged) */}
       <div className="partner-member-container">
       <div className="BePartnerMemberSection">
           <h2 className="BePartnerMemberText">BE A PARTNER</h2>
@@ -76,7 +93,6 @@ const PartnerSec: React.FC = () => {
           </div>
         </div>
       </div>
-
       <h2 className="support-tk-title">SUPPORT TARA KABATAAN</h2>
       <div className="support-tk-container">
         <div className="support-tk-content-format">
@@ -95,8 +111,6 @@ const PartnerSec: React.FC = () => {
           <span className="donate-now-text">DONATE NOW</span>
         </button>
       </div>
-
-      {/* ✅ QR CODE MODAL */}
       {showQR && (
         <div className="qr-popup-overlay" onClick={() => setShowQR(false)}>
           <div className="qr-popup" onClick={(e) => e.stopPropagation()}>

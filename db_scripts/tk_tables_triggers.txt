@@ -185,10 +185,9 @@ CREATE TABLE tk_webapp.chatbot_faqs (
 
 CREATE TABLE tk_webapp.members (
     member_id VARCHAR(150) PRIMARY KEY,
-    user_id VARCHAR(150),
-    role_id VARCHAR(150),
-    join_date TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    member_name VARCHAR(255),
+    member_image VARCHAR(255),
+    role_id VARCHAR(150), 
     FOREIGN KEY (role_id) REFERENCES roles(role_id)
 );
 

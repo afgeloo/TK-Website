@@ -8,33 +8,33 @@ require_once '../config/db.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-if (!$data || !isset($data['user_id'])) {
+if (!$data || !isset($data['member_id'])) {
     echo json_encode(["success" => false, "message" => "Invalid data."]);
     exit;
 }
 
-$user_id = $data['user_id'];
-$user_name = $data['user_name'] ?? "";
+$member_id = $data['member_id'];
+$member_name = $data['member_name'] ?? "";
 $role_id = $data['role_id'] ?? "";
-$user_image = $data['user_image'] ?? "";
+$member_image = $data['member_image'] ?? "";
 
-$query = "UPDATE users SET user_name = ?, role_id = ?, user_image = ? WHERE user_id = ?";
+$query = "UPDATE members SET member_name = ?, role_id = ?, member_image = ? WHERE member_id = ?";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("ssss", $user_name, $role_id, $user_image, $user_id);
+$stmt->bind_param("ssss", $member_name, $role_id, $member_image, $member_id);
 
 if ($stmt->execute()) {
-    $sql = "SELECT u.user_id, u.user_name, u.user_image, u.role_id, r.role_name 
-            FROM users u 
+    $sql = "SELECT u.member_id, u.member_name, u.member_image, u.role_id, r.role_name 
+            FROM members u 
             LEFT JOIN roles r ON u.role_id = r.role_id 
-            WHERE u.user_id = ?";
+            WHERE u.member_id = ?";
     
     $fetchStmt = $conn->prepare($sql);
-    $fetchStmt->bind_param("s", $user_id);
+    $fetchStmt->bind_param("s", $member_id);
     $fetchStmt->execute();
     $result = $fetchStmt->get_result();
-    $updatedUser = $result->fetch_assoc();
+    $updatedMember = $result->fetch_assoc();
 
-    echo json_encode(["success" => true, "user" => $updatedUser]);
+    echo json_encode(["success" => true, "member" => $updatedMember]);
 } else {
     echo json_encode(["success" => false, "message" => $stmt->error]);
 }
