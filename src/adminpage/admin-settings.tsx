@@ -74,16 +74,24 @@ const AdminSettings = () => {
 
   const handleAddNewMemberSave = async () => {
     try {
-      let imageUrl = "";
+      const response = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_member.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...newMember, member_image: "" }),
+      });
   
-      if (memberImageUrl?.startsWith("blob:")) {
+      const data = await response.json();
+  
+      if (data.success && data.member) {
+        const newId = data.member.member_id;
+        let imageUrl = "";
+  
         const fileInput = document.getElementById("new-member-image-upload") as HTMLInputElement;
         const file = fileInput?.files?.[0];
         if (file) {
           const formData = new FormData();
           formData.append("image", file);
-  
-          formData.append("member_id", "temp"); 
+          formData.append("member_id", newId);
   
           const uploadRes = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_member_image.php", {
             method: "POST",
@@ -93,31 +101,25 @@ const AdminSettings = () => {
           const uploadData = await uploadRes.json();
           if (uploadData.success && uploadData.image_url) {
             imageUrl = uploadData.image_url;
+  
+            await fetch("http://localhost/tara-kabataan-webapp/backend/api/update_member.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                ...data.member,
+                member_image: imageUrl,
+              }),
+            });
           }
         }
-      }
-  
-      const payload = {
-        ...newMember,
-        member_image: imageUrl,
-      };
-  
-      const response = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_member.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-  
-      const data = await response.json();
-  
-      if (data.success && data.member) {
-        setMembers((prev) => [data.member, ...prev]);
+        setMembers((prev) => [
+          { ...data.member, member_image: imageUrl },
+          ...prev
+        ]);        
         setIsAddingNewMember(false);
-        setNotification("New member added successfully!");
         setNewMember({ member_name: "", member_image: "", role_id: "" });
         setMemberImageUrl(null);
+        setNotification("New member added successfully!");
       } else {
         setNotification("Failed to add member.");
       }
@@ -127,14 +129,45 @@ const AdminSettings = () => {
     }
   
     setTimeout(() => setNotification(""), 4000);
-  };  
-
+  };
+  
   const [isAddingNewMember, setIsAddingNewMember] = useState(false);
   const [newMember, setNewMember] = useState<Omit<Member, "member_id" | "role_name">>({
     member_name: "",
     member_image: "",
     role_id: "",
   });
+
+  const [confirmMemberDeleteVisible, setConfirmMemberDeleteVisible] = useState(false);
+
+  const handleDeleteMember = async () => {
+    if (!selectedMember) return;
+  
+    try {
+      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_member.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ member_id: selectedMember.member_id }),
+      });
+  
+      const data = await res.json();
+      if (data.success) {
+        setMembers((prev) => prev.filter((m) => m.member_id !== selectedMember.member_id));
+        setNotification("Member deleted successfully!");
+        setIsEditingMember(false);
+        setSelectedMember(null);
+        setEditableMember(null);
+        setMemberImageUrl(null);
+      } else {
+        setNotification("Failed to delete member.");
+      }
+    } catch (err) {
+      console.error("Delete member error:", err);
+      setNotification("An error occurred while deleting the member.");
+    }
+  
+    setTimeout(() => setNotification(""), 4000);
+  };  
 
   interface Partner {
     partner_id: string;
@@ -695,6 +728,12 @@ const AdminSettings = () => {
                     </div>
                     <div className="admin-member-edit-actions">
                       <button
+                      className="delete-member-btn"
+                      onClick={() => setConfirmMemberDeleteVisible(true)}
+                      >
+                        Delete
+                      </button>
+                      <button
                         className="save-btn"
                         onClick={async () => {
                           if (!editableMember) return;
@@ -754,6 +793,30 @@ const AdminSettings = () => {
                   </div>
                 </div>
               )}
+              {confirmMemberDeleteVisible && (
+              <div className="blogs-confirmation-popup show">
+                <div className="blogs-confirmation-box">
+                  <p>Are you sure you want to delete this member and all their images?</p>
+                  <div className="blogs-confirmation-actions">
+                    <button
+                      className="confirm-yes"
+                      onClick={() => {
+                        setConfirmMemberDeleteVisible(false);
+                        handleDeleteMember();
+                      }}
+                    >
+                      Yes
+                    </button>
+                    <button
+                      className="confirm-no"
+                      onClick={() => setConfirmMemberDeleteVisible(false)}
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
                {isAddingNewMember && (
               <div className="admin-member-modal">
                 {notification && (
