@@ -1,5 +1,5 @@
 import "./css/admin-settings.css";
-import { FaSearch, FaBell, FaPlus, FaEdit } from "react-icons/fa";
+import { FaSearch, FaBell, FaPlus, FaEdit, FaPhone, FaEnvelope, FaMapMarkerAlt, FaFacebookF, FaInstagram } from "react-icons/fa";
 import president from "../assets/aboutpage/council/president.jpg";
 import { BsThreeDots } from "react-icons/bs";
 import { useState, useEffect } from "react";
@@ -581,7 +581,124 @@ const AdminSettings = () => {
       <div className="admin-settings-main-content">
         {activeTab === 0 && (
           <div className="admin-settings-tab-placeholder">
-            <p>About Us content coming soon...</p>
+            <div className="admin-settings-aboutus">
+              <div className="admin-settings-aboutus-contact-info">
+                <div className="admin-settings-aboutus-contact-info-left">
+                <h1 className="admin-settings-aboutus-contact-info-left-h1">Contact Information</h1>
+                  <div className="admin-settings-aboutus-contact-info-phone">
+                    <div className="admin-settings-aboutus-contact-info-phone-icon">
+                      <FaPhone />
+                    </div>
+                    <div className="admin-settings-aboutus-contact-info-phone-desc">
+                      <h1>Phone</h1>
+                      <p>+63 912 345 6789</p>
+                    </div>
+                  </div>
+                  <div className="admin-settings-aboutus-contact-info-email">
+                    <div className="admin-settings-aboutus-contact-info-email-icon">
+                      <FaEnvelope />
+                    </div>
+                    <div className="admin-settings-aboutus-contact-info-email-desc">
+                      <h1>Email</h1>
+                      <p>tarakabataan@gmail.com</p>
+                    </div>
+                  </div>
+                  <div className="admin-settings-aboutus-contact-info-address">
+                    <div className="admin-settings-aboutus-contact-info-address-icon">
+                      <FaMapMarkerAlt />
+                    </div>
+                    <div className="admin-settings-aboutus-contact-info-address-desc">
+                      <h1>Address</h1>
+                      <p>2077 Smith St., Malate, Manila</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="admin-settings-aboutus-contact-info-right">
+                  <div className="admin-settings-aboutus-contact-info-right-edit">
+                    <FaEdit className="aboutus-edit-icon" />
+                  </div>
+                  <div className="admin-settings-aboutus-contact-info-facebook">
+                    <div className="admin-settings-aboutus-contact-info-facebook-icon">
+                      <FaFacebookF />
+                    </div>
+                    <div className="admin-settings-aboutus-contact-info-facebook-desc">
+                      <h1>Facebook</h1>
+                      <p>Tara Kabataan</p>
+                    </div>
+                  </div>
+                  <div className="admin-settings-aboutus-contact-info-instagram">
+                    <div className="admin-settings-aboutus-contact-info-instagram-icon">
+                      <FaInstagram />
+                    </div>
+                    <div className="admin-settings-aboutus-contact-info-instagram-desc">
+                      <h1>Instagram</h1>
+                      <p>@tarakabataan</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="admin-settings-aboutus-page-contents">
+                <div className="admin-settings-aboutus-page-contents-left">
+                  <h1 className="admin-settings-aboutus-page-contents-left-h1">Page Contents</h1>
+                  <div className="admin-settings-aboutus-core-val">
+                    <div className="admin-settings-aboutus-core-val-left">
+                      <h1>Core Values</h1>
+                      <p>Kapwa, Kalinagan, Kaginhawaan</p>
+                    </div>
+                    <div className="admin-settings-aboutus-core-val-right">
+                      <FaEdit className="aboutus-page-contents-edit-icon" />
+                    </div>
+                  </div>
+                  <div className="admin-settings-aboutus-mission">
+                    <div className="admin-settings-aboutus-mission-left">
+                      <h1>Mission</h1>
+                      <p>Layunin ng Tara Kabataan ang pagpapatibay...</p>
+                    </div>
+                    <div className="admin-settings-aboutus-mission-right">
+                      <FaEdit className="aboutus-page-contents-edit-icon" />
+                    </div>
+                  </div>
+                  <div className="admin-settings-aboutus-vision">
+                    <div className="admin-settings-aboutus-vision-left">
+                      <h1>Vision</h1>
+                      <p>Pangarap ng Tara Kabataan ang pagkakaroon...</p>
+                    </div>
+                    <div className="admin-settings-aboutus-vision-right">
+                      <FaEdit className="aboutus-page-contents-edit-icon" />
+                    </div>
+                  </div>
+                </div>
+                <div className="admin-settings-aboutus-page-contents-right">
+                  <div className="admin-settings-aboutus-background-text">
+                    <div className="admin-settings-aboutus-background-text-left">
+                      <h1>Background</h1>
+                      <p>Ang Tara Kabataan ay naitatag noong...</p>
+                    </div>
+                    <div className="admin-settings-aboutus-background-text-right">
+                      <FaEdit className="aboutus-page-contents-edit-icon" />
+                    </div>
+                  </div>
+                  <div className="admin-settings-aboutus-council-text">
+                    <div className="admin-settings-aboutus-council-text-left">
+                      <h1>Council</h1>
+                      <p>Ang Tara Kabataan Council ang pangunahing...</p>
+                    </div>
+                    <div className="admin-settings-aboutus-council-text-right">
+                      <FaEdit className="aboutus-page-contents-edit-icon" />
+                    </div>
+                  </div>
+                  <div className="admin-settings-aboutus-advocacies">
+                    <div className="admin-settings-aboutus-advocacies-left">
+                      <h1>Advocacies</h1>
+                      <p>Kalusugan, Kalikasan, Karunungan, Kultura, Kasarian</p>
+                    </div>
+                    <div className="admin-settings-aboutus-advocacies-right">
+                      <FaEdit className="aboutus-page-contents-edit-icon" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
         {activeTab === 1 && (

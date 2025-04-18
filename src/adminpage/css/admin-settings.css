@@ -784,3 +784,178 @@
 .delete-member-btn:hover {
   background-color: #d32f2f;
 }
+
+.admin-settings-aboutus-contact-info {
+  border: 1px solid rgba(0, 0, 0, 0.15); 
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
+  border-radius: 12px; 
+  padding: 20px; 
+  background-color: #fff; 
+  display: flex;
+  font-family: 'Helvetica', sans-serif;
+}
+
+.admin-settings-aboutus-contact-info-left-h1{
+  font-size: 18px;
+}
+
+.admin-settings-aboutus-contact-info-phone h1,
+.admin-settings-aboutus-contact-info-email h1,
+.admin-settings-aboutus-contact-info-address h1,
+.admin-settings-aboutus-contact-info-facebook h1,
+.admin-settings-aboutus-contact-info-instagram h1
+{
+  font-size: 12px;
+  margin-bottom: -5px;
+}
+
+.admin-settings-aboutus-contact-info p{
+  font-size: 10px;
+}
+
+.admin-settings-aboutus-contact-info-phone,
+.admin-settings-aboutus-contact-info-email,
+.admin-settings-aboutus-contact-info-address,
+.admin-settings-aboutus-contact-info-facebook,
+.admin-settings-aboutus-contact-info-instagram
+{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.admin-settings-aboutus-contact-info-phone-icon,
+.admin-settings-aboutus-contact-info-email-icon,
+.admin-settings-aboutus-contact-info-address-icon,
+.admin-settings-aboutus-contact-info-facebook-icon,
+.admin-settings-aboutus-contact-info-instagram-icon
+{
+  background-color: #4DB1E3;
+  color: white;
+  font-size: 18px;
+  padding: 2px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  min-height: 30px;
+}
+
+.admin-settings-aboutus-contact-info-left{
+  width: 100%;
+}
+
+.admin-settings-aboutus-contact-info-right{
+  width: 100%;
+}
+
+.admin-settings-aboutus-contact-info-right-edit{
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 8px;
+}
+
+.aboutus-edit-icon {
+  color: rgb(149, 149, 149);
+  font-size: 10px;
+  display: flex;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.admin-settings-aboutus-page-contents{
+  display: flex;
+  font-family: 'Helvetica', sans-serif;
+  padding: 10px;
+  margin-top: -5px;
+}
+
+.admin-settings-aboutus-page-contents-left,
+.admin-settings-aboutus-page-contents-right
+{
+  width: 100%;
+  padding: 5px;
+}
+
+.admin-settings-aboutus-page-contents-right{
+  margin-top: 35px;
+}
+
+.admin-settings-aboutus-page-contents-left-h1{
+  font-size: 18px;
+}
+
+.admin-settings-aboutus-core-val h1,
+.admin-settings-aboutus-mission h1,
+.admin-settings-aboutus-vision h1,
+.admin-settings-aboutus-background-text h1,
+.admin-settings-aboutus-council-text h1,
+.admin-settings-aboutus-advocacies h1
+{
+  font-size: 12px;
+  margin-bottom: -5px;
+}
+
+.admin-settings-aboutus-page-contents p{
+  font-size: 10px;
+}
+
+.admin-settings-aboutus-core-val,
+.admin-settings-aboutus-mission,
+.admin-settings-aboutus-vision,
+.admin-settings-aboutus-background-text,
+.admin-settings-aboutus-council-text,
+.admin-settings-aboutus-advocacies
+{
+  display: flex;
+  align-items: center;
+  background-color: #F5F5F5;
+  padding: 2px 20px;
+  border-radius: 15px; 
+  margin-top: 10px;
+}
+
+.admin-settings-aboutus-core-val-left,
+.admin-settings-aboutus-mission-left,
+.admin-settings-aboutus-vision-left,
+.admin-settings-aboutus-background-text-left,
+.admin-settings-aboutus-council-text-left,
+.admin-settings-aboutus-advocacies-left
+{
+  width: 80%;
+}
+
+.admin-settings-aboutus-core-val-right,
+.admin-settings-aboutus-mission-right,
+.admin-settings-aboutus-vision-right,
+.admin-settings-aboutus-background-text-right,
+.admin-settings-aboutus-council-text-right,
+.admin-settings-aboutus-advocacies-right
+{
+  width: 20%;
+}
+
+.admin-settings-aboutus-core-val-right,
+.admin-settings-aboutus-mission-right,
+.admin-settings-aboutus-vision-right,
+.admin-settings-aboutus-background-text-right,
+.admin-settings-aboutus-council-text-right,
+.admin-settings-aboutus-advocacies-right
+{
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 8px;
+}
+
+.aboutus-page-contents-edit-icon {
+  color: rgb(149, 149, 149);
+  font-size: 10px;
+  display: flex;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
