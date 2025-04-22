@@ -796,7 +796,7 @@
 }
 
 .admin-settings-aboutus-contact-info-left-h1{
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .admin-settings-aboutus-contact-info-phone h1,
@@ -805,12 +805,12 @@
 .admin-settings-aboutus-contact-info-facebook h1,
 .admin-settings-aboutus-contact-info-instagram h1
 {
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: -5px;
 }
 
 .admin-settings-aboutus-contact-info p{
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .admin-settings-aboutus-contact-info-phone,
@@ -832,14 +832,14 @@
 {
   background-color: #4DB1E3;
   color: white;
-  font-size: 18px;
+  font-size: 20px;
   padding: 2px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 30px;
-  min-height: 30px;
+  min-width: 35px;
+  min-height: 35px;
 }
 
 .admin-settings-aboutus-contact-info-left{
@@ -859,7 +859,7 @@
 
 .aboutus-edit-icon {
   color: rgb(149, 149, 149);
-  font-size: 10px;
+  font-size: 12px;
   display: flex;
   cursor: pointer;
   width: 20px;
@@ -881,11 +881,11 @@
 }
 
 .admin-settings-aboutus-page-contents-right{
-  margin-top: 35px;
+  margin-top: 40px;
 }
 
 .admin-settings-aboutus-page-contents-left-h1{
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .admin-settings-aboutus-core-val h1,
@@ -895,12 +895,12 @@
 .admin-settings-aboutus-council-text h1,
 .admin-settings-aboutus-advocacies h1
 {
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: -5px;
 }
 
 .admin-settings-aboutus-page-contents p{
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .admin-settings-aboutus-core-val,
@@ -953,7 +953,7 @@
 
 .aboutus-page-contents-edit-icon {
   color: rgb(149, 149, 149);
-  font-size: 10px;
+  font-size: 12px;
   display: flex;
   cursor: pointer;
   width: 18px;
