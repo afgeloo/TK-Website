@@ -72,7 +72,7 @@ function EventDetails() {
       };
 
     if (!event) return null; 
-    const imagePath = `http://localhost/tara-kabataan/tara-kabataan-webapp/${event.event_image}`;
+    const imagePath = `http://localhost/${event.event_image}`;
     return (
         <div className="event-soledetails-container">
             <div className="event-image-container">
@@ -86,7 +86,7 @@ function EventDetails() {
                 <div className="custom-divider-details2"></div>
                 <p className="event-speakernames">{event.event_speakers || "To be announced"}</p>
                 <p className="event-going">
-                    {event.event_going} <strong>{from === "past" ? "Went" : "Going"}</strong>
+                    Category: <strong>{event.event_category}</strong>
                 </p>
                 <div className="custom-divider-details2"></div>
                 <p className="location-header-event">Location:</p>
@@ -145,7 +145,10 @@ function EventDetails() {
                 </div>
             </div>
             <div className="custom-divider-details"></div>
-            <p className="event-details-about">{event.event_content}</p>
+            <div
+                className="event-details-about"
+                dangerouslySetInnerHTML={{ __html: event.event_content }}
+            ></div>
 
             {from === "upcoming" && (
                 <button className="eventrsvp-button-details">RSVP</button>
