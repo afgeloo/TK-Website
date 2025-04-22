@@ -9,6 +9,7 @@
 <li> Pineda, Miguel Ynigo T. </li> 
 <li> Revaula, Alexcszis Rasec T. </li> 
 <li> Reyes, France Angelo Joel M. </li> 
+<li> Valencia, John Cedric </li> 
 </b>
 
 <h2> <img height=35 width=35 src="https://github.com/afgeloo/TK-Website/blob/main/tk%20sipa.png"> What is Tara Kabataan? </h2>
