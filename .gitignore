@@ -1,3 +1,13 @@
+# =====================
+# Node.js / React
+# =====================
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.*.local
+
 # Logs
 logs
 *.log
@@ -7,18 +17,34 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# =====================
+# Upload Folders (frontend)
+# =====================
+uploads/blogs-images/*
+!uploads/blogs-images/.gitkeep
+
+uploads/events-images/*
+!uploads/events-images/.gitkeep
+
+uploads/members-images/*
+!uploads/members-images/.gitkeep
+
+uploads/partners-images/*
+!uploads/partners-images/.gitkeep
+
+# =====================
+# Other temp files
+# =====================
+*.tmp
+*.temp
