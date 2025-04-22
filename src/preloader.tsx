@@ -7,7 +7,7 @@ const Preloader: React.FC = () => {
     <div className="preloader">
       <div className="preloader-logo">
         <img src={preloaderImg} alt="Loading..." />
-        <div className="shadow"></div> {/* Add shadow element */}
+        <div className="shadow"></div> 
       </div>
       <p className="preloader-text">LOADING</p>
     </div>

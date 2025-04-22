@@ -6,7 +6,7 @@ import { chatbubblesOutline } from 'ionicons/icons';
 
 const Chatbot: React.FC = () => {
     const [isExpanded, setIsExpanded] = useState(false);
-    const [hasEntered, setHasEntered] = useState(false); // ✅ NEW: animation state
+    const [hasEntered, setHasEntered] = useState(false); 
     const [messages, setMessages] = useState<{ text: string, type: 'self' | 'other' }[]>([]);
     const [strictProductSearch, setStrictProductSearch] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
@@ -20,12 +20,9 @@ const Chatbot: React.FC = () => {
         if (!myStorage.getItem('chatID')) {
             myStorage.setItem('chatID', createUUID());
         }
-
-        // ✅ Trigger first-time slide-in
         setTimeout(() => {
             setHasEntered(true);
-        }, 300); // delay for smooth transition
-
+        }, 300); 
     }, []);
 
     const createUUID = () => {

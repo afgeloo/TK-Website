@@ -6,7 +6,7 @@ function MissionVision(){
     const [vision, setVision] = useState("Loading...");
 
     useEffect(() => {
-        fetch("http://localhost/tara-kabataan-webapp/backend/api/aboutus.php")
+        fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/aboutus.php")
         .then((res) => {
             if (!res.ok) throw new Error("Network error");
             return res.json();

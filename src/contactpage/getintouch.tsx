@@ -6,7 +6,7 @@ function GetInTouch() {
   const [email, setEmail] = useState<string>("Loading...");
 
   useEffect(() => {
-    fetch("http://localhost/tara-kabataan-webapp/backend/api/aboutus.php")
+    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/aboutus.php")
       .then((res) => res.json())
       .then((data) => {
         if (data.contact_no) setContactNo(data.contact_no);

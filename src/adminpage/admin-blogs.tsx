@@ -99,7 +99,7 @@ const AdminBlogs = () => {
   };
   
   const handleSave = () => {
-    fetch("http://localhost/tara-kabataan-webapp/backend/api/update_blogs.php", {
+    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_blogs.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editableBlog),
@@ -134,7 +134,7 @@ const AdminBlogs = () => {
     formData.append("image", file);
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_blog_image.php", {
+      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
         method: "POST",
         body: formData,
       });
@@ -159,7 +159,7 @@ const AdminBlogs = () => {
   const confirmDeleteBlog = () => {
     if (!selectedBlog) return;
   
-    fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_blogs.php", {
+    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/delete_blogs.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ blog_id: selectedBlog.blog_id }),
@@ -200,7 +200,7 @@ const AdminBlogs = () => {
     formData.append("image", file);
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_blog_image.php", {
+      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
         method: "POST",
         body: formData,
       });
@@ -267,7 +267,7 @@ const AdminBlogs = () => {
 
   const applyBulkStatus = async (newStatus: string) => {
     try {
-      const response = await fetch("http://localhost/tara-kabataan-webapp/backend/api/update_bulk_blog_status.php", {
+      const response = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_bulk_blog_status.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -299,7 +299,7 @@ const AdminBlogs = () => {
 
   const handleBulkDelete = async () => {
     try {
-      const response = await fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_bulk_blogs.php", {
+      const response = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/delete_bulk_blogs.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ blog_ids: selectedBlogIds }),
@@ -321,7 +321,7 @@ const AdminBlogs = () => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost/tara-kabataan-webapp/backend/api/get_user_name.php?user_id=${newBlogAuthor}`)
+    fetch(`http://localhost/tara-kabataan/tara-kabataan-backend/api/get_user_name.php?user_id=${newBlogAuthor}`)
       .then(res => res.json())
       .then(data => {
         if (data.user_name) {
@@ -332,7 +332,7 @@ const AdminBlogs = () => {
   }, [newBlogAuthor]);
 
   useEffect(() => {
-    fetch("http://localhost/tara-kabataan-webapp/backend/api/blogs.php")
+    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/blogs.php")
       .then((res) => res.json())
       .then((data) => {
         setBlogs(data.blogs);
@@ -358,7 +358,7 @@ const AdminBlogs = () => {
     formData.append("image", file);
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_blog_image.php", {
+      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/add_new_blog_image.php", {
         method: "POST",
         body: formData,
       });
@@ -394,7 +394,7 @@ const AdminBlogs = () => {
     };
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_blog.php", {
+      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/add_new_blog.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(blogData),
@@ -406,7 +406,7 @@ const AdminBlogs = () => {
       if (data.success && data.blog) {
         setBlogs((prev) => [...prev, data.blog]); 
   
-        fetch("http://localhost/tara-kabataan-webapp/backend/api/blogs.php")
+        fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/blogs.php")
           .then((res) => res.json())
           .then((data) => {
             setBlogs(data.blogs);
@@ -684,7 +684,7 @@ const AdminBlogs = () => {
                       <button
                         className="confirm-yes"
                         onClick={() => {
-                          fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_blogs.php", {
+                          fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/delete_blogs.php", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ blog_id: selectedBlog?.blog_id }),
@@ -1061,7 +1061,7 @@ const AdminBlogs = () => {
                             const formData = new FormData();
                             formData.append("image", file);
                             try {
-                              const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_blog_image.php", {
+                              const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
                                 method: "POST",
                                 body: formData,
                               });

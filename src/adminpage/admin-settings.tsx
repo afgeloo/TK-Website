@@ -18,7 +18,7 @@ const AdminSettings = () => {
   const [members, setMembers] = useState<Member[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost/tara-kabataan-webapp/backend/api/members.php")
+    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/members.php")
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -45,7 +45,7 @@ const AdminSettings = () => {
   
     try {
       const res = await fetch(
-        "http://localhost/tara-kabataan-webapp/backend/api/upload_member_image.php",
+        "http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_member_image.php",
         {
           method: "POST",
           body: formData,
@@ -74,7 +74,7 @@ const AdminSettings = () => {
 
   const handleAddNewMemberSave = async () => {
     try {
-      const response = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_member.php", {
+      const response = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/add_new_member.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...newMember, member_image: "" }),
@@ -93,7 +93,7 @@ const AdminSettings = () => {
           formData.append("image", file);
           formData.append("member_id", newId);
   
-          const uploadRes = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_member_image.php", {
+          const uploadRes = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_member_image.php", {
             method: "POST",
             body: formData,
           });
@@ -102,7 +102,7 @@ const AdminSettings = () => {
           if (uploadData.success && uploadData.image_url) {
             imageUrl = uploadData.image_url;
   
-            await fetch("http://localhost/tara-kabataan-webapp/backend/api/update_member.php", {
+            await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_member.php", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -144,7 +144,7 @@ const AdminSettings = () => {
     if (!selectedMember) return;
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_member.php", {
+      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/delete_member.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ member_id: selectedMember.member_id }),
@@ -197,7 +197,7 @@ const AdminSettings = () => {
   >(null);
 
   useEffect(() => {
-    fetch("http://localhost/tara-kabataan-webapp/backend/api/partners.php")
+    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/partners.php")
       .then((res) => res.json())
       .then((data) => {
         console.log("PARTNERS DATA:", data);
@@ -209,10 +209,10 @@ const AdminSettings = () => {
   const getFullImageUrl = (url: string | null) => {
     if (!url) return "";
     if (url.startsWith("http")) return url;
-    if (url.includes("/tara-kabataan-webapp/")) {
+    if (url.includes("/tara-kabataan/")) {
       return `http://localhost${url}`;
     }
-    return `http://localhost/tara-kabataan-webapp${url.startsWith("/") ? "" : "/"}${url}`;
+    return `http://localhost/tara-kabataan${url.startsWith("/") ? "" : "/"}${url}`;
   };
 
   const getFullImageUrlCouncil = (url: string | null) => {
@@ -220,9 +220,9 @@ const AdminSettings = () => {
     if (url.startsWith("http")) return url;
   
     const [path, query] = url.split("?");
-    const fullPath = path.includes("/tara-kabataan-webapp/")
+    const fullPath = path.includes("/tara-kabataan/")
       ? `http://localhost${path}`
-      : `http://localhost/tara-kabataan-webapp${path.startsWith("/") ? "" : "/"}${path}`;
+      : `http://localhost/tara-kabataan/${path.startsWith("/") ? "" : "/"}${path}`;
   
     return query ? `${fullPath}?${query}` : fullPath;
   };  
@@ -237,7 +237,7 @@ const AdminSettings = () => {
 
     try {
       const res = await fetch(
-        "http://localhost/tara-kabataan-webapp/backend/api/update_partners.php",
+        "http://localhost/tara-kabataan/tara-kabataan-backend/api/update_partners.php",
         {
           method: "POST",
           headers: {
@@ -288,7 +288,7 @@ const AdminSettings = () => {
   
     try {
       const res = await fetch(
-        "http://localhost/tara-kabataan-webapp/backend/api/add_new_partner.php",
+        "http://localhost/tara-kabataan/tara-kabataan-backend/api/add_new_partner.php",
         {
           method: "POST",
           headers: {
@@ -313,7 +313,7 @@ const AdminSettings = () => {
             formData.append("partner_id", newId);
   
             const imgRes = await fetch(
-              "http://localhost/tara-kabataan-webapp/backend/api/upload_partner_image.php",
+              "http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_partner_image.php",
               {
                 method: "POST",
                 body: formData,
@@ -324,7 +324,7 @@ const AdminSettings = () => {
   
             if (imgData.success && imgData.image_url) {
               data.partner.partner_image = imgData.image_url;
-              await fetch("http://localhost/tara-kabataan-webapp/backend/api/update_partners.php", {
+              await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_partners.php", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -388,7 +388,7 @@ const AdminSettings = () => {
   
     try {
       const uploadUrl =
-        "http://localhost/tara-kabataan-webapp/backend/api/upload_partner_image.php";
+        "http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_partner_image.php";
   
       const res = await fetch(uploadUrl, {
         method: "POST",
@@ -424,7 +424,7 @@ const AdminSettings = () => {
 
     try {
       const res = await fetch(
-        "http://localhost/tara-kabataan-webapp/backend/api/delete_partners.php",
+        "http://localhost/tara-kabataan/tara-kabataan-backend/api/delete_partners.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -454,7 +454,7 @@ const AdminSettings = () => {
   const handleBulkDelete = async () => {
     try {
       const response = await fetch(
-        "http://localhost/tara-kabataan-webapp/backend/api/delete_bulk_partners.php",
+        "http://localhost/tara-kabataan/tara-kabataan-backend/api/delete_bulk_partners.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -859,7 +859,7 @@ const AdminSettings = () => {
                           const updatedImage = memberImageUrl || "";
                         
                           if (!memberImageUrl && originalImage) {
-                            await fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_member_image.php", {
+                            await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/delete_member_image.php", {
                               method: "POST",
                               headers: { "Content-Type": "application/json" },
                               body: JSON.stringify({ image_url: originalImage }),
@@ -872,7 +872,7 @@ const AdminSettings = () => {
                         
                           try {
                             const response = await fetch(
-                              "http://localhost/tara-kabataan-webapp/backend/api/update_member.php",
+                              "http://localhost/tara-kabataan/tara-kabataan-backend/api/update_member.php",
                               {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },

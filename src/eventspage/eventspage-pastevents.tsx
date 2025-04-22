@@ -11,15 +11,15 @@ export interface Event {
   event_image: string;
   event_category: string;
   event_title: string;
-  event_date: string;       // ISO date string, e.g., "2024-04-01"
+  event_date: string;       
   event_day: string;
-  event_start_time: string; // e.g., "13:00:00"
+  event_start_time: string; 
   event_end_time: string;
   event_venue: string;
   event_content: string;
   event_speakers: string;
   event_status: string;
-  created_at: string;       // ISO datetime string
+  created_at: string;       
 }
 
 

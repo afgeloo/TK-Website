@@ -35,7 +35,7 @@ function SingleBlog() {
     const fetchBlog = async () => {
       try {
         const response = await fetch(
-          `http://localhost/tara-kabataan-webapp/backend/api/blogs.php?blog_id=${id}`
+          `http://localhost/tara-kabataan/tara-kabataan-backend/api/blogs.php?blog_id=${id}`
         );
         const data = await response.json();
         if (data && data.blog_id) {

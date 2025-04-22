@@ -59,7 +59,7 @@ const AdminEvents = () => {
   }, [selectedEvent]);
   
   useEffect(() => {
-    fetch("http://localhost/tara-kabataan-webapp/backend/api/events1.php")
+    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/events1.php")
       .then((res) => res.json())
       .then((data) => {
         console.log("EVENTS DATA:", data); 
@@ -146,7 +146,7 @@ const AdminEvents = () => {
       editableEvent.image_url = tempImageUrl;
     }
   
-    fetch("http://localhost/tara-kabataan-webapp/backend/api/update_event.php", {
+    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_event.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editableEvent),
@@ -187,7 +187,7 @@ const AdminEvents = () => {
     };
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_event.php", {
+      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/add_new_event.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -223,7 +223,7 @@ const AdminEvents = () => {
     if (!selectedEvent) return;
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_event.php", {
+      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/delete_event.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ event_id: selectedEvent.event_id })
@@ -255,7 +255,7 @@ const AdminEvents = () => {
     formData.append("image", file);
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_event_image.php", {
+      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_event_image.php", {
         method: "POST",
         body: formData,
       });
@@ -284,10 +284,10 @@ const AdminEvents = () => {
   const getFullImageUrl = (url: string | null) => {
     if (!url) return "";
     if (url.startsWith("http")) return url;
-    if (url.includes("/tara-kabataan-webapp/")) {
+    if (url.includes("/tara-kabataan/")) {
       return `http://localhost${url}`;
     }
-    return `http://localhost/tara-kabataan-webapp${url.startsWith("/") ? "" : "/"}${url}`;
+    return `http://localhost/tara-kabataan${url.startsWith("/") ? "" : "/"}${url}`;
   };  
 
   const saveSelection = () => {
@@ -317,7 +317,7 @@ const AdminEvents = () => {
 
   const handleBulkDelete = async () => {
     try {
-      const response = await fetch("http://localhost/tara-kabataan-webapp/backend/api/delete_bulk_events.php", {
+      const response = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/delete_bulk_events.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ event_ids: selectedEventIds }),
@@ -340,7 +340,7 @@ const AdminEvents = () => {
 
   const applyBulkStatus = async (newStatus: string) => {
     try {
-      const response = await fetch("http://localhost/tara-kabataan-webapp/backend/api/update_bulk_event_status.php", {
+      const response = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_bulk_event_status.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -952,7 +952,7 @@ const AdminEvents = () => {
                             formData.append("image", file);
 
                             try {
-                              const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_event_image.php", {
+                              const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_event_image.php", {
                                 method: "POST",
                                 body: formData,
                               });
@@ -1208,7 +1208,7 @@ const AdminEvents = () => {
                           const formData = new FormData();
                           formData.append("image", file);
 
-                          const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/add_new_event_image.php", {
+                          const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/add_new_event_image.php", {
                             method: "POST",
                             body: formData,
                           });
@@ -1289,7 +1289,7 @@ const AdminEvents = () => {
                           const formData = new FormData();
                           formData.append("image", file);
                           try {
-                            const res = await fetch("http://localhost/tara-kabataan-webapp/backend/api/upload_event_image.php", {
+                            const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_event_image.php", {
                               method: "POST",
                               body: formData,
                             });
