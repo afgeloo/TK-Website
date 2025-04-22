@@ -29,21 +29,6 @@ lerna-debug.log*
 *.sw?
 
 # =====================
-# Upload Folders (frontend)
-# =====================
-uploads/blogs-images/*
-!uploads/blogs-images/.gitkeep
-
-uploads/events-images/*
-!uploads/events-images/.gitkeep
-
-uploads/members-images/*
-!uploads/members-images/.gitkeep
-
-uploads/partners-images/*
-!uploads/partners-images/.gitkeep
-
-# =====================
 # Other temp files
 # =====================
 *.tmp
