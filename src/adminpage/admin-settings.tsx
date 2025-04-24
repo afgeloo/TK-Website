@@ -482,6 +482,38 @@ const AdminSettings = () => {
     setTimeout(() => setNotification(""), 4000);
   };
 
+  interface AboutUs {
+    aboutus_id: string;
+    background: string;
+    overview: string;
+    core_kapwa: string;
+    core_kalinangan: string;
+    core_kaginhawaan: string;
+    mission: string;
+    vision: string;
+    council: string;
+    adv_kalusugan: string;
+    adv_kalikasan: string;
+    adv_karunungan: string;
+    adv_kultura: string;
+    adv_kasarian: string;
+    contact_no: string;
+    about_email: string;
+  }  
+
+  const [aboutData, setAboutData] = useState<AboutUs | null>(null);
+
+  useEffect(() => {
+    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/aboutus.php")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.error) {
+          setAboutData(data);
+        }
+      })
+      .catch((err) => console.error("Failed to fetch About Us data:", err));
+  }, []);
+
   return (
     <div className="admin-settings">
       {notification && (
@@ -591,7 +623,7 @@ const AdminSettings = () => {
                     </div>
                     <div className="admin-settings-aboutus-contact-info-phone-desc">
                       <h1>Phone</h1>
-                      <p>+63 912 345 6789</p>
+                      <p>{aboutData?.contact_no || "N/A"}</p>
                     </div>
                   </div>
                   <div className="admin-settings-aboutus-contact-info-email">
@@ -600,7 +632,7 @@ const AdminSettings = () => {
                     </div>
                     <div className="admin-settings-aboutus-contact-info-email-desc">
                       <h1>Email</h1>
-                      <p>tarakabataan@gmail.com</p>
+                      <p>{aboutData?.about_email || "N/A"}</p>
                     </div>
                   </div>
                   <div className="admin-settings-aboutus-contact-info-address">
@@ -652,7 +684,13 @@ const AdminSettings = () => {
                   <div className="admin-settings-aboutus-mission">
                     <div className="admin-settings-aboutus-mission-left">
                       <h1>Mission</h1>
-                      <p>Layunin ng Tara Kabataan ang pagpapatibay...</p>
+                      <p>
+                        {aboutData?.mission
+                          ? aboutData.mission.length > 50
+                            ? aboutData.mission.slice(0, 50) + "..."
+                            : aboutData.mission
+                          : "No mission found."}
+                      </p>                    
                     </div>
                     <div className="admin-settings-aboutus-mission-right">
                       <FaEdit className="aboutus-page-contents-edit-icon" />
@@ -661,8 +699,13 @@ const AdminSettings = () => {
                   <div className="admin-settings-aboutus-vision">
                     <div className="admin-settings-aboutus-vision-left">
                       <h1>Vision</h1>
-                      <p>Pangarap ng Tara Kabataan ang pagkakaroon...</p>
-                    </div>
+                      <p>
+                        {aboutData?.vision
+                          ? aboutData.vision.length > 50
+                            ? aboutData.vision.slice(0, 50) + "..."
+                            : aboutData.vision
+                          : "No vision found."}
+                      </p>                       </div>
                     <div className="admin-settings-aboutus-vision-right">
                       <FaEdit className="aboutus-page-contents-edit-icon" />
                     </div>
@@ -672,7 +715,13 @@ const AdminSettings = () => {
                   <div className="admin-settings-aboutus-background-text">
                     <div className="admin-settings-aboutus-background-text-left">
                       <h1>Background</h1>
-                      <p>Ang Tara Kabataan ay naitatag noong...</p>
+                      <p>
+                        {aboutData?.background
+                          ? aboutData.background.length > 50
+                            ? aboutData.background.slice(0, 50) + "..."
+                            : aboutData.background
+                          : "No background found."}
+                      </p>
                     </div>
                     <div className="admin-settings-aboutus-background-text-right">
                       <FaEdit className="aboutus-page-contents-edit-icon" />
@@ -681,7 +730,13 @@ const AdminSettings = () => {
                   <div className="admin-settings-aboutus-council-text">
                     <div className="admin-settings-aboutus-council-text-left">
                       <h1>Council</h1>
-                      <p>Ang Tara Kabataan Council ang pangunahing...</p>
+                      <p>
+                        {aboutData?.council
+                          ? aboutData.council.length > 50
+                            ? aboutData.council.slice(0, 50) + "..."
+                            : aboutData.council
+                          : "No council found."}
+                      </p>
                     </div>
                     <div className="admin-settings-aboutus-council-text-right">
                       <FaEdit className="aboutus-page-contents-edit-icon" />
