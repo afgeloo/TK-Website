@@ -374,11 +374,9 @@ const AdminSettings = () => {
       setEditImageUrl(tempPreviewUrl);
     } else {
       setNewImageUrl(tempPreviewUrl);
-      // Don't upload yet in new mode, wait until Save
       return;
     }
   
-    // Only upload immediately in edit mode
     const formData = new FormData();
     formData.append("image", file);
   
@@ -499,6 +497,9 @@ const AdminSettings = () => {
     adv_kasarian: string;
     contact_no: string;
     about_email: string;
+    facebook: string;
+    instagram: string;
+    address: string;
   }  
 
   const [aboutData, setAboutData] = useState<AboutUs | null>(null);
@@ -513,6 +514,87 @@ const AdminSettings = () => {
       })
       .catch((err) => console.error("Failed to fetch About Us data:", err));
   }, []);
+
+  const [isEditingContact, setIsEditingContact] = useState(false);
+  const [editableContact, setEditableContact] = useState<AboutUs | null>(null);
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [emailInvalid, setEmailInvalid] = useState(false);
+  const [phoneInvalid, setPhoneInvalid] = useState(false);
+  const [isEditingPageContent, setIsEditingPageContent] = useState(false);
+  const [pageContentField, setPageContentField] = useState<keyof AboutUs | null>(null);
+  const [editablePageContent, setEditablePageContent] = useState("");
+  const [isEditingCoreValues, setIsEditingCoreValues] = useState(false);
+
+  const [editableCoreValues, setEditableCoreValues] = useState({
+    core_kapwa: "",
+    core_kalinangan: "",
+    core_kaginhawaan: "",
+  });
+
+  const [isEditingAdvocacies, setIsEditingAdvocacies] = useState(false);
+  const [editableAdvocacies, setEditableAdvocacies] = useState({
+    adv_kalusugan: "",
+    adv_kalikasan: "",
+    adv_karunungan: "",
+    adv_kultura: "",
+    adv_kasarian: "",
+  });
+
+  const handleSaveCoreValues = async () => {
+    if (!aboutData) return;
+  
+    try {
+      const updated = { ...aboutData, ...editableCoreValues };
+      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_aboutus.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updated),
+      });
+  
+      const data = await res.json();
+      if (data.success) {
+        setAboutData(updated);
+        setNotification("Core Values updated successfully!");
+      } else {
+        setNotification("Failed to update Core Values.");
+      }
+    } catch (err) {
+      console.error("Error updating Core Values:", err);
+      setNotification("An error occurred while updating Core Values.");
+    }
+    setIsEditingCoreValues(false);
+    setTimeout(() => setNotification(""), 4000);
+  };
+  
+  const handleSaveAdvocacies = async () => {
+    if (!aboutData) return;
+  
+    try {
+      const updated = { ...aboutData, ...editableAdvocacies };
+      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_aboutus.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updated),
+      });
+  
+      const data = await res.json();
+      if (data.success) {
+        setAboutData(updated);
+        setNotification("Advocacies updated successfully!");
+      } else {
+        setNotification("Failed to update Advocacies.");
+      }
+    } catch (err) {
+      console.error("Error updating Advocacies:", err);
+      setNotification("An error occurred while updating Advocacies.");
+    }
+    setIsEditingAdvocacies(false);
+    setTimeout(() => setNotification(""), 4000);
+  };  
+
+  const [selectedCoreValue, setSelectedCoreValue] = useState<keyof typeof editableCoreValues>("core_kapwa");
+  const [selectedAdvocacy, setSelectedAdvocacy] = useState<keyof typeof editableAdvocacies>("adv_kalusugan");
 
   return (
     <div className="admin-settings">
@@ -641,13 +723,19 @@ const AdminSettings = () => {
                     </div>
                     <div className="admin-settings-aboutus-contact-info-address-desc">
                       <h1>Address</h1>
-                      <p>2077 Smith St., Malate, Manila</p>
+                      <p>{aboutData?.address || "N/A"}</p>
                     </div>
                   </div>
                 </div>
                 <div className="admin-settings-aboutus-contact-info-right">
                   <div className="admin-settings-aboutus-contact-info-right-edit">
-                    <FaEdit className="aboutus-edit-icon" />
+                    <FaEdit
+                      className="aboutus-edit-icon"
+                      onClick={() => {
+                        setEditableContact({ ...aboutData! });
+                        setIsEditingContact(true);
+                      }}
+                    />
                   </div>
                   <div className="admin-settings-aboutus-contact-info-facebook">
                     <div className="admin-settings-aboutus-contact-info-facebook-icon">
@@ -655,7 +743,7 @@ const AdminSettings = () => {
                     </div>
                     <div className="admin-settings-aboutus-contact-info-facebook-desc">
                       <h1>Facebook</h1>
-                      <p>Tara Kabataan</p>
+                      <p>{aboutData?.facebook || "N/A"}</p>
                     </div>
                   </div>
                   <div className="admin-settings-aboutus-contact-info-instagram">
@@ -664,7 +752,7 @@ const AdminSettings = () => {
                     </div>
                     <div className="admin-settings-aboutus-contact-info-instagram-desc">
                       <h1>Instagram</h1>
-                      <p>@tarakabataan</p>
+                      <p>{aboutData?.instagram || "N/A"}</p>
                     </div>
                   </div>
                 </div>
@@ -678,7 +766,17 @@ const AdminSettings = () => {
                       <p>Kapwa, Kalinagan, Kaginhawaan</p>
                     </div>
                     <div className="admin-settings-aboutus-core-val-right">
-                      <FaEdit className="aboutus-page-contents-edit-icon" />
+                    <FaEdit 
+                      className="aboutus-page-contents-edit-icon" 
+                      onClick={() => {
+                        setEditableCoreValues({
+                          core_kapwa: aboutData?.core_kapwa || "",
+                          core_kalinangan: aboutData?.core_kalinangan || "",
+                          core_kaginhawaan: aboutData?.core_kaginhawaan || "",
+                        });
+                        setIsEditingCoreValues(true);
+                      }}
+                    />
                     </div>
                   </div>
                   <div className="admin-settings-aboutus-mission">
@@ -693,7 +791,14 @@ const AdminSettings = () => {
                       </p>                    
                     </div>
                     <div className="admin-settings-aboutus-mission-right">
-                      <FaEdit className="aboutus-page-contents-edit-icon" />
+                    <FaEdit
+                      className="aboutus-page-contents-edit-icon"
+                      onClick={() => {
+                        setPageContentField("mission");
+                        setEditablePageContent(aboutData?.mission || "");
+                        setIsEditingPageContent(true);
+                      }}
+                    />
                     </div>
                   </div>
                   <div className="admin-settings-aboutus-vision">
@@ -707,7 +812,14 @@ const AdminSettings = () => {
                           : "No vision found."}
                       </p>                       </div>
                     <div className="admin-settings-aboutus-vision-right">
-                      <FaEdit className="aboutus-page-contents-edit-icon" />
+                    <FaEdit
+                      className="aboutus-page-contents-edit-icon"
+                      onClick={() => {
+                        setPageContentField("vision");
+                        setEditablePageContent(aboutData?.vision || "");
+                        setIsEditingPageContent(true);
+                      }}
+                    />
                     </div>
                   </div>
                 </div>
@@ -724,7 +836,14 @@ const AdminSettings = () => {
                       </p>
                     </div>
                     <div className="admin-settings-aboutus-background-text-right">
-                      <FaEdit className="aboutus-page-contents-edit-icon" />
+                    <FaEdit
+                      className="aboutus-page-contents-edit-icon"
+                      onClick={() => {
+                        setPageContentField("background");
+                        setEditablePageContent(aboutData?.background || "");
+                        setIsEditingPageContent(true);
+                      }}
+                    />
                     </div>
                   </div>
                   <div className="admin-settings-aboutus-council-text">
@@ -739,7 +858,14 @@ const AdminSettings = () => {
                       </p>
                     </div>
                     <div className="admin-settings-aboutus-council-text-right">
-                      <FaEdit className="aboutus-page-contents-edit-icon" />
+                    <FaEdit
+                      className="aboutus-page-contents-edit-icon"
+                      onClick={() => {
+                        setPageContentField("council");
+                        setEditablePageContent(aboutData?.council || "");
+                        setIsEditingPageContent(true);
+                      }}
+                    />
                     </div>
                   </div>
                   <div className="admin-settings-aboutus-advocacies">
@@ -748,12 +874,317 @@ const AdminSettings = () => {
                       <p>Kalusugan, Kalikasan, Karunungan, Kultura, Kasarian</p>
                     </div>
                     <div className="admin-settings-aboutus-advocacies-right">
-                      <FaEdit className="aboutus-page-contents-edit-icon" />
+                    <FaEdit 
+                      className="aboutus-page-contents-edit-icon" 
+                      onClick={() => {
+                        setEditableAdvocacies({
+                          adv_kalusugan: aboutData?.adv_kalusugan || "",
+                          adv_kalikasan: aboutData?.adv_kalikasan || "",
+                          adv_karunungan: aboutData?.adv_karunungan || "",
+                          adv_kultura: aboutData?.adv_kultura || "",
+                          adv_kasarian: aboutData?.adv_kasarian || "",
+                        });
+                        setIsEditingAdvocacies(true);
+                      }}
+                    />
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            {isEditingPageContent && pageContentField && (
+            <div className="admin-contact-modal">
+              <div className="admin-contact-modal-content">
+                <button
+                  className="admin-contact-modal-close"
+                  onClick={() => {
+                    setIsEditingPageContent(false);
+                    setPageContentField(null);
+                  }}
+                >
+                  ✕
+                </button>
+                <h1>Edit {pageContentField.replace("_", " ").replace(/^\w/, (c) => c.toUpperCase())}</h1>
+                <textarea
+                  className="admin-pagecontent-text"
+                  value={editablePageContent}
+                  onChange={(e) => setEditablePageContent(e.target.value)}
+                />
+                <div className="admin-contact-edit-actions">
+                  <button
+                    className="save-btn"
+                    onClick={async () => {
+                      if (!aboutData || !pageContentField) return;
+                      try {
+                        const updated = { ...aboutData, [pageContentField]: editablePageContent };
+                        const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_aboutus.php", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify(updated),
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                          setAboutData(updated);
+                          setNotification("Page content updated successfully!");
+                        } else {
+                          setNotification("Failed to update page content.");
+                        }
+                      } catch (err) {
+                        console.error("Error updating page content:", err);
+                        setNotification("An error occurred while updating page content.");
+                      }
+                      setTimeout(() => setNotification(""), 4000);
+
+                      setIsEditingPageContent(false);
+                      setPageContentField(null);
+                    }}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="cancel-btn"
+                    onClick={() => {
+                      setIsEditingPageContent(false);
+                      setPageContentField(null);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+              {isEditingCoreValues && (
+                <div className="admin-contact-modal">
+                  <div className="admin-contact-modal-content">
+                    <button
+                      className="admin-contact-modal-close"
+                      onClick={() => setIsEditingCoreValues(false)}
+                    >
+                      ✕
+                    </button>
+                    <h1>Edit Core Values</h1>
+                    <div className="admin-contact-edit-fields">
+                      <label>Select Core Value</label>
+                      <select
+                        className="admin-contact-edit-select"
+                        value={selectedCoreValue}
+                        onChange={(e) =>
+                          setSelectedCoreValue(e.target.value as keyof typeof editableCoreValues)
+                        }
+                      >
+                        <option value="core_kapwa">Kapwa</option>
+                        <option value="core_kalinangan">Kalinangan</option>
+                        <option value="core_kaginhawaan">Kaginhawaan</option>
+                      </select>
+                      <label>Edit Text</label>
+                      <textarea
+                        value={editableCoreValues[selectedCoreValue]}
+                        onChange={(e) =>
+                          setEditableCoreValues((prev) => ({
+                            ...prev,
+                            [selectedCoreValue]: e.target.value,
+                          }))
+                        }
+                        className="admin-corevalue-textarea"
+                      />
+                    </div>
+                    <div className="admin-contact-edit-actions">
+                      <button className="save-btn" onClick={handleSaveCoreValues}>
+                        Save
+                      </button>
+                      <button
+                        className="cancel-btn"
+                        onClick={() => setIsEditingCoreValues(false)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {isEditingAdvocacies && (
+              <div className="admin-contact-modal">
+                <div className="admin-contact-modal-content">
+                  <button
+                    className="admin-contact-modal-close"
+                    onClick={() => setIsEditingAdvocacies(false)}
+                  >
+                    ✕
+                  </button>
+                  <h1>Edit Advocacies</h1>
+                  <div className="admin-contact-edit-fields">
+                    <label>Select Advocacy</label>
+                    <select
+                      className="admin-contact-edit-select"
+                      value={selectedAdvocacy}
+                      onChange={(e) =>
+                        setSelectedAdvocacy(e.target.value as keyof typeof editableAdvocacies)
+                      }
+                    >
+                      <option value="adv_kalusugan">Kalusugan</option>
+                      <option value="adv_kalikasan">Kalikasan</option>
+                      <option value="adv_karunungan">Karunungan</option>
+                      <option value="adv_kultura">Kultura</option>
+                      <option value="adv_kasarian">Kasarian</option>
+                    </select>
+                    <label>Edit Text</label>
+                    <textarea
+                      value={editableAdvocacies[selectedAdvocacy]}
+                      onChange={(e) =>
+                        setEditableAdvocacies((prev) => ({
+                          ...prev,
+                          [selectedAdvocacy]: e.target.value,
+                        }))
+                      }
+                      className="admin-corevalue-textarea"
+                    />
+                  </div>
+                  <div className="admin-contact-edit-actions">
+                    <button className="save-btn" onClick={handleSaveAdvocacies}>
+                      Save
+                    </button>
+                    <button
+                      className="cancel-btn"
+                      onClick={() => setIsEditingAdvocacies(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {isEditingContact && editableContact && (
+            <div className="admin-contact-modal">
+              <div className="admin-contact-modal-content">
+                <button
+                  className="admin-contact-modal-close"
+                  onClick={() => {
+                    setIsEditingContact(false);
+                    setEditableContact(null);
+                  }}
+                >
+                  ✕
+                </button>
+                <h1>Edit Contact Information</h1>
+                <div className="admin-contact-edit-fields">
+                <label>Phone Number</label>
+                  <input
+                    type="text"
+                    value={editableContact.contact_no || ""}
+                    maxLength={11}
+                    className={phoneInvalid ? "error-input" : ""}
+                    onChange={(e) => {
+                      const newValue = e.target.value.replace(/\D/g, ''); 
+                      if (newValue.length <= 11) {
+                        setEditableContact((prev) => prev ? { ...prev, contact_no: newValue } : prev);
+                      }
+                      setPhoneInvalid(false); 
+                    }}
+                  />
+                  {phoneError && <p className="error-message">{phoneError}</p>}
+
+                  <label>Email</label>
+                    <input
+                      type="text"
+                      value={editableContact.about_email || ""}
+                      className={emailInvalid ? "error-input" : ""}
+                      onChange={(e) => {
+                        setEditableContact((prev) => prev ? { ...prev, about_email: e.target.value } : prev);
+                        setEmailInvalid(false); 
+                      }}
+                    />
+                  {emailError && <p className="error-message">{emailError}</p>}
+
+                  <label>Address</label>
+                  <input
+                    type="text"
+                    value={editableContact.address || ""}
+                    onChange={(e) =>
+                      setEditableContact((prev) => prev ? { ...prev, address: e.target.value } : prev)
+                    }
+                  />
+
+                  <label>Facebook</label>
+                  <input
+                    type="text"
+                    value={editableContact.facebook || ""}
+                    onChange={(e) =>
+                      setEditableContact((prev) => prev ? { ...prev, facebook: e.target.value } : prev)
+                    }
+                  />
+
+                  <label>Instagram</label>
+                  <input
+                    type="text"
+                    value={editableContact.instagram || ""}
+                    onChange={(e) =>
+                      setEditableContact((prev) => prev ? { ...prev, instagram: e.target.value } : prev)
+                    }
+                  />
+                </div>
+                <div className="admin-contact-edit-actions">
+                <button
+                  className="save-btn"
+                  onClick={async () => {
+                    if (!editableContact) return;
+                  
+                    let hasError = false;
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    const phoneRegex = /^09\d{9}$/;
+                  
+                    if (!emailRegex.test(editableContact.about_email)) {
+                      setEmailInvalid(true);
+                      hasError = true;
+                    }
+                  
+                    if (!phoneRegex.test(editableContact.contact_no)) {
+                      setPhoneInvalid(true);
+                      hasError = true;
+                    }
+                  
+                    if (hasError) return; 
+                  
+                    try {
+                      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_aboutus.php", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(editableContact),
+                      });
+                  
+                      const data = await res.json();
+                  
+                      if (data.success) {
+                        setAboutData(editableContact);
+                        setNotification("Contact Information updated successfully!");
+                      } else {
+                        setNotification("Failed to update Contact Information.");
+                      }
+                    } catch (err) {
+                      console.error("Error updating Contact Information:", err);
+                      setNotification("An error occurred while updating Contact Information.");
+                    }
+                  
+                    setTimeout(() => setNotification(""), 4000);
+                    setIsEditingContact(false);
+                    setEditableContact(null);
+                  }}                  
+                >
+                  Save
+                </button>
+                  <button
+                    className="cancel-btn"
+                    onClick={() => {
+                      setIsEditingContact(false);
+                      setEditableContact(null);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           </div>
         )}
         {activeTab === 1 && (

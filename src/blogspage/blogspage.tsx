@@ -107,7 +107,6 @@ function BlogsPage() {
     <div className="blogs-page">
       <Header />
 
-      {/* Pinned Blogs */}
       {pinnedBlogs.length > 0 && (
         <>
           <div className="blogs-page-pinned-header">
@@ -115,7 +114,6 @@ function BlogsPage() {
           </div>
 
           <div className="blogs-page-pinned-blogs">
-            {/* One Pinned */}
             {pinnedBlogs.length === 1 && (
               <div className="blogs-page-pinned-container blogs-page-pinned-single">
                 <div

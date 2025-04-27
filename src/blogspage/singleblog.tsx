@@ -8,7 +8,6 @@ import silverTime from "../assets/logos/silverTime.jpg";
 import attachIcon from "../assets/logos/attachicon.jpg";
 import Preloader from "../preloader";
 
-// Blog interface
 interface Blog {
   blog_id: string;
   title: string;
@@ -20,7 +19,6 @@ interface Blog {
   blog_status?: string;
 }
 
-// ✅ Helper to safely build image URL
 const getSafeImageUrl = (url: string | null | undefined): string => {
   if (!url) return "";
   return url.startsWith("http") || url.startsWith("/") ? `http://localhost${url}` : url;
@@ -97,7 +95,6 @@ function SingleBlog() {
           dangerouslySetInnerHTML={{ __html: blog.content }}
         ></div>
 
-        {/* Copy Link to Blog section */}
         <div className="single-blog-copy-link-container">
           <span className="single-blog-copy-link-text">Copy Link to Blog</span>
           <div className="single-blog-copy-link-icon-container" onClick={copyBlogLink}>

@@ -85,8 +85,8 @@ function EventDetails() {
                 <p className="event-speaker"><strong>Speaker/s:</strong></p>
                 <div className="custom-divider-details2"></div>
                 <p className="event-speakernames">{event.event_speakers || "To be announced"}</p>
-                <p className="event-going">
-                    Category: <strong>{event.event_category}</strong>
+                <p className="event-category">
+                    <strong>{event.event_category}</strong>
                 </p>
                 <div className="custom-divider-details2"></div>
                 <p className="location-header-event">Location:</p>
