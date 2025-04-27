@@ -222,11 +222,12 @@ const AdminEvents = () => {
   
     eventDate.setHours(startHour, startMinute, 0, 0);
   
-    if (eventDate < now) {
+    if (editableEvent.event_status !== "COMPLETED" && eventDate < now) {
       setNotification("Cannot set an event date and time in the past!");
       setTimeout(() => setNotification(""), 4000);
       return;
     }
+
   
     if (tempImageUrl !== null) {
       editableEvent.image_url = tempImageUrl;

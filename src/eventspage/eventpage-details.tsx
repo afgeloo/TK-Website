@@ -61,6 +61,13 @@ function EventDetails() {
   if (!event) return null;
   const imageUrl = `http://localhost/${event.event_image}`;
 
+  function formatContent(content: string) {
+    if (!content) return "";
+    return content
+      .replace(/\n/g, "<br>")
+      .replace(/  /g, " &nbsp;");
+  }  
+
   return (
     <div className="event-details">
         <Header />
@@ -72,11 +79,9 @@ function EventDetails() {
             <div className="event-detail-section">
               <p className="event-info-label">Speakers</p>
               <div
-                className="event-info-value"
-                style={{ whiteSpace: "pre-wrap" }}
-                >
-                {event.event_speakers || "To be announced"}
-            </div>
+            className="event-info-value"
+            dangerouslySetInnerHTML={{ __html: formatContent(event.event_speakers || "To be announced") }}
+            ></div>
             </div>
             <div className="event-detail-section">
               <p className="event-info-label">Category</p>

@@ -54,7 +54,7 @@ function SingleBlog() {
     try {
       await navigator.clipboard.writeText(window.location.href);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000); // Auto hide message
+      setTimeout(() => setCopied(false), 2000); 
     } catch (err) {
       console.error("Failed to copy link:", err);
     }
@@ -62,6 +62,12 @@ function SingleBlog() {
 
   if (loading) return <Preloader />;
   if (!blog) return <div className="single-blog-not-found">Blog not found.</div>;
+
+  function formatContent(content: string) {
+    return content
+      .replace(/\n/g, "<br>") 
+      .replace(/  /g, " &nbsp;"); 
+  }  
 
   return (
     <div className="single-blog-container">
@@ -86,12 +92,10 @@ function SingleBlog() {
               <span>{blog.author}</span>
             </div>
           </div>
-
           <div
             className="single-blog-content"
-            dangerouslySetInnerHTML={{ __html: blog.content }}
+            dangerouslySetInnerHTML={{ __html: formatContent(blog.content) }}
           ></div>
-
           <button className="single-blog-copy-link" onClick={copyBlogLink}>
             <img src={attachIcon} alt="Copy Link" />
             <span>{copied ? "Link Copied!" : "Copy Blog Link"}</span>
