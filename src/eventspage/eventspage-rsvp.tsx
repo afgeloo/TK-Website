@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "./css/eventpage-rsvp.css";
 import locationIconeventspage from "../assets/eventspage/Location-eventspage.png";
 import searchIconEventspage from "../assets/eventspage/Search-icon-events.png";
-import CowCurrentEvent from "../assets/eventspage/no_current_event.png";
 import PreloaderEvents from "./loader-events";
 
 export interface Event {

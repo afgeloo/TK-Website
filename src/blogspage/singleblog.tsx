@@ -1,12 +1,14 @@
+// SingleBlog.tsx
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../header";
 import Footer from "../footer";
+import Preloader from "../preloader";
 import "./singleblog.css";
+
 import silverPencil from "../assets/logos/silverPencil.png";
 import silverTime from "../assets/logos/silverTime.jpg";
 import attachIcon from "../assets/logos/attachicon.jpg";
-import Preloader from "../preloader";
 
 interface Blog {
   blog_id: string;
@@ -16,7 +18,6 @@ interface Blog {
   category: string;
   created_at: string;
   author: string;
-  blog_status?: string;
 }
 
 const getSafeImageUrl = (url: string | null | undefined): string => {
@@ -28,82 +29,75 @@ function SingleBlog() {
   const { id } = useParams();
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false); // NEW
 
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await fetch(
-          `http://localhost/tara-kabataan/tara-kabataan-backend/api/blogs.php?blog_id=${id}`
-        );
+        const response = await fetch(`http://localhost/tara-kabataan/tara-kabataan-backend/api/blogs.php?blog_id=${id}`);
         const data = await response.json();
         if (data && data.blog_id) {
           setBlog(data);
         } else {
           console.error("No blog found");
-          setBlog(null);
         }
       } catch (error) {
         console.error("Error fetching blog:", error);
-        setBlog(null);
       } finally {
         setLoading(false);
       }
     };
-
     fetchBlog();
   }, [id]);
 
-  const copyBlogLink = () => {
-    const currentUrl = window.location.href;
-    navigator.clipboard.writeText(currentUrl).catch((err) => {
-      console.error("Failed to copy link: ", err);
-    });
+  const copyBlogLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Auto hide message
+    } catch (err) {
+      console.error("Failed to copy link:", err);
+    }
   };
 
   if (loading) return <Preloader />;
-  if (!blog) return <p>Blog not found.</p>;
+  if (!blog) return <div className="single-blog-not-found">Blog not found.</div>;
 
   return (
-    <div className="single-blog-blog-detail-page">
+    <div className="single-blog-container">
       <Header />
 
-      <div className="single-blog-blog-content-wrapper">
-        <img
-          src={getSafeImageUrl(blog.image_url)}
-          alt={blog.title}
-          className="single-blog-blog-image"
-        />
-
-        <p className="single-blog-blog-category">{blog.category}</p>
-
-        <h1 className="single-blog-blog-title">{blog.title}</h1>
-
-        <div className="single-blog-blog-meta">
-          <img src={silverTime} className="single-blog-blog-time-icon" />
-          {new Date(blog.created_at).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-
-          <img src={silverPencil} className="single-blog-blog-author-icon" />
-          {blog.author}
+      <main className="single-blog-main">
+        <div className="single-blog-image-wrapper">
+          <img src={getSafeImageUrl(blog.image_url)} alt={blog.title} className="single-blog-image" />
         </div>
 
-        <div
-          className="single-blog-blog-content"
-          dangerouslySetInnerHTML={{ __html: blog.content }}
-        ></div>
+        <div className="single-blog-info">
+          <span className="single-blog-category">{blog.category}</span>
+          <h1 className="single-blog-title">{blog.title}</h1>
 
-        <div className="single-blog-copy-link-container">
-          <span className="single-blog-copy-link-text">Copy Link to Blog</span>
-          <div className="single-blog-copy-link-icon-container" onClick={copyBlogLink}>
-            <div className="single-blog-copy-link-icon">
-              <img src={attachIcon} alt="Copy link" className="single-blog-attach-icon" />
+          <div className="single-blog-meta">
+            <div className="single-blog-meta-item">
+              <img src={silverTime} alt="Time Icon" className="single-blog-icon" />
+              <span>{new Date(blog.created_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
+            </div>
+            <div className="single-blog-meta-item">
+              <img src={silverPencil} alt="Author Icon" className="single-blog-icon" />
+              <span>{blog.author}</span>
             </div>
           </div>
+
+          <div
+            className="single-blog-content"
+            dangerouslySetInnerHTML={{ __html: blog.content }}
+          ></div>
+
+          <button className="single-blog-copy-link" onClick={copyBlogLink}>
+            <img src={attachIcon} alt="Copy Link" />
+            <span>{copied ? "Link Copied!" : "Copy Blog Link"}</span>
+          </button>
         </div>
-      </div>
+      </main>
 
       <Footer />
     </div>
