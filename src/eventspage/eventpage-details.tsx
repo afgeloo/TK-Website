@@ -71,7 +71,12 @@ function EventDetails() {
           <div className="event-details-info">
             <div className="event-detail-section">
               <p className="event-info-label">Speakers</p>
-              <p className="event-info-value">{event.event_speakers || "To be announced"}</p>
+              <div
+                className="event-info-value"
+                style={{ whiteSpace: "pre-wrap" }}
+                >
+                {event.event_speakers || "To be announced"}
+            </div>
             </div>
             <div className="event-detail-section">
               <p className="event-info-label">Category</p>

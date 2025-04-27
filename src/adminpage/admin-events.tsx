@@ -908,8 +908,8 @@ const AdminEvents = () => {
                           className="admin-events-inner-content-modal-speakers-content"
                         />
                       ) : (
-                        <p className="admin-events-inner-content-modal-speakers-content">
-                          {selectedEvent.event_speakers}
+                        <p className="admin-events-inner-content-modal-speakers-content" style={{ whiteSpace: 'pre-wrap' }}>
+                        {selectedEvent.event_speakers}
                         </p>
                       )}
                     </div>
