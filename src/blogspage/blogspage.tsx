@@ -106,13 +106,11 @@ function BlogsPage() {
   return (
     <div className="blogs-page">
       <Header />
-
       {pinnedBlogs.length > 0 && (
         <>
           <div className="blogs-page-pinned-header">
             <h2>{pinnedBlogs.length === 1 ? "Pinned Blog" : "Pinned Blogs"}</h2>
           </div>
-
           <div className="blogs-page-pinned-blogs">
             {pinnedBlogs.length === 1 && (
               <div className="blogs-page-pinned-container blogs-page-pinned-single">
@@ -138,8 +136,6 @@ function BlogsPage() {
                 </div>
               </div>
             )}
-
-            {/* Two Pinned */}
             {pinnedBlogs.length === 2 && (
               <div className="blogs-page-pinned-container blogs-page-pinned-double">
                 {pinnedBlogs.map((blog) => (
@@ -167,8 +163,6 @@ function BlogsPage() {
                 ))}
               </div>
             )}
-
-            {/* Three or More Pinned */}
             {pinnedBlogs.length >= 3 && (
               <div className="blogs-page-pinned-container">
                 <div
@@ -191,7 +185,6 @@ function BlogsPage() {
                     </p>
                   </div>
                 </div>
-
                 <div className="blogs-page-pinned-side">
                   {pinnedBlogs.slice(1, 3).map((blog) => (
                     <div
@@ -222,8 +215,6 @@ function BlogsPage() {
           </div>
         </>
       )}
-
-      {/* Categories */}
       <div className="blogs-page-blog-categories">
         <h2 className="blogs-page-blogs-header" style={{ fontFamily: "'Bogart Trial', sans-serif" }}>
           Blogs
@@ -241,8 +232,6 @@ function BlogsPage() {
         </div>
       </div>
       <hr className="blogs-page-Hr" />
-
-      {/* Blogs List */}
       <div className="blogs-page-blogs-list">
         {loading ? (
           <Preloader />
@@ -280,12 +269,11 @@ function BlogsPage() {
             ))}
           </div>
         ) : (
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div className="no-blogs-container">
             <p>No blogs found.</p>
           </div>
         )}
       </div>
-
       {filteredBlogs.length > 4 && (
         <button className="blogs-page-see-more-btn" onClick={() => setShowAllBlogs(!showAllBlogs)}>
           {showAllBlogs ? "Show Less" : "See More"}

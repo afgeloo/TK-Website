@@ -76,7 +76,6 @@ function EventDetails() {
     return (
         <div className="event-soledetails-container">
             <div className="event-image-container">
-
                 <img
                     src={imagePath}
                     alt={imagePath}
@@ -91,13 +90,12 @@ function EventDetails() {
                 <div className="custom-divider-details2"></div>
                 <p className="location-header-event">Location:</p>
                 <div className="custom-divider-details2"></div>
-
-            <a
-                href={event.map_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="event-map-link"
-            >
+                <a
+                    href={event.map_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="event-map-link"
+                >
                 <div className="event-map-container">
                     <iframe
                         src={`https://www.google.com/maps?q=${encodeURIComponent(event.event_venue || "Default Location")}&z=18&output=embed`}
@@ -110,8 +108,6 @@ function EventDetails() {
                 </div>
             </a>
         </div>
-
-        {/* Right side: Info */}
         <div className="event-content">
             <h1 className="event-details-title">{event.event_title}</h1>
             <p className="event-date-details">
@@ -128,7 +124,6 @@ function EventDetails() {
                 />
                 {event.event_venue}
             </p>
-
             <div className="event-details-header-row">
                 <p className="about-details-event-title">About the Event</p>
 
@@ -149,12 +144,10 @@ function EventDetails() {
                 className="event-details-about"
                 dangerouslySetInnerHTML={{ __html: event.event_content }}
             ></div>
-
             {from === "upcoming" && (
                 <button className="eventrsvp-button-details">RSVP</button>
             )}
         </div>
-
             <button className="event-details-back-button" onClick={() => navigate("/events")}>
                 Go Back
             </button>
@@ -170,9 +163,7 @@ function EventDetails() {
              toastClassName="custom-toast"
              limit={1}
          />
-    
         </div>
-        
     );
 }
 

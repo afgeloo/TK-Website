@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchEvents, convertTo12HourFormat, formatDateRSVP } from "./mockServer";
 import "./css/eventpage-rsvp.css";
 import locationIconeventspage from "../assets/eventspage/Location-eventspage.png";
 import searchIconEventspage from "../assets/eventspage/Search-icon-events.png";
@@ -12,15 +11,49 @@ export interface Event {
   event_image: string;
   event_category: string;
   event_title: string;
-  event_date: string; 
-  event_start_time: string; 
+  event_date: string;
+  event_start_time: string;
   event_end_time: string;
   event_venue: string;
   event_content: string;
   event_speakers: string;
   event_status: string;
-  created_at: string; 
+  created_at: string;
 }
+
+const getFullImageUrl = (imageUrl: string) => {
+  if (!imageUrl) return "";
+  if (imageUrl.startsWith("http")) return imageUrl;
+  return `http://localhost${imageUrl}`;
+};
+
+const formatDateRSVP = (dateString: string) => {
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "long", 
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  const date = new Date(dateString);
+  const formatted = date.toLocaleDateString(undefined, options);
+
+  const parts = formatted.split(", ");
+  if (parts.length === 3) {
+    return `${parts[1]}, ${parts[2]} - ${parts[0]}`;
+  }
+  return formatted;
+};
+
+
+const convertTo12HourFormat = (time: string) => {
+  if (!time) return "";
+  const [hourStr, minuteStr] = time.split(":");
+  let hour = parseInt(hourStr, 10);
+  const minute = minuteStr;
+  const ampm = hour >= 12 ? "PM" : "AM";
+  hour = hour % 12 || 12;
+  return `${hour}:${minute} ${ampm}`;
+};
 
 function EventsPageRSVP() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -35,11 +68,17 @@ function EventsPageRSVP() {
   const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
-    fetchEvents().then((data) => {
-      if (Array.isArray(data)) {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/events.php");
+        const data = await res.json();
         setEvents(data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
       }
-    });
+    };
+
+    fetchEvents();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
@@ -82,20 +121,16 @@ function EventsPageRSVP() {
     <div className="events-page-rsvp">
       <div className="events-header-row">
         <h1 className="eventspage-header-EVENTS">EVENTS</h1>
-
-        {/* Toggle */}
         <div className="event-toggle-wrapper">
-          <div className="event-toggle-background">
-            <span className={`toggle-indicator ${viewType.toLowerCase()}`}></span>
-
+          <div className="event-toggle-tabs">
             <button
-              className={`toggle-segment ${viewType === "UPCOMING" ? "active" : ""}`}
+              className={`event-toggle-tab ${viewType === "UPCOMING" ? "active" : ""}`}
               onClick={() => setViewType("UPCOMING")}
             >
               UPCOMING
             </button>
             <button
-              className={`toggle-segment ${viewType === "PAST" ? "active" : ""}`}
+              className={`event-toggle-tab ${viewType === "PAST" ? "active" : ""}`}
               onClick={() => setViewType("PAST")}
             >
               PAST
@@ -116,7 +151,6 @@ function EventsPageRSVP() {
             </span>
           ))}
         </div>
-
         <div className="event-search-bar">
           <input
             type="text"
@@ -145,7 +179,7 @@ function EventsPageRSVP() {
               style={{ cursor: "pointer" }}
             >
               <img
-                src={event.event_image}
+                src={getFullImageUrl(event.event_image)}
                 alt={event.event_title || "No image available"}
                 className="event-image"
               />
@@ -153,7 +187,7 @@ function EventsPageRSVP() {
               <p className="event-category">{event.event_category}</p>
               <p className="event-date">
                 {formatDateRSVP(event.event_date)} <br />
-                {convertTo12HourFormat(event.event_start_time)}
+                {convertTo12HourFormat(event.event_start_time)} - {convertTo12HourFormat(event.event_end_time)}
               </p>
               <p className="event-location">
                 <img
@@ -168,8 +202,8 @@ function EventsPageRSVP() {
                   <button
                     className="eventrsvp-button"
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent event bubbling
-                      window.open("https://docs.google.com/forms/d/1t6zpzidXd5fhIdotpMYwJpOhobaw0VzsYaouREs4kgg/edit", "_blank"); 
+                      e.stopPropagation();
+                      window.open("https://docs.google.com/forms/d/1t6zpzidXd5fhIdotpMYwJpOhobaw0VzsYaouREs4kgg/edit", "_blank");
                     }}
                   >
                     RSVP
@@ -185,18 +219,15 @@ function EventsPageRSVP() {
               </button>
             </div>
           )}
-{loadingMore && (
-  <div className="see-more-loader" style={{ gridColumn: "1 / -1" }}>
-    <PreloaderEvents inline />
-  </div>
-)}
+          {loadingMore && (
+            <div className="see-more-loader" style={{ gridColumn: "1 / -1" }}>
+              <PreloaderEvents inline />
+            </div>
+          )}
         </div>
       ) : (
         <div className="no-events-container">
-          <img src={CowCurrentEvent} alt="No Events" className="no-events-image" />
-          <div className="no-events-bubble">
-            <p className="no-events-text">No events found.</p>
-          </div>
+          <p>No events found.</p>
         </div>
       )}
     </div>

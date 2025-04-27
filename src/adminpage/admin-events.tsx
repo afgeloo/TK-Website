@@ -711,6 +711,8 @@ const AdminEvents = () => {
                         <p className="admin-events-inner-content-modal-venue-content">{selectedEvent.event_venue}</p>
                       )}
                     </div>
+                  </div>
+                  <div className="admin-events-inner-content-modal-top-right">
                     <div className="admin-events-inner-content-modal-status">
                       <p><strong>Status</strong></p>
                       <select
@@ -727,8 +729,6 @@ const AdminEvents = () => {
                         ))}
                       </select>
                     </div>
-                  </div>
-                  <div className="admin-events-inner-content-modal-top-right">
                     <div className="admin-events-inner-content-modal-date">
                       <p><strong>Date</strong></p>
                       {isEditing ? (

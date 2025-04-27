@@ -114,7 +114,28 @@
   .admin-logout-link.active .admin-logout-icon {
     color: #FE93B4;
   }
-  
+
+.admin-sidebar.events-page {
+  background-color: #4DB1E3;
+}
+
+.admin-sidebar.events-page .admin-link {
+  color: white;
+}
+
+.admin-sidebar.events-page .admin-link.active {
+  background-color: white;
+  color: #4DB1E3;
+}
+
+.admin-sidebar.events-page .admin-link.active .admin-icon {
+  color: #4DB1E3;
+}
+
+.admin-sidebar.events-page .admin-icon {
+  color: white;
+}
+
   @media (max-width: 768px) {
     .admin-sidebar {
       position: fixed;

@@ -11,5 +11,7 @@ call npm install @emailjs/browser
 call npm install @ionic/react
 call npm install react-icons
 call npm install react-toastify
+call npm install @googlemaps/js-api-loader
+
 echo Installation complete!
 pause

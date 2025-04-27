@@ -1,4 +1,4 @@
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import {
   FaBars,
@@ -12,17 +12,18 @@ import logo from "../assets/header/tarakabataanlogo2.png";
 
 const AdminSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const isEventsPage = location.pathname.includes("events");
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   return (
     <>
-      {/* Hamburger button */}
       <button className="admin-sidebar-toggle" onClick={toggleSidebar}>
         <FaBars />
       </button>
 
-      <div className={`admin-sidebar ${isOpen ? "open" : ""}`}>
+      <div className={`admin-sidebar ${isOpen ? "open" : ""} ${isEventsPage ? "events-page" : ""}`}>
         <header className="admin-sidebar-header">
           <Link to="/">
             <img src={logo} alt="Tarakabataan Logo" className="admin-logo" />
@@ -42,7 +43,7 @@ const AdminSidebar = () => {
         <NavLink
           to="events"
           className={({ isActive }) =>
-            isActive ? "admin-link active" : "admin-link"
+            isActive ? "admin-link active events-active" : "admin-link"
           }
           onClick={() => setIsOpen(false)}
         >
@@ -59,8 +60,6 @@ const AdminSidebar = () => {
           <FaCog className="admin-icon" />
           Settings
         </NavLink>
-
-        {/* Logout link at bottom with smaller size */}
         <NavLink
           to="/"
           className="admin-logout-link"
