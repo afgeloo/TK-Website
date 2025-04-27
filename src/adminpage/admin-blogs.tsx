@@ -66,11 +66,12 @@ const AdminBlogs = () => {
     const searchLower = searchQuery.toLowerCase();
 
     const matchSearch =
+      (blog.blog_id?.toLowerCase().includes(searchLower) ?? false) ||
       (blog.title?.toLowerCase().includes(searchLower) ?? false) ||
       (blog.category?.toLowerCase().includes(searchLower) ?? false) ||
       (blog.author?.toLowerCase().includes(searchLower) ?? false) ||
       (blog.blog_status?.toLowerCase().includes(searchLower) ?? false) ||
-      (blog.created_at?.toLowerCase().includes(searchLower) ?? false) ||
+      (formatDate(blog.created_at).toLowerCase().includes(searchLower) ?? false) ||
       (blog.blog_id?.toLowerCase().includes(searchLower) ?? false);
 
     return matchCategory && matchStatus && matchSearch;
@@ -437,10 +438,6 @@ const AdminBlogs = () => {
           />
         </div>
         <div className="admin-blogs-header-right">
-          <div className="admin-blogs-bell-wrapper">
-            <FaBell className="admin-blogs-bell-icon" />
-            <span className="admin-blogs-bell-dot"></span>
-          </div>
           <div className="admin-blogs-loggedin-info">
             <img src={president} className="admin-blogs-loggedin-avatar" />
             <div className="admin-blogs-loggedin-desc">

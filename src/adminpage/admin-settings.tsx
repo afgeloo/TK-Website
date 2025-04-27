@@ -595,6 +595,22 @@ const AdminSettings = () => {
 
   const [selectedCoreValue, setSelectedCoreValue] = useState<keyof typeof editableCoreValues>("core_kapwa");
   const [selectedAdvocacy, setSelectedAdvocacy] = useState<keyof typeof editableAdvocacies>("adv_kalusugan");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredMembers = members.filter((member) =>
+    member.member_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    member.role_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    member.member_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    member.role_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );  
+
+  const filteredPartners = partners.filter((partner) =>
+    partner.partner_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    partner.partner_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    partner.partner_dec.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    partner.partner_contact_email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    partner.partner_phone_number.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="admin-settings">
@@ -610,13 +626,14 @@ const AdminSettings = () => {
       <div className="admin-settings-header">
         <div className="admin-settings-search-container">
           <FaSearch className="admin-settings-search-icon" />
-          <input type="text" placeholder="Search" />
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
         <div className="admin-settings-header-right">
-          <div className="admin-settings-bell-wrapper">
-            <FaBell className="admin-settings-bell-icon" />
-            <span className="admin-settings-bell-dot"></span>
-          </div>
           <div className="admin-settings-loggedin-info">
             <img src={president} className="admin-settings-loggedin-avatar" />
             <div className="admin-settings-loggedin-desc">
@@ -1191,7 +1208,7 @@ const AdminSettings = () => {
           <div className="admin-settings-tab-placeholder">
             <div className="admin-settings-members">
               <div className="admin-settings-members-cards">
-                {members.map((member) => (
+                {filteredMembers.map((member) => (
                   <div
                     key={member.member_id}
                     className="admin-settings-members-cards-content"
@@ -1532,8 +1549,8 @@ const AdminSettings = () => {
                 <col style={{ width: "50px" }} />
               </colgroup>
               <tbody>
-                {partners.length > 0 ? (
-                  partners.map((partner) => (
+              {filteredPartners.length > 0 ? (
+                filteredPartners.map((partner) => (
                     <tr
                       className="admin-settings-table-content"
                       key={partner.partner_id}

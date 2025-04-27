@@ -2,13 +2,12 @@ import { useState, useEffect } from "react";
 import { useLocation, Outlet } from "react-router-dom";
 import Preloader from "./preloader";
 import Chatbot from "./chatbot";
-import GoToTop from "./gototop"; // ✅ Import GoToTop
+import GoToTop from "./gototop"; 
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
-  // Show preloader only on page reload
   useEffect(() => {
     setLoading(true);
 
@@ -31,18 +30,19 @@ const App: React.FC = () => {
     return () => window.removeEventListener("load", handleLoad);
   }, []);
 
-  // Scroll to top on route change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.pathname]);
 
   if (loading) return <Preloader />;
 
+  const isAdmin = location.pathname.startsWith("/Admin");
+
   return (
     <>
       <Outlet />
-      <Chatbot />
-      <GoToTop /> {/* ✅ Add it here */}
+      {!isAdmin && <Chatbot />}
+      {!isAdmin && <GoToTop />} 
     </>
   );
 };

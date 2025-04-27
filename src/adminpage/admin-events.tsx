@@ -68,6 +68,16 @@ const AdminEvents = () => {
       .catch((err) => console.error("Failed to fetch events:", err));
   }, []);
 
+  const formatDate = (timestamp: string): string => {
+    if (!timestamp) return "—";
+    const date = new Date(timestamp);
+    return isNaN(date.getTime()) ? "—" : date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };  
+
   const filteredEvents = events
   .filter((event) => {
     const matchCategory =
@@ -81,12 +91,13 @@ const AdminEvents = () => {
     const searchLower = searchQuery.toLowerCase();
 
     const matchSearch =
+      event.event_id.toLowerCase().includes(searchLower) ||
       event.title.toLowerCase().includes(searchLower) ||
       event.event_venue.toLowerCase().includes(searchLower) ||
       event.event_speakers.toLowerCase().includes(searchLower) ||
       event.category.toLowerCase().includes(searchLower) ||
       event.event_status.toLowerCase().includes(searchLower) ||
-      event.event_date.toLowerCase().includes(searchLower);
+      formatDate(event.event_date).toLowerCase().includes(searchLower);
 
     return matchCategory && matchStatus && matchSearch;
   })
@@ -95,16 +106,6 @@ const AdminEvents = () => {
     const dateB = new Date(b.event_date).getTime();
     return createdSortOrder === "Newest First" ? dateB - dateA : dateA - dateB;
   });
-
-  const formatDate = (timestamp: string): string => {
-    if (!timestamp) return "—";
-    const date = new Date(timestamp);
-    return isNaN(date.getTime()) ? "—" : date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };  
 
   const formatTime = (timeString: string): string => {
     if (!timeString) return "—";
@@ -415,10 +416,6 @@ const AdminEvents = () => {
           />
         </div>
         <div className="admin-events-header-right">
-          <div className="admin-events-bell-wrapper">
-            <FaBell className="admin-events-bell-icon" />
-            <span className="admin-events-bell-dot"></span>
-          </div>
           <div className="admin-events-loggedin-info">
             <img src={president} className="admin-events-loggedin-avatar" />
             <div className="admin-events-loggedin-desc">

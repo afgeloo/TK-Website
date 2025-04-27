@@ -16,7 +16,6 @@ const BlogsPage = lazy(() => import("./blogspage/blogspage"));
 const SingleBlog = lazy(() => import("./blogspage/singleblog"));
 const EventDetails  = lazy(() => import("./eventspage/eventpage-details")); 
 
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -33,12 +32,18 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminPage />,
+    element: <App />, 
     children: [
-      { path: "blogs", element: <AdminBlogs /> },
-      { path: "events", element: <AdminEvents /> },
-      { path: "settings", element: <AdminSettings /> },
-      { index: true, element: <Navigate to="blogs" /> },
+      {
+        path: "",
+        element: <AdminPage />, 
+        children: [
+          { path: "blogs", element: <AdminBlogs /> },
+          { path: "events", element: <AdminEvents /> },
+          { path: "settings", element: <AdminSettings /> },
+          { index: true, element: <Navigate to="blogs" /> },
+        ],
+      },
     ],
   },
 ]);
