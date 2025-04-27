@@ -82,29 +82,55 @@ function EventsPageRSVP() {
   }, []);
 
   useEffect(() => {
+    const now = new Date();
+  
     const filtered = events.filter((event) => {
+      const eventDate = new Date(event.event_date);
+      const [startHour, startMinute] = event.event_start_time.split(":").map(Number);
+      const [endHour, endMinute] = event.event_end_time.split(":").map(Number);
+  
+      const eventStartDateTime = new Date(eventDate);
+      eventStartDateTime.setHours(startHour, startMinute, 0, 0);
+  
+      const eventEndDateTime = new Date(eventDate);
+      eventEndDateTime.setHours(endHour, endMinute, 0, 0);
+  
+      const isOngoingNow = now >= eventStartDateTime && now <= eventEndDateTime;
+      const isFutureEvent = now < eventStartDateTime;
+      const isPastEvent = now > eventEndDateTime;
+  
+      let correctedStatus = event.event_status.toLowerCase();
+  
+      if (correctedStatus === "upcoming" && isOngoingNow) {
+        correctedStatus = "ongoing";
+      }
+      if ((correctedStatus === "upcoming" || correctedStatus === "ongoing") && isPastEvent) {
+        correctedStatus = "completed";
+      }
+  
       const isMatchingView =
         viewType === "UPCOMING"
-          ? event.event_status.toLowerCase() === "upcoming"
-          : event.event_status.toLowerCase() === "completed";
-
+          ? (correctedStatus === "upcoming" || correctedStatus === "ongoing")
+          : (correctedStatus === "completed");
+  
       const isMatchingCategory =
         selectedCategory === "ALL" ||
         event.event_category.toUpperCase() === selectedCategory;
-
+  
       const isMatchingSearch =
         searchQuery.trim() === "" ||
         event.event_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         event.event_category.toLowerCase().includes(searchQuery.toLowerCase()) ||
         event.event_venue.toLowerCase().includes(searchQuery.toLowerCase()) ||
         formatDateRSVP(event.event_date).toLowerCase().includes(searchQuery.toLowerCase());
-
+  
       return isMatchingView && isMatchingCategory && isMatchingSearch;
     });
-
+  
     setFilteredEvents(filtered);
     setCurrentPage(1);
-  }, [viewType, selectedCategory, searchQuery, events]);
+  }, [viewType, selectedCategory, searchQuery, events]);  
+  
 
   const currentEvents = filteredEvents.slice(0, eventsToShow);
 

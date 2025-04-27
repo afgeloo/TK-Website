@@ -266,7 +266,20 @@ const AdminBlogs = () => {
     return authors[authorId] || authorId;
   };
 
+  const [notificationType, setNotificationType] = useState<"success" | "error">("success");
+
   const applyBulkStatus = async (newStatus: string) => {
+    if (newStatus === "PINNED") {
+      const alreadyPinnedCount = blogs.filter(blog => blog.blog_status === "PINNED").length;
+      const tryingToPinCount = selectedBlogIds.length;
+      if (alreadyPinnedCount + tryingToPinCount > 3) {
+        setNotification("You can only pin up to 3 blogs. Please unpin one first.");
+        setNotificationType("error"); 
+        setTimeout(() => setNotification(""), 4000);
+        return;
+      }
+    }
+  
     try {
       const response = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_bulk_blog_status.php", {
         method: "POST",
@@ -275,10 +288,10 @@ const AdminBlogs = () => {
           blog_ids: selectedBlogIds,
           new_status: newStatus
         }),
-    });
-
+      });
+  
       const data = await response.json();
-
+  
       if (data.success) {
         setBlogs((prev) =>
           prev.map((blog) =>
@@ -289,14 +302,21 @@ const AdminBlogs = () => {
         );
         setSelectedBlogIds([]);
         setSelectMode(false);
+        setNotification(`Successfully updated blogs to ${newStatus}!`);
+        setNotificationType("success"); 
+        setTimeout(() => setNotification(""), 4000);
       } else {
-        alert("Failed to update status.");
+        setNotification("Failed to update blog status.");
+        setNotificationType("error"); 
+        setTimeout(() => setNotification(""), 4000);
       }
     } catch (err) {
       console.error("Bulk status update error:", err);
-      alert("Error occurred during bulk status update.");
+      setNotification("Error occurred during bulk status update.");
+      setNotificationType("error"); 
+      setTimeout(() => setNotification(""), 4000);
     }
-  };
+  };   
 
   const handleBulkDelete = async () => {
     try {
@@ -425,6 +445,42 @@ const AdminBlogs = () => {
     }
   };
 
+  const pinnedBlogs = blogs.filter(blog => blog.blog_status === "PINNED");
+  const pinnedCount = pinnedBlogs.length;
+  
+  const togglePinBlog = (blogId: string, currentPinned: boolean) => {
+    if (!currentPinned && pinnedCount >= 3) {
+      setNotification("You can only pin up to 3 blogs. Please unpin one first.");
+      setTimeout(() => setNotification(""), 4000);
+      return;
+    }
+
+    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_blog_pin_status.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ blog_id: blogId, is_pinned: currentPinned ? 0 : 1 }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setBlogs(prev =>
+            prev.map(blog =>
+              blog.blog_id === blogId ? { ...blog, is_pinned: currentPinned ? 0 : 1 } : blog
+            )
+          );
+          setNotification(currentPinned ? "Blog unpinned." : "Blog pinned!");
+          setTimeout(() => setNotification(""), 4000);
+        } else {
+          setNotification("Failed to update pin status.");
+          setTimeout(() => setNotification(""), 4000);
+        }
+      })
+      .catch((err) => {
+        console.error("Pin error:", err);
+        setNotification("An error occurred while pinning.");
+      });
+  };
+
   return (
     <div className="admin-blogs">
       <div className="admin-blogs-header">
@@ -446,6 +502,11 @@ const AdminBlogs = () => {
             </div>
           </div>
         </div>
+          {notification && (
+            <div className={`blogs-notification-message ${notificationType} show`}>
+              {notification}
+            </div>
+          )}
       </div>
       <div className="admin-blogs-lower-header">
         <h1>Blogs</h1>
@@ -760,7 +821,19 @@ const AdminBlogs = () => {
                         className={`admin-blogs-modal-select modal-status-${(isEditing ? editableBlog?.blog_status : selectedBlog.blog_status).toLowerCase()}`}
                         value={isEditing ? editableBlog?.blog_status : selectedBlog.blog_status}
                         disabled={!isEditing}
-                        onChange={(e) => setEditableBlog({ ...editableBlog!, blog_status: e.target.value })}
+                        onChange={(e) => {
+                          const newStatus = e.target.value;                       
+                          if (newStatus === "PINNED") {
+                            const pinnedBlogsCount = blogs.filter(blog => blog.blog_status === "PINNED").length;
+                            const isCurrentlyPinned = editableBlog?.blog_status === "PINNED";                       
+                            if (pinnedBlogsCount >= 3 && !isCurrentlyPinned) {
+                              setNotification("You can only pin up to 3 blogs. Please unpin one first.");
+                              setTimeout(() => setNotification(""), 4000);
+                              return; 
+                            }
+                          }
+                          setEditableBlog({ ...editableBlog!, blog_status: newStatus });
+                        }}                        
                       >
                         {["DRAFT", "PUBLISHED", "PINNED", "ARCHIVED"].map((status) => (
                           <option key={status} value={status}>{status}</option>

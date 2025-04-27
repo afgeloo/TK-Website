@@ -12,6 +12,7 @@ call npm install @ionic/react
 call npm install react-icons
 call npm install react-toastify
 call npm install @googlemaps/js-api-loader
+call npm install @react-google-maps/api
 
 echo Installation complete!
 pause

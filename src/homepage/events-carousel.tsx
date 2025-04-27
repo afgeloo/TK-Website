@@ -59,7 +59,6 @@ const EventsCarousel: React.FC<CarouselProps> = memo(({
         ))}
       </div>
 
-      {/* Navigation Buttons */}
       <div className="absolute items-center">
         <button onClick={prev} className="p-1">
           <ChevronLeft size={30} />
@@ -69,7 +68,6 @@ const EventsCarousel: React.FC<CarouselProps> = memo(({
         </button>
       </div>
 
-      {/* Indicators */}
       <div className="bottom-4">
         {slides.map((_, i) => (
           <div key={i} className={`w-3 ${curr === i ? "p-2" : "bg-opacity-50"}`} />

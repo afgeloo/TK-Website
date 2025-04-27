@@ -1,57 +1,69 @@
 import "./css/events-sec.css";
 import EventsCarousel from "./events-carousel";
 import { Link } from "react-router-dom";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 
+interface Event {
+  event_id: string;
+  event_image: string;
+  event_category: string;
+  event_title: string;
+  event_date: string;
+  event_venue: string;
+}
 
-const assetsPath = "./src/assets/homepage/";
+const EventsSec: React.FC = memo(() => {
+  const [slides, setSlides] = useState<any[]>([]);
 
-const slides = [
-  { 
-    image: `${assetsPath}events-1.jpg`, 
-    category: "Kalusugan",
-    title: "Exploring AI Innovations",
-    date: "March 15, 2025",
-    location: "Google HQ, CA"
-  },
-  { 
-    image: `${assetsPath}events-2.jpg`, 
-    category: "Kalikasan",
-    title: "Building Scalable Web Apps",
-    date: "March 20, 2025",
-    location: "Online (Zoom)"
-  },
-  { 
-    image: `${assetsPath}events-3.jpg`, 
-    category: "Karunungan",
-    title: "Code Your Way to Victory",
-    date: "March 25-26, 2025",
-    location: "Microsoft Campus, WA"
-  },
-  { 
-    image: `${assetsPath}events-4.jpg`, 
-    category: "Kultura",
-    title: "Meet Industry Experts",
-    date: "March 30, 2025",
-    location: "San Francisco, CA"
-  },
-];
+  useEffect(() => {
+    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/events.php")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          const sortedEvents = data
+            .sort((a: Event, b: Event) => new Date(b.event_date).getTime() - new Date(a.event_date).getTime())
+            .slice(0, 5); // Only 5 latest
 
-const EventsSec: React.FC = memo(() => (
-  <div className="events-sec">
-    <div className="events-sec-content">
-      <h1 className="events-header">EVENTS</h1>
-      <div className="carousel-container">
-        <EventsCarousel slides={slides} autoSlide autoSlideInterval={5000} />
+          const formattedSlides = sortedEvents.map((event: Event) => {
+            const formattedDate = new Date(event.event_date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            });
+
+            return {
+              image: `http://localhost${event.event_image}`,
+              category: event.event_category,
+              title: event.event_title,
+              date: formattedDate,
+              location: event.event_venue,
+            };
+          });
+
+          setSlides(formattedSlides);
+        }
+      })
+      .catch((err) => console.error("Failed to fetch events:", err));
+  }, []);
+
+  return (
+    <div className="events-sec">
+      <div className="events-sec-content">
+        <h1 className="events-header">EVENTS</h1>
+        <div className="carousel-container">
+          {slides.length > 0 && (
+            <EventsCarousel slides={slides} autoSlide autoSlideInterval={5000} />
+          )}
+        </div>
+        <div className="events-sec-nav">
+          <Link to="/Events" className="nav-events">
+            <img src="./src/assets/homepage/calendar.png" alt="Calendar Icon" />
+            SEE MORE
+          </Link>
+        </div>
       </div>
-      <div className="events-sec-nav">
-      <Link to="/Events" className="nav-events">
-        <img src={`${assetsPath}calendar.png`} alt="Calendar Icon" />
-        SEE MORE
-      </Link>
     </div>
-    </div>
-  </div>
-));
+  );
+});
 
 export default EventsSec;

@@ -9,6 +9,7 @@ interface Blog {
   category: string;
   content?: string;
   blog_status?: string;
+  created_at?: string; // Important for sorting by latest
 }
 
 const BlogsSec: React.FC = () => {
@@ -19,8 +20,22 @@ const BlogsSec: React.FC = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.blogs) {
-          const pinned = data.blogs.filter((blog: Blog) => blog.blog_status === "PINNED");
-          setBlogs(pinned);
+          const allBlogs: Blog[] = data.blogs;
+
+          const pinnedBlogs = allBlogs
+            .filter(blog => blog.blog_status === "PINNED")
+            .sort((a, b) => new Date(b.created_at || "").getTime() - new Date(a.created_at || "").getTime());
+
+          const otherBlogs = allBlogs
+            .filter(blog => blog.blog_status !== "PINNED")
+            .sort((a, b) => new Date(b.created_at || "").getTime() - new Date(a.created_at || "").getTime());
+
+          const finalBlogs = [
+            ...pinnedBlogs.slice(0, 3), // get as many PINNED as possible (up to 3)
+            ...otherBlogs,
+          ].slice(0, 3); // then slice to exactly 3 blogs total
+
+          setBlogs(finalBlogs);
         }
       })
       .catch((err) => console.error("Failed to fetch blogs:", err));
@@ -38,31 +53,36 @@ const BlogsSec: React.FC = () => {
           <div className="blogs-container-sec">
             <h1 className="blogs-header">BLOGS</h1>
             <div className="blogs-container">
-            {blogs.map(({ blog_id, title, image_url, category, content }) => (
-              <div key={blog_id} className="blog-box">
-                <div className="blogs-image-container">
-                  <img
-                    src={`http://localhost${image_url}`}
-                    alt={`Blog ${blog_id}`}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "./src/assets/homepage/default-blog.png";
+              {blogs.map(({ blog_id, title, image_url, category, content }) => (
+                <Link
+                  key={blog_id}
+                  to={`/blog/${blog_id}`}
+                  className="blog-box" 
+                  style={{ textDecoration: 'none', color: 'inherit' }} 
+                >
+                  <div className="blogs-image-container">
+                    <img
+                      src={`http://localhost${image_url}`}
+                      alt={`Blog ${blog_id}`}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "./src/assets/homepage/default-blog.png";
+                      }}
+                    />
+                  </div>
+                  <div className="blog-title">
+                    <h1>{title}</h1>
+                  </div>
+                  <div className="blog-category">
+                    <p>{category}</p>
+                  </div>
+                  <div
+                    className="blog-description"
+                    dangerouslySetInnerHTML={{
+                      __html: content || "",
                     }}
                   />
-                </div>
-                <div className="blog-title">
-                  <h1>{title}</h1>
-                </div>
-                <div className="blog-category">
-                  <p>{category}</p>
-                </div>
-                <div
-                className="blog-description"
-                dangerouslySetInnerHTML={{
-                  __html: content || "",
-                }}
-              ></div>
-              </div>
-            ))}
+                </Link>
+              ))}
             </div>
           </div>
           <div className="blogs-sec-nav">

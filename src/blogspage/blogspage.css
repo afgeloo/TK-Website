@@ -515,17 +515,17 @@
 .blogs-page-see-more-btn {
     display: block;
     margin: 18px auto; 
-    padding: 11px 22px; 
-    font-size: 22px; 
-    background-color: #FFC5D7;
-    color: #FF5A89;
+    padding: 10px 20px; 
+    font-size: 20px; 
+    background-color: #FE93B4;
+    color: #ffffff;
     border: none;
     border-radius: 45px; 
     cursor: pointer;
     text-align: center;
     font-family: 'helvetic', sans-serif !important;
-    font-weight: bold;
     margin-top: -45px; 
+    font-weight: 500;
 }
 
 .blogs-page-pinned-full .blogs-page-pinned-overlay {

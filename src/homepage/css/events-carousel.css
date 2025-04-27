@@ -47,6 +47,7 @@
     object-fit: cover; 
     border-radius: 12px;
     flex-shrink: 0; 
+    max-height: 550px;
 }
 
 .absolute {
@@ -117,38 +118,38 @@
 }
 
 .description-category {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
     font-style: italic;
 }
 
 .description-title {
-    font-size: 1.4rem;
+    font-size: 2.5rem;
     font-weight: bold;
     margin: 0.3rem 0;
 }
 
 .description-date {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     opacity: 0.8;
 }
 
 .description-location {
     display: flex;
     gap: 5px; 
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     opacity: 0.8;
 }
 
 .description-location img {
-    width: 16px; 
+    width: 20px; 
     height: auto;
 }
 
 .description-location p {
     margin: 0;
     padding: 0;
-    font-size: 14px; 
+    font-size: 1.2rem; 
 }
 
 @media screen and (max-width: 768px) {

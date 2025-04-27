@@ -502,12 +502,12 @@
   }
 
 .upload-btn {
-  background-color: #1299ED;
+  background-color: #FE93B4;
   color: #fff;
 }
 
 .remove-btn {
-  background-color: #64b8cb9a;
+  background-color: #4fb0ec;
   color: #fff;
 }
 
@@ -1068,7 +1068,7 @@
   resize: none;
   font-family: inherit;
   color: inherit;
-  min-height: 200px;
+  min-height: 160px;
   text-align: justify;
 }
 
@@ -1111,4 +1111,8 @@
   border-radius: 10px;
   margin-top: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-events-google-map {
+  width: 100%;
 }

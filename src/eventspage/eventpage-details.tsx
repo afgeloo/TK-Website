@@ -28,7 +28,6 @@ export interface Event {
 
 function EventDetails() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const from = queryParams.get("from");

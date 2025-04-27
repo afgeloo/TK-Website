@@ -5,6 +5,7 @@ import { FaSearch, FaBell, FaPlus } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
 import { FaBold, FaItalic, FaUnderline, FaImage, FaListUl, FaUndo, FaRedo } from "react-icons/fa";
 import select from "../assets/adminpage/blogs/select.png";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 const AdminEvents = () => {
 
@@ -50,6 +51,34 @@ const AdminEvents = () => {
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [notification, setNotification] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [markerPosition, setMarkerPosition] = useState<{ lat: number; lng: number }>({
+    lat: 14.5995, 
+    lng: 120.9842,
+  });
+  
+  const handleMarkerDragEnd = async (e: google.maps.MapMouseEvent) => {
+    const lat = e.latLng?.lat();
+    const lng = e.latLng?.lng();
+    if (lat && lng) {
+      setMarkerPosition({ lat, lng });
+  
+      const apiKey = 'YOUR_GOOGLE_MAPS_API_KEY'; 
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`
+      );
+      const data = await response.json();
+  
+      if (data.status === 'OK') {
+        const address = data.results[0]?.formatted_address || "";
+        if (isEditing && editableEvent) {
+          setEditableEvent({ ...editableEvent, event_venue: address });
+        }
+      } else {
+        console.error('Reverse Geocoding failed:', data.status);
+      }
+    }
+  };
   
   useEffect(() => {
     if (selectedEvent) {
@@ -62,11 +91,54 @@ const AdminEvents = () => {
     fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/events1.php")
       .then((res) => res.json())
       .then((data) => {
-        console.log("EVENTS DATA:", data); 
-        setEvents(data.events || []);
+        console.log("EVENTS DATA:", data);
+        const now = new Date();
+  
+        const updatedEvents = (data.events || []).map((event: Event) => {
+          const [startHour, startMinute] = event.event_start_time.split(":").map(Number);
+          const [endHour, endMinute] = event.event_end_time.split(":").map(Number);
+        
+          const eventStartDatetime = new Date(event.event_date);
+          eventStartDatetime.setHours(startHour, startMinute, 0, 0);
+        
+          const eventEndDatetime = new Date(event.event_date);
+          eventEndDatetime.setHours(endHour, endMinute, 0, 0);
+        
+          const now = new Date();
+        
+          if (event.event_status === "UPCOMING") {
+            if (now >= eventStartDatetime && now <= eventEndDatetime) {
+              event.event_status = "ONGOING";
+        
+              fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_event_status.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  event_id: event.event_id,
+                  new_status: "ONGOING",
+                }),
+              }).catch((err) => console.error("Failed to update backend to ONGOING:", err));
+            } else if (now > eventEndDatetime) {
+              event.event_status = "COMPLETED";
+        
+              fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_event_status.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  event_id: event.event_id,
+                  new_status: "COMPLETED",
+                }),
+              }).catch((err) => console.error("Failed to update backend to COMPLETED:", err));
+            }
+          }
+        
+          return event;
+        });        
+  
+        setEvents(updatedEvents);
       })
       .catch((err) => console.error("Failed to fetch events:", err));
-  }, []);
+  }, []);  
 
   const formatDate = (timestamp: string): string => {
     if (!timestamp) return "—";
@@ -143,6 +215,19 @@ const AdminEvents = () => {
   const handleSave = () => {
     if (!editableEvent) return;
   
+    const now = new Date();
+  
+    const eventDate = new Date(editableEvent.event_date);
+    const [startHour, startMinute] = editableEvent.event_start_time.split(":").map(Number);
+  
+    eventDate.setHours(startHour, startMinute, 0, 0);
+  
+    if (eventDate < now) {
+      setNotification("Cannot set an event date and time in the past!");
+      setTimeout(() => setNotification(""), 4000);
+      return;
+    }
+  
     if (tempImageUrl !== null) {
       editableEvent.image_url = tempImageUrl;
     }
@@ -155,16 +240,16 @@ const AdminEvents = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          // ✨ update saved image locally too
           const updated = { ...editableEvent };
           setEvents((prev) =>
             prev.map((e) => (e.event_id === updated.event_id ? updated : e))
           );
           setSelectedEvent(updated);
           setEditableEvent(null);
-          setTempImageUrl(null); // clear preview
+          setTempImageUrl(null);
           setIsEditing(false);
           setNotification("Event updated successfully!");
+          setSelectedStatus("All");
           setTimeout(() => setNotification(""), 4000);
         } else {
           setNotification("Failed to update event.");
@@ -175,14 +260,26 @@ const AdminEvents = () => {
         console.error("Update error:", err);
         alert("An error occurred while updating.");
       });
-  };
+  };  
 
   const handleAddNewEventSave = async () => {
     const editor = document.getElementById("add-event-content-editor");
     const extractedContent = editor ? editor.innerHTML.trim() : "";
   
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); 
+    const selectedDate = new Date(newEvent.event_date);
+    selectedDate.setHours(0, 0, 0, 0);
+  
+    if (selectedDate < today) {
+      setNotification("Event date cannot be in the past!");
+      setTimeout(() => setNotification(""), 4000);
+      return; 
+    }
+  
     const payload = {
       ...newEvent,
+      event_status: "UPCOMING", 
       content: extractedContent,
       image_url: newImageUrl || ""
     };
@@ -211,9 +308,8 @@ const AdminEvents = () => {
     }
   
     setTimeout(() => setNotification(""), 4000);
-  };
+  };  
   
-
   const handleDelete = () => {
     setBulkActionType("delete");
     setBulkActionStatus("SINGLE_DELETE");
@@ -377,7 +473,7 @@ const AdminEvents = () => {
     event_date: "",
     event_start_time: "",
     event_end_time: "",
-    event_venue: "",
+    event_venue: "Manila, Philippines",
     event_status: "UPCOMING",
     event_speakers: "",
     content: "",
@@ -392,7 +488,7 @@ const AdminEvents = () => {
       event_date: "",
       event_start_time: "",
       event_end_time: "",
-      event_venue: "",
+      event_venue: "Manila, Philippines",
       event_status: "UPCOMING",
       event_speakers: "",
       content: "",
@@ -402,6 +498,8 @@ const AdminEvents = () => {
     const editor = document.getElementById("add-event-content-editor");
     if (editor) editor.innerHTML = ""; 
   };  
+
+  const isFieldLocked = selectedEvent?.event_status === "COMPLETED" || selectedEvent?.event_status === "CANCELLED";
   
   return (
     <div className="admin-events">
@@ -469,30 +567,18 @@ const AdminEvents = () => {
         </div>
       </div>
       {selectMode && (
-        <div className="admin-events-bulk-actions">
-          {["UPCOMING", "ONGOING", "COMPLETED", "CANCELLED"].map((status) => (
-            <button
-              key={status}
-              onClick={() => {
-                setBulkActionStatus(status);
-                setBulkActionType("status"); 
-                setBulkConfirmVisible(true);
-              }}
-            >
-              {status}
-            </button>
-          ))}
-          <button
-            className="bulk-delete-btn"
-            onClick={() => {
-              setBulkActionType("delete"); 
-              setBulkConfirmVisible(true);
-            }}
-          >
-            Delete
-          </button>
-        </div>
-      )}
+      <div className="admin-events-bulk-actions">
+        <button
+          className="bulk-delete-btn"
+          onClick={() => {
+            setBulkActionType("delete"); 
+            setBulkConfirmVisible(true);
+          }}
+        >
+          DELETE
+        </button>
+      </div>
+    )}
       <div className="admin-events-main-content">
         <div className="admin-events-scrollable-table">
           <table className="admin-events-table">
@@ -675,6 +761,7 @@ const AdminEvents = () => {
                             setEditableEvent({ ...editableEvent!, title: e.target.value })
                           }
                           className="admin-events-inner-content-modal-title-content"
+                          disabled={!isEditing}
                         />
                       ) : (
                         <p className="admin-events-inner-content-modal-title-content">{selectedEvent.title}</p>
@@ -683,18 +770,20 @@ const AdminEvents = () => {
                     <div className="admin-events-inner-content-modal-category">
                       <p><strong>Category</strong></p>
                       <select
-                        className="admin-events-inner-content-modal-category-content pink-category"
-                        value={dropdownCategory ?? ''}
-                        onChange={(e) => {
-                          setDropdownCategory(e.target.value);
-                          setEditableEvent(prev => prev ? { ...prev, category: e.target.value } : prev);
-                        }}
-                        disabled={false}
-                      >
-                        {["KALUSUGAN", "KALIKASAN", "KARUNUNGAN", "KULTURA", "KASARIAN"].map((cat) => (
-                          <option key={cat} value={cat}>{cat}</option>
-                        ))}
-                      </select>
+                      className="admin-events-inner-content-modal-category-content pink-category"
+                      value={dropdownCategory ?? ''}
+                      onChange={(e) => {
+                        setDropdownCategory(e.target.value);
+                        setEditableEvent(prev => prev ? { ...prev, category: e.target.value } : prev);
+                      }}
+                      disabled={!isEditing}
+                    >
+                      {["KALUSUGAN", "KALIKASAN", "KARUNUNGAN", "KULTURA", "KASARIAN"].map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                    </select>
                     </div>
                     <div className="admin-events-inner-content-modal-venue">
                       <p><strong>Venue</strong></p>
@@ -702,15 +791,33 @@ const AdminEvents = () => {
                         <input
                           type="text"
                           value={editableEvent?.event_venue || ""}
-                          onChange={(e) =>
-                            setEditableEvent({ ...editableEvent!, event_venue: e.target.value })
+                          onChange={(e) => 
+                            setEditableEvent(prev => prev ? { ...prev, event_venue: e.target.value } : prev)
+                          }
+                          onBlur={() => 
+                            setEditableEvent(prev => prev ? { ...prev, event_venue: prev.event_venue.trim() === "" ? "Manila, Philippines" : prev.event_venue } : prev)
                           }
                           className="admin-events-inner-content-modal-venue-content"
+                          disabled={!isEditing || isFieldLocked}
                         />
                       ) : (
                         <p className="admin-events-inner-content-modal-venue-content">{selectedEvent.event_venue}</p>
                       )}
                     </div>
+                    {(isEditing ? editableEvent?.event_venue : selectedEvent.event_venue) && (
+                      <div className="admin-events-google-map">
+                        <iframe
+                          src={`https://www.google.com/maps?q=${encodeURIComponent(
+                            isEditing ? editableEvent?.event_venue ?? "" : selectedEvent.event_venue
+                          )}&z=18&output=embed`}
+                          width="100%"
+                          height="250"
+                          loading="lazy"
+                          style={{ border: "0", borderRadius: "10px", marginTop: "15px" }}
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                    )}
                   </div>
                   <div className="admin-events-inner-content-modal-top-right">
                     <div className="admin-events-inner-content-modal-status">
@@ -722,9 +829,14 @@ const AdminEvents = () => {
                           setDropdownStatus(e.target.value);
                           setEditableEvent(prev => prev ? { ...prev, event_status: e.target.value } : prev);
                         }}
-                        disabled={!isEditing}
+                        disabled={!isEditing || isFieldLocked}
                       >
-                        {["UPCOMING", "ONGOING", "COMPLETED", "CANCELLED"].map((stat) => (
+                        {dropdownStatus && !["UPCOMING", "CANCELLED"].includes(dropdownStatus) && (
+                          <option value={dropdownStatus} disabled>
+                            {dropdownStatus}
+                          </option>
+                        )}
+                        {["UPCOMING", "CANCELLED"].map((stat) => (
                           <option key={stat} value={stat}>{stat}</option>
                         ))}
                       </select>
@@ -739,6 +851,7 @@ const AdminEvents = () => {
                             setEditableEvent({ ...editableEvent!, event_date: e.target.value })
                           }
                           className="admin-events-inner-content-modal-date-content"
+                          disabled={!isEditing || isFieldLocked}
                         />
                       ) : (
                         <p className="admin-events-inner-content-modal-date-content">
@@ -757,6 +870,7 @@ const AdminEvents = () => {
                               setEditableEvent({ ...editableEvent!, event_start_time: e.target.value })
                             }
                             className="admin-events-inner-content-modal-time-start-content"
+                            disabled={!isEditing || isFieldLocked}
                           />
                         ) : (
                           <p className="admin-events-inner-content-modal-time-start-content">
@@ -774,6 +888,7 @@ const AdminEvents = () => {
                               setEditableEvent({ ...editableEvent!, event_end_time: e.target.value })
                             }
                             className="admin-events-inner-content-modal-time-end-content"
+                            disabled={!isEditing || isFieldLocked}
                           />
                         ) : (
                           <p className="admin-events-inner-content-modal-time-end-content">
@@ -1105,20 +1220,30 @@ const AdminEvents = () => {
                           }
                         />
                       </div>
+                      {newEvent.event_venue && (
+                      <div className="admin-events-google-map">
+                        <iframe
+                          src={`https://www.google.com/maps?q=${encodeURIComponent(newEvent.event_venue)}&z=18&output=embed`}
+                          width="100%"
+                          height="250"
+                          loading="lazy"
+                          style={{ border: "0", borderRadius: "10px", marginTop: "15px" }}
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                    )}
+                  </div>
+                  <div className="admin-new-event-inner-content-modal-top-right">
                     <div className="admin-new-event-inner-content-modal-status">
-                    <p><strong>Status</strong></p>
+                      <p><strong>Status</strong></p>
                       <select
                         className={`admin-events-inner-content-modal-status-content status-${newEvent.event_status.toLowerCase()}`}
                         value={newEvent.event_status}
-                        onChange={(e) => setNewEvent({ ...newEvent, event_status: e.target.value })}
+                        disabled 
                       >
-                        {["UPCOMING", "ONGOING", "COMPLETED", "CANCELLED"].map((status) => (
-                          <option key={status} value={status}>{status}</option>
-                        ))}
+                        <option value="UPCOMING">UPCOMING</option> 
                       </select>
                     </div>
-                  </div>
-                  <div className="admin-new-event-inner-content-modal-top-right">
                     <div className="admin-new-event-inner-content-modal-date">
                       <p><strong>Date</strong></p>
                       <input

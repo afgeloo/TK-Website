@@ -740,35 +740,40 @@
 }
 
   .edit-btn{
-    background-color: #f58db6;
+    background-color: #FE93B4;
+    color: #fff;
+  }
+
+  .edit-btn:hover{
+    background-color: #ef6792;
     color: #fff;
   }
 
   .save-btn {
-    background-color: #f58db6;
+    background-color: #FE93B4;
     color: #fff;
   }
   
   .save-btn:hover {
-    background-color: #f58db6;
+    background-color: #ef6792;
   }
 
   .cancel-btn{
-    background-color: #4261c8bb;
+    background-color: #4fb0ec;
     color: #fff;
   }
 
   .cancel-btn:hover {
-    background-color: #4261c8;
+    background-color: #31a0e5;
   }
 
   .delete-btn {
-    background-color: #e06868e3;
+    background-color: #4fb0ec;
     color: #fff;
   }
 
   .delete-btn:hover {
-    background-color: #de3e3ee3;
+    background-color: #31a0e5;
   }
 
   .admin-blogs-image-buttons {
@@ -780,12 +785,12 @@
   }
 
   .upload-btn {
-    background-color: #1299ED;
+    background-color: #FE93B4;
     color: #fff;
   }
   
   .remove-btn {
-    background-color: #64b8cb9a;
+    background-color: #4fb0ec;
     color: #fff;
   }
   
@@ -824,7 +829,7 @@
   }
   
   .blogs-notification-message.error {
-    background: linear-gradient(135deg, #ff4e4e, #b60000);
+    background: linear-gradient(135deg, #fb8686, #fb3b3b);
   }
   
   .admin-blogs-modal-desc-content {

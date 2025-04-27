@@ -759,12 +759,11 @@
 }
 
 .admin-member-edit-actions .cancel-btn {
-  background-color: #f0f0f0;
-  color: #444;
+  background-color: #4fb0ec;
 }
 
 .admin-member-edit-actions .cancel-btn:hover {
-  background-color: #ddd;
+  background-color: #4fb0ec;
 }
 
 .delete-member-btn {
@@ -1067,13 +1066,11 @@
 }
 
 .admin-contact-edit-actions .cancel-btn {
-  background-color: #f0f0f0;
-  color: #555;
+  background-color: #4fb0ec;
 }
 
 .admin-contact-edit-actions .cancel-btn:hover {
-  background-color: #e0e0e0;
-  color: #222;
+  background-color: #39a4e7;
 }
 
 @keyframes modalFadeSlide {
