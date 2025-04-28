@@ -19,7 +19,6 @@ interface Blog {
   blog_status?: string;
 }
 
-// ✅ Helper to handle null/undefined or unsafe image_url
 const getSafeImageUrl = (url: string | null | undefined): string => {
   if (!url) return "";
   return url.startsWith("http") || url.startsWith("/") ? `http://localhost${url}` : url;
@@ -52,16 +51,18 @@ function BlogsPage() {
         `http://localhost/tara-kabataan/tara-kabataan-backend/api/blogs.php?category=ALL`
       );
       const data = await response.json();
-
+  
       if (data && data.pinned && data.blogs) {
-        const filteredAllBlogs = data.blogs.filter((blog: Blog) =>
+        const publishedBlogs = data.blogs.filter((blog: Blog) =>
           blog.blog_status?.toUpperCase() === "PUBLISHED"
         );
+  
+        const mergedBlogs = [...data.pinned, ...publishedBlogs];
+  
         setPinnedBlogs(data.pinned); 
-        setAllBlogs(filteredAllBlogs);
-        setBlogs(filteredAllBlogs);
-      }
-       else {
+        setAllBlogs(mergedBlogs);
+        setBlogs(mergedBlogs);
+      } else {
         console.error("Unexpected API response format:", data);
       }
       setLoading(false);
@@ -69,7 +70,7 @@ function BlogsPage() {
       console.error("Error fetching blogs:", error);
       setLoading(false);
     }
-  };
+  };  
 
   useEffect(() => {
     fetchBlogs();
