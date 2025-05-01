@@ -41,6 +41,8 @@ const BlogsSec: React.FC = () => {
       .catch((err) => console.error("Failed to fetch blogs:", err));
   }, []);
 
+  if (blogs.length === 0) return null;
+
   return (
     <div className="blogs-sec">
       <div className="blogs-bg">

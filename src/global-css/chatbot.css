@@ -1,6 +1,4 @@
-/* chatbot CSS */
 
-/* Custom scrollbar */
 .fancy-scrollbar::-webkit-scrollbar {
     width: 6px;
 }
@@ -13,7 +11,6 @@
     background-color: #ffffff;
 }
 
-/* Background gradient (mimicking fancy-background) */
 .fancy-background {
     background: -moz-linear-gradient(-45deg, #183850 0, #183850 25%, #192C46 50%, #22254C 75%, #22254C 100%);
     background: -webkit-linear-gradient(-45deg, #183850 0, #183850 25%, #192C46 50%, #22254C 75%, #22254C 100%);
@@ -21,7 +18,6 @@
     background-attachment: fixed;
 }
 
-/* Scrolling shadow (simplified version) */
 .scrolling-shadows {
     background: linear-gradient(#ffffff 30%, rgba(255, 249, 240, 0)),
                 linear-gradient(rgba(255, 249, 240, 0), #ffffff 70%) 0 100%,
@@ -55,7 +51,6 @@
     background-color: #cccccc !important;
 }
 
-
 .floating-chat {
     z-index: 1000;
     cursor: pointer;
@@ -64,22 +59,22 @@
     justify-content: center;
     color: white;
     position: fixed;
-    bottom: 20px; /* Adjusted position */
-    right: 20px; /* Adjusted position */
-    width: 60px; /* Increased size */
-    height: 60px; /* Increased size */
+    bottom: 20px; 
+    right: 20px; 
+    width: 60px; 
+    height: 60px; 
     transform: translateY(70px);
     transition: all 250ms ease-out;
     border-radius: 50%;
-    background: #fe93b4; /* Updated gradient color */
+    background: #fe93b4;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    font-family: "Helvetica Now Text", Helvetica, sans-serif; /* Set font-family */
+    font-family: "Helvetica Now Text", Helvetica, sans-serif;
 }
 
 .floating-chat.enter:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-    opacity: 1; /* Full opacity when hovered */
+    opacity: 1; 
 }
 
 .floating-chat.enter {
@@ -89,14 +84,14 @@
 }
 
 .floating-chat.expand {
-    width: 350px; /* Increased width */
-    max-height: 520px; /* Increased height */
-    height: 520px; /* Increased height */
+    width: 350px;
+    max-height: 520px; 
+    height: 520px; 
     border-radius: 5px;
     cursor: auto;
     opacity: 1;
-    right: 20px; /* Ensure it stays in sight when expanded */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Added drop shadow */
+    right: 20px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); 
 }
 
 .floating-chat:focus {
@@ -128,16 +123,13 @@
     right: 0;
     bottom: 0;
     background-color: #ffffff;
-    font-family: "Helvetica Now Text", Helvetica, sans-serif; /* Set font-family */
+    font-family: "Helvetica Now Text", Helvetica, sans-serif; 
 }
 
 .floating-chat .chat.enter {
     opacity: 1;
     border-radius: 0;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin: 10px;
     padding-bottom: -20px;
     width: auto;
     height: auto;
@@ -146,10 +138,10 @@
 .floating-chat .chat .headerchat {
     flex-shrink: 0;
     display: flex;
-    justify-content: space-between; /* Align elements horizontally */
-    align-items: center; /* Align elements vertically */
+    justify-content: space-between; 
+    align-items: center; 
     padding-bottom: 4px;
-    background: #fe93b4; /* Updated header background color */
+    background: #fe93b4; 
 }
 
 .floating-chat .chat .headerchat .title {
@@ -208,15 +200,15 @@
 .floating-chat .chat .messages li {
     position: relative;
     clear: both;
-    display: flex; /* Changed to flex */
-    align-items: center; /* Center items vertically */
+    display: flex; 
+    align-items: center; 
     padding: 14px;
     margin: 0 0 20px 0;
-    font: 12px/16px "Helvetica Now Text", Helvetica, sans-serif; /* Set font-family */
+    font: 12px/16px "Helvetica Now Text", Helvetica, sans-serif; 
     border-radius: 10px;
     word-wrap: break-word;
     max-width: 81%;
-    color: #fff; /* Make text white */
+    color: #fff; 
 }
 
 .floating-chat .chat .messages li:before {
@@ -342,12 +334,12 @@
     margin: 1px 5px 2px 5px;
     display: inline-block;
     text-align: left;
-    font-family: "Helvetica Now Text", Helvetica, sans-serif; /* Set font-family */
-    transition: background-color 0.3s ease; /* Add transition for hover effect */
+    font-family: "Helvetica Now Text", Helvetica, sans-serif; 
+    transition: background-color 0.3s ease;
 }
 
 .floating-chat .chat .predefined-messages button:hover {
-    background-color: #e682a3; /* Darker shade on hover */
+    background-color: #e682a3; 
 }
 
 .typing {
@@ -466,3 +458,46 @@
         margin-right: 0;
     }
 }
+
+@media screen and (max-width: 768px) {
+    .floating-chat.expand {
+      width: 90vw;
+      height: 80vh;
+      max-height: 80vh;
+      border-radius: 10px;
+      right: 5vw;
+    }
+  
+    .floating-chat .chat.enter {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      border-radius: 10px;
+      opacity: 1;
+    }
+  
+    .floating-chat .chat .messages {
+      max-height: 40vh;
+      overflow-y: auto;      
+    }
+  
+    .floating-chat .chat .footerchat {
+      padding: 25px;
+      max-height: 80px;
+    }
+  
+    .floating-chat .chat .footerchat .text-box {
+      font-size: 14px;
+      padding: 6px;
+    }
+  
+    .floating-chat .chat .footerchat button {
+      font-size: 14px;
+      padding: 6px 12px;
+    }
+  
+    .floating-chat .chat .predefined-messages button {
+      font-size: 13px;
+    }
+  }
+  

@@ -4,11 +4,9 @@ import "./global-css/footer.css";
 import "./global-css/header.css";
 
 import logo from "./assets/header/tarakabataanlogo2.png";
-import topCloud from "./assets/homepage/bot-cloud.png";
+import topCloud from "./assets/homepage/top-cloud.png";
 import footerMid from "./assets/homepage/footer-mid.png";
 import botCloud from "./assets/footer/botcloud.png";
-import phoneIcon from "./assets/footer/Telephone.png";
-import emailIcon from "./assets/footer/email.png";
 import facebookIcon from "./assets/footer/facebook.png";
 import instagramIcon from "./assets/footer/instagram.png";
 import { IonIcon } from "@ionic/react";
@@ -36,10 +34,8 @@ function Footer() {
   return (
     <div className="footer-sec">
       <img src={topCloud} className="footer-top-cloud" alt="Top Cloud" draggable="false" />
-      <img src={footerMid} className="footer-mid" alt="Footer Mid" draggable="false" />
       <div className="footer-section-main">
         <div className="footer-content">
-          {/* Left Section */}
           <div className="footer-left-content">
             <img src={logo} alt="Tarakabataan Logo" className="footer-tk-logo" draggable="false" />
             <div className="footer-number">
@@ -48,17 +44,13 @@ function Footer() {
               </div>
               <p>{contactNo}</p>
             </div>
-
             <div className="footer-email">
               <div className="footer-icon-circle">
                 <IonIcon icon={mailOutline} />
               </div>
               <p>{email}</p>
             </div>
-
           </div>
-
-          {/* Middle Section */}
           <div className="footer-mid-content">
             <h2>About Us</h2>
             <p>
@@ -66,11 +58,8 @@ function Footer() {
               itinatag para isulong ang kaginhawaan ng bawat kabataan at Manilenyo.
             </p>
           </div>
-
-          {/* Right Section */}
           <div className="footer-right-content">
             <h2>Social Media</h2>
-
             <a
               href="https://www.facebook.com/TaraKabataanMNL"
               target="_blank"
@@ -80,7 +69,6 @@ function Footer() {
               <img src={facebookIcon} alt="Facebook" draggable="false" />
               <p>Tara Kabataan</p>
             </a>
-
             <a
               href="https://www.instagram.com/tarakabataan"
               target="_blank"
@@ -91,10 +79,8 @@ function Footer() {
               <p>@tarakabataan</p>
             </a>
           </div>
-
         </div>
       </div>
-      <img src={botCloud} className="footer-bot-cloud" alt="Bottom Cloud" draggable="false" />
     </div>
   );
 }

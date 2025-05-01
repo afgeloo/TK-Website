@@ -46,6 +46,8 @@ const EventsSec: React.FC = memo(() => {
       .catch((err) => console.error("Failed to fetch events:", err));
   }, []);
 
+  if (slides.length === 0) return null; 
+
   return (
     <div className="events-sec">
       <div className="events-sec-content">
