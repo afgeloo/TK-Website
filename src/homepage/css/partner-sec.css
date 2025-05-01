@@ -163,9 +163,9 @@
   align-items: center; 
   justify-content: center; 
   width: 820px;
-  min-height: 400px;
+  min-height: 370px;
   margin: 20px auto;
-  padding: 1px 30px 40px 30px;
+  padding: 1px 30px 50px 30px;
   border-radius: 25px;
   background-color: white;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -393,14 +393,14 @@
   
   .button-inside-be-a-partner-member {
     padding: 10px 20px;
-    font-size: 15px;
+    font-size: 12px;
     margin-top: auto;
   }
   
   .circle-inside-be-a-partner-member {
-    width: 70px;
-    height: 70px;
-    top: 10px;
+    width: 60px;
+    height: 60px;
+    top: 30px;
   }
   
   .partner-image, .member-image {
@@ -409,7 +409,7 @@
   }
   
   .text-inside-be-a-partner-member-container {
-    font-size: 15px;
+    font-size: 12px;
     margin-top: 90px;
     width: 100%;
     padding: 0 10px;
@@ -417,27 +417,50 @@
   
   .support-tk-container {
     width: 60%;
-    padding: 40px;
   }
   
   .support-tk-content-format {
     flex-direction: column;
-    padding: 50px;
     align-items: center;
-    margin-top: -40px;
+    max-height: 20%;
   }
   
   .logo-inside-donate-now-sizing {
-    width: 100px;
-    margin-top: 0;
+    width: 80px;
   }
   
   .support-tk-text {
-    font-size: 15px;
+    font-size: 12px;
     margin: 0;
     padding: 0;
     text-align: justify;
   }
-  
+
+  .donate-now-text {
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    font-family: 'helvetic';
+    position: relative;
+  }
+
+  .logo-inside-donate-now {
+    height: 25px; 
+    width: auto;
+    margin-right: 10px;
+  }  
+
+  .donate-now-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ff5a89, #ff94b2);
+    color: white;
+    height: 50px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    cursor: pointer; 
+  }
 
 }

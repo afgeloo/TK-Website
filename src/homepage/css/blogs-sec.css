@@ -213,5 +213,17 @@
     .blogs-bg-tk {
         display: none;
       }
+
+      .blog-title{
+        font-size: 8px;
+    }
+    
+    .blog-category{
+        font-size: 15px;
+    }
+
+    .blog-description {
+        font-size: 12px;
+    }
   }
   

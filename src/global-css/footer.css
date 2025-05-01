@@ -163,6 +163,7 @@
   .footer-right-content {
     width: 100%;
     max-width: 350px;
+    font-size: 12px;
   }
 
   .footer-number,
@@ -179,6 +180,8 @@
   .footer-tk-logo {
     margin: 0 auto 10px auto;
   }
+
+  
 }
 
 
