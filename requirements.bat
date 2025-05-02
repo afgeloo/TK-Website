@@ -13,6 +13,8 @@ call npm install react-icons
 call npm install react-toastify
 call npm install @googlemaps/js-api-loader
 call npm install @react-google-maps/api
+call npm install @hello-pangea/dnd
+
 
 echo Installation complete!
 pause

@@ -863,7 +863,7 @@
 }
 
 .admin-new-event-float-buttons{
-  position: sticky;
+  position: relative;
   top: 0;
   right: 1.5rem;
   display: flex;

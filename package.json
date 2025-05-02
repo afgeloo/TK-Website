@@ -12,6 +12,7 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@googlemaps/js-api-loader": "^1.16.8",
+    "@hello-pangea/dnd": "^18.0.1",
     "@ionic/react": "^8.5.2",
     "@react-google-maps/api": "^2.20.6",
     "@tiptap/extension-link": "^2.11.7",

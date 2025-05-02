@@ -103,7 +103,10 @@ const AdminBlogs = () => {
     fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_blogs.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editableBlog),
+      body: JSON.stringify({
+        ...editableBlog,
+        more_images: editableBlogMoreImages,
+      }),      
     })
       .then((res) => res.json())
       .then((data) => {
@@ -286,7 +289,8 @@ const AdminBlogs = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           blog_ids: selectedBlogIds,
-          new_status: newStatus
+          new_status: newStatus,
+          more_images: editableBlogMoreImages,
         }),
       });
   
@@ -412,7 +416,8 @@ const AdminBlogs = () => {
       blog_status: newBlogStatus,
       image_url: newBlogImage,
       author: newBlogAuthor,
-    };
+      more_images: newBlogMoreImages, 
+    };    
   
     try {
       const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/add_new_blog.php", {
@@ -434,8 +439,10 @@ const AdminBlogs = () => {
           })
           .catch((err) => console.error("Failed to refresh blogs:", err));
   
-        resetNewBlogForm();
-        setNewBlogModalOpen(false);
+          resetNewBlogForm();
+          setNewBlogMoreImages([]);
+          setShowAllImagesModal(false);
+          setNewBlogModalOpen(false);
       } else {
         alert("Failed to save new blog: " + (data.error || "Unknown error"));
       }
@@ -481,6 +488,36 @@ const AdminBlogs = () => {
       });
   };
 
+  const [newBlogMoreImages, setNewBlogMoreImages] = useState<string[]>([]);
+  const [showAllImagesModal, setShowAllImagesModal] = useState(false);
+  const [fullImageUrl, setFullImageUrl] = useState("");
+  const [editableBlogMoreImages, setEditableBlogMoreImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (selectedBlog) {
+      setEditableBlogMoreImages([]); 
+    }
+  }, [selectedBlog]);
+
+  useEffect(() => {
+    if (selectedBlog) {
+      fetch(`http://localhost/tara-kabataan/tara-kabataan-backend/api/get_blog_images.php?blog_id=${selectedBlog.blog_id}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && Array.isArray(data.images)) {
+            setEditableBlogMoreImages(data.images); 
+          } else {
+            setEditableBlogMoreImages([]);
+          }
+        })
+        .catch(err => {
+          console.error("Failed to load more blog images:", err);
+          setEditableBlogMoreImages([]);
+        });
+    }
+  }, [selectedBlog]);
+  
+  
   return (
     <div className="admin-blogs">
       <div className="admin-blogs-header">
@@ -840,12 +877,12 @@ const AdminBlogs = () => {
                         ))}
                       </select>
                     </div> 
-                  </div>
-                  <div className="admin-blogs-modal-right">
                     <div className="admin-blogs-modal-date">
                       <p><strong>Created At</strong></p>
                       <p className="admin-blogs-modal-date-content">{formatDate(selectedBlog.created_at)}</p>
                     </div>
+                  </div>
+                  <div className="admin-blogs-modal-right">
                     <div className="admin-blogs-modal-image">
                       <p><strong>Image</strong></p>
                       {(isEditing ? editableBlog?.image_url : selectedBlog.image_url) ? (
@@ -881,6 +918,86 @@ const AdminBlogs = () => {
                               Remove
                             </button>
                           </div>
+                    </div>
+                    <div className="admin-blogs-new-blog-modal-image">
+                      <p><strong>More Images</strong></p>
+                      {editableBlogMoreImages.length > 0 ? (
+                        <div className="blog-more-image-grid">
+                          {editableBlogMoreImages.slice(0, 4).map((img, i) => {
+                            const isLast = i === 3 && editableBlogMoreImages.length > 4;
+                            return (
+                              <div key={i} className="blog-image-preview">
+                                <img src={`http://localhost${img}`} alt={`More Image ${i}`} />
+                                {isLast && (
+                                  <div
+                                    className="blog-image-overlay"
+                                    onClick={() => setShowAllImagesModal(true)}
+                                  >
+                                    +{editableBlogMoreImages.length - 3}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <div className="blog-more-image-placeholder-grid">
+                          {[...Array(4)].map((_, i) => (
+                            <div key={i} className="blog-more-image-placeholder-cell">
+                              <span className="blog-placeholder-icon">🖼️</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        style={{ display: "none" }}
+                        id="edit-blog-more-images-input"
+                        onChange={async (e) => {
+                          const files = e.target.files;
+                          if (!files) return;
+
+                          const uploaded: string[] = [];
+
+                          for (const file of Array.from(files)) {
+                            const formData = new FormData();
+                            formData.append("image", file);
+
+                            try {
+                              const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
+                                method: "POST",
+                                body: formData,
+                              });
+                              const data = await res.json();
+                              if (data.success && data.image_url) {
+                                uploaded.push(data.image_url);
+                              }
+                            } catch (err) {
+                              console.error("Upload failed:", err);
+                            }
+                          }
+
+                          setEditableBlogMoreImages((prev) => [...prev, ...uploaded]);
+                        }}
+                      />
+                      <div className="admin-blogs-image-buttons">
+                        <button
+                          className="upload-btn"
+                          disabled={!isEditing}
+                          onClick={() => document.getElementById("edit-blog-more-images-input")?.click()}
+                        >
+                          Add More
+                        </button>
+                        <button
+                          className="remove-btn"
+                          disabled={!isEditing}
+                          onClick={() => setEditableBlogMoreImages([])}
+                        >
+                          Clear All
+                        </button>
+                      </div>
                     </div>
                 </div>
                 </div>
@@ -1006,18 +1123,25 @@ const AdminBlogs = () => {
                 className="cancel-btn"
                 onClick={() => {
                   resetNewBlogForm();
-                  setNewBlogModalOpen(false);
-                }}
+                  setNewBlogMoreImages([]);       
+                  setShowAllImagesModal(false);  
+                  setNewBlogModalOpen(false);     
+              }} 
               >
                 Cancel
               </button>
             </div>
-              <button
-                className="admin-blogs-new-blog-modal-close"
-                onClick={() => setNewBlogModalOpen(false)}
-              >
-                ✕
-              </button>
+            <button
+              className="admin-blogs-new-blog-modal-close"
+              onClick={() => {
+                resetNewBlogForm();
+                setNewBlogMoreImages([]);     
+                setShowAllImagesModal(false);  
+                setNewBlogModalOpen(false);   
+            }} 
+            >
+              ✕
+            </button>
               <div className="admin-blogs-new-blog-modal-inner-content">
                 <div className="admin-blogs-new-blog-modal-inner-content-top">
                   <div className="admin-blogs-new-blog-modal-left">
@@ -1048,9 +1172,7 @@ const AdminBlogs = () => {
                       <p><strong>Author</strong></p>
                       <p className="admin-blogs-new-blog-modal-author-content">{newBlogAuthorName}</p>
                     </div>
-                  </div>
-                  <div className="admin-blogs-new-blog-modal-right">    
-                  <div className="admin-blogs-new-blog-modal-status">
+                    <div className="admin-blogs-new-blog-modal-status">
                     <p><strong>Status</strong></p>
                     <select
                       className={`admin-blogs-new-blog-modal-select modal-status-${newBlogStatus.toLowerCase()}`}
@@ -1062,14 +1184,36 @@ const AdminBlogs = () => {
                       ))}
                     </select>
                   </div> 
+                  </div>
+                  <div className="admin-blogs-new-blog-modal-right">    
                   <div className="admin-blogs-new-blog-modal-image">
-                    <p><strong>Image</strong></p>
-                    {newBlogImage && (
+                    <p><strong>Main Image</strong></p>
+                    {newBlogImage ? (
                       <img
                         src={`http://localhost${newBlogImage}`}
                         alt="Preview"
+                        style={{ maxWidth: "100%", maxHeight: "300px", borderRadius: "4px" }}
                       />
-                    )}
+                    ) : (
+                      <div
+                        style={{
+                          width: "100%",
+                          height: "200px",
+                          maxWidth: "100%",
+                          maxHeight: "300px",
+                          backgroundColor: "#f2f2f2",
+                          color: "#888",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontStyle: "italic",
+                          border: "1px dashed #ccc",
+                          borderRadius: "4px",
+                        }}
+                      >
+                        No Blog Image
+                      </div>
+                    )}              
                     <input
                       type="file"
                       accept="image/*"
@@ -1092,6 +1236,86 @@ const AdminBlogs = () => {
                       </button>
                     </div>
                   </div>
+                  <div className="admin-blogs-new-blog-modal-image">
+                  <p><strong>More Images</strong></p>
+                  {newBlogMoreImages.length > 0 ? (
+                    <div className="blog-more-image-grid">
+                    {[...newBlogMoreImages]
+                    .slice(0, 4)
+                    .map((img, i) => {
+                      const isLast = i === 3 && newBlogMoreImages.length > 4;
+                      return (
+                        <div key={i} className="blog-image-preview">
+                          <img src={`http://localhost${img}`} alt={`More Image ${i}`} />
+                          {isLast && (
+                            <div
+                              className="blog-image-overlay"
+                              onClick={() => setShowAllImagesModal(true)}
+                            >
+                              +{newBlogMoreImages.length - 3}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>                  
+                  ) : (
+                    <div className="blog-more-image-placeholder-grid">
+                      {[...Array(4)].map((_, i) => (
+                        <div key={i} className="blog-more-image-placeholder-cell">
+                          <span className="blog-placeholder-icon">🖼️</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    style={{ display: "none" }}
+                    id="new-blog-more-images-input"
+                    onChange={async (e) => {
+                      const files = e.target.files;
+                      if (!files) return;
+
+                      const uploaded: string[] = [];
+
+                      for (const file of Array.from(files)) {
+                        const formData = new FormData();
+                        formData.append("image", file);
+
+                        try {
+                          const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
+                            method: "POST",
+                            body: formData,
+                          });
+                          const data = await res.json();
+                          if (data.success && data.image_url) {
+                            uploaded.push(data.image_url);
+                          }
+                        } catch (err) {
+                          console.error("Upload failed:", err);
+                        }
+                      }
+
+                      setNewBlogMoreImages((prev) => [...prev, ...uploaded]);
+                    }}
+                  />
+                  <div className="admin-blogs-image-buttons">
+                    <button
+                      className="upload-btn"
+                      onClick={() => document.getElementById("new-blog-more-images-input")?.click()}
+                    >
+                      Add More
+                    </button>
+                    <button
+                      className="remove-btn"
+                      onClick={() => setNewBlogMoreImages([])}
+                    >
+                      Clear All
+                    </button>
+                  </div>
+                </div>
                 </div>
                 </div>
                 <div className="admin-blogs-new-blog-modal-inner-content-bot">
@@ -1166,6 +1390,69 @@ const AdminBlogs = () => {
           </div>
         </div>
       )}
+     {showAllImagesModal && (
+      <div className="blog-gallery-modal">
+        <div className="blog-gallery-overlay" onClick={() => setShowAllImagesModal(false)}></div>
+        <div className="blog-gallery-wrapper">
+          <button className="blog-gallery-close" onClick={() => setShowAllImagesModal(false)}>✕</button>
+          <div className="blog-gallery-grid">
+            {(isEditing ? editableBlogMoreImages : newBlogMoreImages).map((img, index) => (
+              <div key={index} className="blog-gallery-thumb">
+                <div
+                  className="thumb-image-wrapper"
+                  onClick={() => setFullImageUrl(`http://localhost${img}`)}
+                >
+                  <img src={`http://localhost${img}`} alt={`More Image ${index}`} />
+                  {index > 0 && (
+                    <button
+                      className="thumb-swap-left"
+                      onClick={(e) => {
+                        e.stopPropagation(); 
+                        if (isEditing) {
+                          setEditableBlogMoreImages((prev) => {
+                            const updated = [...prev];
+                            [updated[index - 1], updated[index]] = [updated[index], updated[index - 1]];
+                            return updated;
+                          });
+                        } else {
+                          setNewBlogMoreImages((prev) => {
+                            const updated = [...prev];
+                            [updated[index - 1], updated[index]] = [updated[index], updated[index - 1]];
+                            return updated;
+                          });
+                        }
+                      }}
+                    >
+                      ←
+                    </button>
+                  )}
+                  <button
+                    className="delete-btn thumb-delete"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (isEditing) {
+                        setEditableBlogMoreImages((prev) => prev.filter((_, i) => i !== index));
+                      } else {
+                        setNewBlogMoreImages((prev) => prev.filter((_, i) => i !== index));
+                      }
+                    }}
+                  >
+                    🗑
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {fullImageUrl && (
+          <div className="blog-fullscreen-viewer">
+            <div className="blog-fullscreen-backdrop" onClick={() => setFullImageUrl("")}></div>
+            <img src={fullImageUrl} alt="Fullscreen" className="blog-fullscreen-image" />
+            <button className="blog-fullscreen-exit" onClick={() => setFullImageUrl("")}>✕</button>
+          </div>
+        )}
+      </div>
+    )}
       {bulkConfirmVisible && (
         <div className="blogs-confirmation-popup show">
           <div className="blogs-confirmation-box">
