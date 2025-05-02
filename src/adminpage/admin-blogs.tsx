@@ -944,7 +944,7 @@ const AdminBlogs = () => {
                         <div className="blog-more-image-placeholder-grid">
                           {[...Array(4)].map((_, i) => (
                             <div key={i} className="blog-more-image-placeholder-cell">
-                              <span className="blog-placeholder-icon">🖼️</span>
+                              <span className="blog-placeholder-icon">+</span>
                             </div>
                           ))}
                         </div>
@@ -1263,7 +1263,7 @@ const AdminBlogs = () => {
                     <div className="blog-more-image-placeholder-grid">
                       {[...Array(4)].map((_, i) => (
                         <div key={i} className="blog-more-image-placeholder-cell">
-                          <span className="blog-placeholder-icon">🖼️</span>
+                          <span className="blog-placeholder-icon">+</span>
                         </div>
                       ))}
                     </div>
