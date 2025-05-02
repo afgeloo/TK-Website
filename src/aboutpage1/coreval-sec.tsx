@@ -41,7 +41,6 @@ function CoreValue() {
       });
   }, []);
 
-  // Auto-slide every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) =>
@@ -63,34 +62,36 @@ function CoreValue() {
               alt="Ribbon"
             />
           </div>
-          <div className="coreval-cow">
-            <img src="./src/assets/aboutpage/coreval-cow.png" alt="Cow" />
-          </div>
-          <div className="corevalues-cards">
-            <div className="slider-container">
-              <div
-                className="slider"
-                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-              >
-                {coreValues.map((value, idx) => (
-                  <div className="card" key={idx}>
-                    <h1>{value.title}</h1>
-                    <p
-                      dangerouslySetInnerHTML={{
-                        __html: value.description.replace(/\n/g, "<br />"),
-                      }}
+          <div className="coreval-content-wrapper">
+            <div className="coreval-cow">
+              <img src="./src/assets/aboutpage/coreval-cow.png" alt="Cow" />
+            </div>
+            <div className="corevalues-cards">
+              <div className="slider-container">
+                <div
+                  className="slider"
+                  style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                >
+                  {coreValues.map((value, idx) => (
+                    <div className="card" key={idx}>
+                      <h1>{value.title}</h1>
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html: value.description.replace(/\n/g, "<br />"),
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="pagination-dots">
+                  {coreValues.map((_, idx) => (
+                    <span
+                      key={idx}
+                      className={`dot ${idx === currentIndex ? "active" : ""}`}
+                      onClick={() => setCurrentIndex(idx)}
                     />
-                  </div>
-                ))}
-              </div>
-              <div className="pagination-dots">
-                {coreValues.map((_, idx) => (
-                  <span
-                    key={idx}
-                    className={`dot ${idx === currentIndex ? "active" : ""}`}
-                    onClick={() => setCurrentIndex(idx)}
-                  />
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>

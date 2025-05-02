@@ -12,96 +12,9 @@
     font-style: normal;
   }
 
-.missionvision-sec {
-    max-width: 100%;
-    overflow: hidden;
-    gap: 5px;
-    padding: 0;
-}
-
-.missionvision-sec-content{
-    margin-bottom: 80px;
-}
-
-.missionvision-header{
-    padding: 0px 100px 0 100px;
-    font-family: 'Bogart Trial', sans-serif;
-    text-align: start;
-    font-size: 30px;
-    font-weight: bold;
-}
-
-.missionvision-bg {
-    background: linear-gradient(to bottom, #FF3B6A, #FE93B4);
-    z-index: -1;
-    min-height: 600px;
-    width: 100%;
-    position: relative; 
-    padding: 20px 0; 
-    display: flex;
-    flex-direction: column;
-
-}
-
-.missionvision-bg img {
-    max-width: clamp(700px, 80rem, 900px); 
-    height: auto;
-    position: absolute;
-    bottom: 0;
-    right: 0; 
-}
-
-.missionvision-content-1, .missionvision-content-2, .missionvision-content-3 {
-    z-index: 1;
-    position: relative;
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    width: 100%;
-}
-
-.missionvision-container-1, .missionvision-container-2, .missionvision-container-3 {
-    flex-direction: row;
-    align-items: center; 
-    justify-content: space-between; 
-    font-family: 'Helvetic', sans-serif;
-    padding: 0 50px 20px 50px;
-    background: rgba(255, 255, 255, 0);
-    border: 2px solid rgb(255, 255, 255);
-    border-radius: 10px;
-    width: 80%;
-    max-width: 1000px; 
-    margin: 20px auto;
-}
-
-.missionvision-container-1-header, .missionvision-container-2-header, .missionvision-container-3-header {
-    font-family: 'Bogart Trial', sans-serif;
-    text-align: justify; 
-    font-size: 30px;
-    font-weight: bold;
-    color: rgb(255, 255, 255); 
-}
-
-.missionvision-container-1-description, .missionvision-container-2-description, .missionvision-container-3-description {
-    font-family: 'Helvetic', sans-serif;
-    font-size: 18px;
-    margin: 0 auto;
-    text-align: justify; 
-    line-height: 1.5;
-    letter-spacing: 1px;
-    color: rgb(255, 255, 255); 
-}
 
 .mission-vision-sec {
-    max-width: 100%;
-    overflow: hidden;
-    gap: 5px;
-    padding: 0;
-    margin-bottom: -50px;
-}
-
-.mission-sec-content, .vision-sec-content{
-    padding: 0px 100px 50px 100px;
+    padding: 0 100px;
 }
 
 .mission-header, .vision-header{
@@ -109,6 +22,7 @@
     text-align: start;
     font-size: 30px;
     font-weight: bold;
+    margin-top: 50px;
 }
 
 .mission-description, .vision-description{
@@ -119,3 +33,59 @@
     line-height: 2;
     letter-spacing: 1px;
 }
+
+@media screen and (max-width: 1024px) {
+    .mission-vision-sec {
+      padding: 20px 20px;
+    }
+  
+    .mission-header,
+    .vision-header {
+      font-size: 26px;
+    }
+  
+    .mission-description,
+    .vision-description {
+      font-size: 20px;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .mission-vision-sec {
+        padding: 20px 40px;
+        margin-top: -60px;
+      }
+  
+    .mission-header,
+    .vision-header {
+      font-size: 20px;
+      margin-top: 30px;
+    }
+  
+    .mission-description,
+    .vision-description {
+      font-size: 10px;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .mission-vision-sec {
+        padding: 20px;
+      }
+      
+    .mission-header,
+    .vision-header {
+      font-size: 18px;
+    }
+  
+    .mission-description,
+    .vision-description {
+      font-size: 14px;
+    }
+  
+    .mission-sec-content,
+    .vision-sec-content {
+      padding: 0 15px 20px 15px;
+    }
+  }
+  

@@ -36,9 +36,18 @@ const BgCarousel: React.FC<CarouselProps> = memo(({
 
   return (
     <div className="bg-overflow-hidden">
-      <div className="bg-flex" style={{ transform: `translateX(-${curr * 100}%)` }}>
+      <div
+        className="bg-flex"
+        style={{
+          transform: `translateX(-${curr * 100}%)`,
+        }}
+      >
         {slides.map((slide, index) => (
-          <div key={index} className="bg-carousel-slide">
+          <div
+            key={index}
+            className="bg-carousel-slide"
+            style={{ width: `${100 / slides.length}%` }}
+          >        
             <img src={slide.image} alt={`Slide ${index}`} />
             <div className="bg-description-overlay">
               <div className="bg-description-content">

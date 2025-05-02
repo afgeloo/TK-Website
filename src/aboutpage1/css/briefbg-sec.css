@@ -70,3 +70,49 @@
     margin-bottom: 50px;
     width: 90%; 
   }
+
+  @media screen and (max-width: 1200px) {
+    .briefbg-sec-content {
+      padding: 0 50px 40px 50px;
+    }
+  
+    .briefbg-header {
+      font-size: 26px;
+    }
+  
+    .briefbg-description {
+      font-size: 20px;
+      line-height: 1.8;
+    }
+  
+    .briefbg-carousel-bg {
+      min-width: 100%;
+      max-width: 100%;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .briefbg-sec {
+      margin-top: 50px;
+    }
+  
+    .briefbg-sec-content {
+      margin-top: 30px;
+    }
+  
+    .briefbg-header {
+      font-size: 20px;
+      text-align: center;
+    }
+  
+    .briefbg-description {
+      font-size: 10px;
+    }
+  
+    .briefbg-carousel-bg {
+      min-width: 100%;
+      max-width: 100%;
+    }
+  
+  }
+  

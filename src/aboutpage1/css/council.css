@@ -153,3 +153,36 @@
         grid-template-columns: repeat(1, 1fr); 
     }
 }
+
+@media screen and (max-width: 768px) {
+    .council-sec {
+        margin-top: 10px;
+    }
+
+    .council-sec-content {
+        padding: 0 50px;
+        margin-top: 30px;
+    }
+
+    .council-header {
+        font-size: 24px;
+    }
+
+    .council-description {
+        font-size: 12px;
+        margin-bottom: 70px;
+    }
+
+    .council-card {
+        background: transparent;
+        border-radius: 20px;
+        position: relative;
+        width: 400px;
+        height: 250px;
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        margin: auto;
+    }
+
+}
