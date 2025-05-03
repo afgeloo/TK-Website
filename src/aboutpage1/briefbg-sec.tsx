@@ -42,7 +42,7 @@ const BriefBg: React.FC = memo(() => {
           alt="Brief Background Carousel Background"
         />
       </div>
-      <div className="carousel-container">
+      <div className="bg-carousel-container">
         <BgCarousel slides={slides} autoSlide autoSlideInterval={5000} />
       </div>
       <div className="briefbg-sec-content">

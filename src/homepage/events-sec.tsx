@@ -51,17 +51,17 @@ const EventsSec: React.FC = memo(() => {
   return (
     <div className="events-sec">
       <div className="events-sec-content">
-        <h1 className="events-header">EVENTS</h1>
         <div className="carousel-container">
+        <h1 className="events-header">EVENTS</h1>
           {slides.length > 0 && (
             <EventsCarousel slides={slides} autoSlide autoSlideInterval={5000} />
           )}
-        </div>
-        <div className="events-sec-nav">
+          <div className="events-sec-nav">
           <Link to="/Events" className="nav-events">
             <img src="./src/assets/homepage/calendar.png" alt="Calendar Icon" />
             SEE MORE
           </Link>
+        </div>
         </div>
       </div>
     </div>

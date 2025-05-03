@@ -55,7 +55,7 @@
     font-size: 30px;
     font-weight: bold;
     margin-left: 30px;
-    margin-bottom: -5px;
+    margin-bottom: 10px;
 }
 
 .blogs-container {
@@ -196,6 +196,8 @@
 
     .blogs-header{
         font-size: 20px;
+        justify-self: center;
+        margin-left: 0;
     }
     
     .blogs-container {
