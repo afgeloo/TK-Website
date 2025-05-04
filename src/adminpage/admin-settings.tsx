@@ -613,6 +613,7 @@ const AdminSettings = () => {
   );
 
   const [fullscreenImageUrl, setFullscreenImageUrl] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
 
   return (
     <div className="admin-settings">
@@ -651,20 +652,22 @@ const AdminSettings = () => {
           <div className="admin-settings-tabs-wrapper">
             {activeTab === 2 && (
               <>
-                <div className="admin-events-lower-header-select">
-                  <button
-                    onClick={() => {
-                      setSelectMode(!selectMode);
-                      setSelectedPartnerIds([]);
-                    }}
-                  >
-                    <img
-                      src={select}
-                      className="admin-blogs-lower-header-select-img"
-                    />
-                    {selectMode ? "Cancel" : "Select"}
-                  </button>
-                </div>
+                {viewMode === "table" && (
+                  <div className="admin-events-lower-header-select">
+                    <button
+                      onClick={() => {
+                        setSelectMode(!selectMode);
+                        setSelectedPartnerIds([]);
+                      }}
+                    >
+                      <img
+                        src={select}
+                        className="admin-blogs-lower-header-select-img"
+                      />
+                      {selectMode ? "Cancel" : "Select"}
+                    </button>
+                  </div>
+                )}
                 <button
                   className="add-new-partner-btn"
                   onClick={() => {
@@ -682,6 +685,20 @@ const AdminSettings = () => {
                   <FaPlus className="admin-icon-left" />
                   Add New Partner
                 </button>
+                <div className="admin-blogs-toggle-wrapper">
+                  <button
+                    className={`admin-blogs-toggle-button ${viewMode === 'table' ? 'active' : ''}`}
+                    onClick={() => setViewMode('table')}
+                  >
+                    Table View
+                  </button>
+                  <button
+                    className={`admin-blogs-toggle-button ${viewMode === 'grid' ? 'active' : ''}`}
+                    onClick={() => setViewMode('grid')}
+                  >
+                    Grid View
+                  </button>
+                </div>
               </>
             )}
             <div className="admin-settings-tabs">
@@ -1532,6 +1549,8 @@ const AdminSettings = () => {
           </div>
         )}
         {activeTab === 2 && (
+          <div className="admin-settings-partner-container">
+            {viewMode === "table" ? (
           <div className="admin-settings-scrollable-table">
             <table className="admin-settings-table">
               <thead>
@@ -1607,7 +1626,30 @@ const AdminSettings = () => {
                 )}
               </tbody>
             </table>
+          </div>
+            ) : (
+              <div className="admin-settings-grid-view">
+                {(filteredPartners.length > 0 ? filteredPartners : []).map((partner) => (
+                  <div className="admin-settings-grid-card" key={partner.partner_id}>
+                    <div className="settings-grid-container">
+                      <img
+                        src={getFullImageUrl(partner.partner_image)}
+                        alt="partner"
+                        className="settings-grid-img"
+                        onClick={() => setSelectedPartner(partner)}
+                      />
+                    </div>
+                    <div className="admin-settings-grid-card-info">
+                      <p className="settings-overlay-title">{partner.partner_name}</p>
+                      <p className="settings-overlay-contact">{partner.partner_contact_email}</p>
+                      <p className="settings-overlay-phone">{partner.partner_phone_number}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
             {selectedPartner && (
+            <div className="admin-partners-modal-layer">
               <div className="admin-partners-modal">
                 {selectedPartner && notification && (
                   <div
@@ -1846,6 +1888,7 @@ const AdminSettings = () => {
                   </div>
                 </div>
               </div>
+            </div>
             )}
             {isAddingNewPartner && (
               <div className="admin-partners-modal">

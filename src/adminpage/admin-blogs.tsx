@@ -528,6 +528,7 @@ const AdminBlogs = () => {
     : selectedBlog?.more_images || [];
 
   const [confirmThumbDeleteIndex, setConfirmThumbDeleteIndex] = useState<number | null>(null);
+  const [viewMode, setViewMode] = useState<"table" | "grid">("table");
   
   return (
     <div className="admin-blogs">
@@ -559,6 +560,8 @@ const AdminBlogs = () => {
       <div className="admin-blogs-lower-header">
         <h1>Blogs</h1>
         <div className="admin-blogs-lower-header-right">
+        {viewMode === "table" ? (
+        <>
           <div className="admin-blogs-lower-header-show">
             <p>Showing</p>
             <div className="admin-blogs-lower-header-count" onClick={() => setOpen(!open)}>
@@ -566,7 +569,7 @@ const AdminBlogs = () => {
               <span className="dropdown-arrow">▾</span>
               {open && (
                 <div className="admin-blogs-dropdown-menu">
-                  {[-1,...Array.from({ length: 20 }, (_, i) => i + 1)].map((val) => (
+                  {[-1, ...Array.from({ length: 20 }, (_, i) => i + 1)].map((val) => (
                     <div
                       key={val}
                       className="admin-blogs-dropdown-item"
@@ -588,6 +591,49 @@ const AdminBlogs = () => {
               {selectMode ? "Cancel" : "Select"}
             </button>
           </div>
+        </>
+      ) : (
+        <div className="admin-blogs-lower-header-show">
+          <p>Category</p>
+          <div
+            className="admin-blogs-lower-header-category"
+            onClick={() => setOpenCategory(!openCategory)}
+          >
+            {selectedCategory}
+            <span className="dropdown-arrow">▾</span>
+            {openCategory && (
+              <div className="admin-blogs-dropdown-menu">
+                {["All", "Kalusugan", "Kalikasan", "Karunungan", "Kultura", "Kasarian"].map((cat) => (
+                  <div
+                    key={cat}
+                    className="admin-blogs-dropdown-item"
+                    onClick={() => {
+                      setSelectedCategory(cat);
+                      setOpenCategory(false);
+                    }}
+                  >
+                    {cat}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      <div className="admin-blogs-toggle-wrapper">
+          <button
+            className={`admin-blogs-toggle-button ${viewMode === 'table' ? 'active' : ''}`}
+            onClick={() => setViewMode('table')}
+          >
+            Table View
+          </button>
+          <button
+            className={`admin-blogs-toggle-button ${viewMode === 'grid' ? 'active' : ''}`}
+            onClick={() => setViewMode('grid')}
+          >
+            Grid View
+          </button>
+        </div>
           <div className="admin-blogs-lower-header-new-blog">
           <button
             onClick={() => {
@@ -630,8 +676,9 @@ const AdminBlogs = () => {
       </div>
     )}
       <div className="admin-blogs-main-content">
-      <div className="admin-blogs-scrollable-table">
-        <table className="admin-blogs-table">
+      {viewMode === "table" ? (
+        <div className="admin-blogs-scrollable-table">
+          <table className="admin-blogs-table">
           <thead>
               <tr>
                 <th>ID</th>
@@ -757,6 +804,37 @@ const AdminBlogs = () => {
             </tbody>
           </table>
         </div>
+      ) : (
+        <div className="admin-blogs-grid-view">
+          {filteredBlogs.length > 0 ? (
+            <div className="blog-grid-scrollable-wrapper">
+              <div className="blog-grid-container">
+                {filteredBlogs.map((blog) => (
+                  <div
+                    key={blog.blog_id}
+                    className={`blog-grid-card grid-status-${blog.blog_status.toLowerCase()}`}
+                    onClick={() => setSelectedBlog(blog)}
+                  >
+                    <img
+                      src={`http://localhost${blog.image_url}`}
+                      alt={blog.title}
+                      className="blog-grid-image"
+                    />
+                    <div className="blog-grid-overlay">
+                      <h3 className="blog-overlay-title">{blog.title}</h3>
+                      <p className="blog-overlay-category">{blog.category}</p>
+                      <p className="blog-overlay-date">{formatDate(blog.created_at)}</p>
+                      <p className="blog-overlay-author">{getAuthorNameById(blog.author)}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p style={{ marginTop: "20px" }}>No blogs found.</p>
+          )}
+        </div>
+      )}
       </div>
       {selectedBlog && (
         <div className="admin-blogs-view-more">

@@ -51,6 +51,7 @@ const AdminEvents = () => {
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [notification, setNotification] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
 
   const [markerPosition, setMarkerPosition] = useState<{ lat: number; lng: number }>({
     lat: 14.5995, 
@@ -528,8 +529,10 @@ const AdminEvents = () => {
       <div className="admin-events-lower-header">
         <h1>Events</h1>
         <div className="admin-events-lower-header-right">
-        <div className="admin-events-lower-header-show">
-          <p>Showing</p>
+        {viewMode === 'table' ? (
+        <>
+          <div className="admin-events-lower-header-show">
+            <p>Showing</p>
             <div className="admin-events-lower-header-count" onClick={() => setOpen(!open)}>
               {count === -1 ? 'All' : count}
               <span className="dropdown-arrow">▾</span>
@@ -560,6 +563,46 @@ const AdminEvents = () => {
               {selectMode ? "Cancel" : "Select"}
             </button>
           </div>
+        </>
+        ) : (
+          <div className="admin-blogs-lower-header-show">
+            <p>Category</p>
+            <div className="admin-blogs-lower-header-category" onClick={() => setOpenCategory(!openCategory)}>
+              {selectedCategory}
+              <span className="dropdown-arrow">▾</span>
+              {openCategory && (
+                <div className="admin-events-dropdown-menu">
+                  {["All", "Kalusugan", "Kalikasan", "Karunungan", "Kultura", "Kasarian"].map((item) => (
+                    <div
+                      key={item}
+                      className="admin-events-dropdown-item"
+                      onClick={() => {
+                        setSelectedCategory(item);
+                        setOpenCategory(false);
+                      }}
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+          <div className="admin-blogs-toggle-wrapper">
+          <button
+            className={`admin-blogs-toggle-button ${viewMode === 'table' ? 'active' : ''}`}
+            onClick={() => setViewMode('table')}
+          >
+            Table View
+          </button>
+          <button
+            className={`admin-blogs-toggle-button ${viewMode === 'grid' ? 'active' : ''}`}
+            onClick={() => setViewMode('grid')}
+          >
+            Grid View
+          </button>
+        </div>
           <div className="admin-events-lower-header-new-event">
             <button onClick={() => setIsAddingNew(true)}>
               <FaPlus className="admin-icon-left" />
@@ -581,6 +624,7 @@ const AdminEvents = () => {
         </button>
       </div>
     )}
+    {viewMode === 'table' ? (
       <div className="admin-events-main-content">
         <div className="admin-events-scrollable-table">
           <table className="admin-events-table">
@@ -711,7 +755,42 @@ const AdminEvents = () => {
             </tbody>
           </table>
         </div>
+      </div> 
+      ) : (
+        <div className="admin-events-main-content">
+          <div className="admin-events-scrollable-table">
+            <div className="admin-blogs-grid-view">
+            {filteredEvents.length > 0 ? (
+              <div className="blog-grid-scrollable-wrapper">
+                <div className="blog-grid-container">
+                  {filteredEvents.map((event) => (
+                    <div
+                      key={event.event_id}
+                      className={`blog-grid-card grid-status-${event.event_status.toLowerCase()}`}
+                      onClick={() => setSelectedEvent(event)}
+                    >
+                      <img
+                        src={getFullImageUrl(event.image_url)}
+                        alt={event.title}
+                        className="blog-grid-image"
+                      />
+                      <div className="blog-grid-overlay">
+                        <h3 className="blog-overlay-title">{event.title}</h3>
+                        <p className="blog-overlay-category">{event.category}</p>
+                        <p className="blog-overlay-date">{formatDate(event.event_date)}</p>
+                        <p className="blog-overlay-venue">{event.event_venue}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <p style={{ marginTop: "20px" }}>No events found.</p>
+            )}
+          </div>
+        </div>
       </div>
+      )}
       {selectedEvent && (
         <div className="admin-events-view-more">
           <div className="admin-events-modal">
