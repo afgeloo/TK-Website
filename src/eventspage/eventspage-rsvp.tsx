@@ -163,9 +163,9 @@ function EventsPageRSVP() {
           </div>
         </div>
       </div>
-
       <div className="event-category-search-wrapper">
-        <div className="event-category-filter">
+      <div className="event-category-filter">
+        <div className="category-buttons-desktop">
           {categories.map((category) => (
             <span
               key={category}
@@ -176,6 +176,20 @@ function EventsPageRSVP() {
             </span>
           ))}
         </div>
+        <div className="category-dropdown-mobile">
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="category-select"
+          >
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
         <div className="event-search-bar">
           <input
             type="text"

@@ -298,7 +298,6 @@
   margin: 0px 0;
   align-self: center; 
   margin-bottom: 20px;
-  
 }
 
 .event-category-filter {
@@ -371,7 +370,6 @@
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
-
 }
 
 .see-more-button.see-less {
@@ -388,5 +386,140 @@
   grid-column: 1 / -1;
 }
   
- 
+.category-buttons-desktop {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.category-dropdown-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  .events-page-rsvp {
+    padding: 0 20px;
+  }
+
+  .eventsrsvp-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
+    align-items: center;
+  }
+
+  .events-header-row {
+    margin-top: 20px;
+  }
+  
+  .eventspage-header-EVENTS {
+    font-size: 24px;
+  }
+  
+  .event-toggle-tab {
+    font-size: 10px;
+  }
+
+  .event-search-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .event-search-input {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  .event-card {
+    width: 150px;
+  }
+
+  .event-image {
+    width: 100%;
+    height: 130px; 
+  }
+
+  .event-title {
+    font-size: 14px;
+  }
+
+  .event-category {
+    font-size: 12px;
+  }
+
+  .event-date{
+    font-size: 10px;
+  }
+
+  .event-location {
+    font-size: 10px;
+  }
+
+  .locationevent-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .eventrsvp-button {
+    padding: 8px 50px;
+    font-size: 10px;
+  }
+
+  .see-more-button {
+    font-size: 14px;
+    padding: 10px 30px;
+    width: 100%;
+  }
+
+  .category-buttons-desktop {
+    display: none;
+  }
+  
+  .category-dropdown-mobile {
+    display: block;
+    width: 100%;
+    position: relative;
+  }
+  
+  .category-select {
+    width: 100%;
+    padding: 8px 30px;
+    font-size: 10px;
+    font-family: 'Helvetica Now Text', sans-serif;
+    background-color: #ffffff;
+    border: 2px solid #ff8fb1;
+    font-weight: bold;
+    border-radius: 40px;
+    color: #ff8fb1;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23FF5A89' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 18px;
+    cursor: pointer;
+  
+    transition: 
+      background-color 0.3s ease,
+      color 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  
+  .category-select:hover {
+    background-color: #ff8fb1;
+    color: white;
+    border-color: #ff8fb1;
+    box-shadow: 0 0 0 3px rgba(255, 90, 137, 0.2);
+  }
+  
+  .category-select:focus {
+    outline: none;
+    border-color: #ff8fb1;
+    box-shadow: 0 0 0 3px rgba(255, 90, 137, 0.3);
+  }
+}
+
   
