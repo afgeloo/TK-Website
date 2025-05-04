@@ -352,11 +352,11 @@
 }
 
 .see-more-button {
-  background: #f04f88; 
+  background-color: #FE93B4;
   color: white;
   font-size: 16px;
   padding: 10px 20px;
-  border: 2px solid #f04f88; 
+  border: 2px solid #FE93B4; 
   border-radius: 20px;
   cursor: pointer;
   display: block;

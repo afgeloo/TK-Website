@@ -513,19 +513,24 @@
 }
 
 .blogs-page-see-more-btn {
-    display: block;
-    margin: 18px auto; 
-    padding: 10px 20px; 
-    font-size: 20px; 
     background-color: #FE93B4;
-    color: #ffffff;
-    border: none;
-    border-radius: 45px; 
-    cursor: pointer;
-    text-align: center;
-    font-family: 'helvetic', sans-serif !important;
-    margin-top: -45px; 
-    font-weight: 500;
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: 2px solid #FE93B4; 
+  border-radius: 20px;
+  cursor: pointer;
+  display: block;
+  width: 150px;
+  text-align: center;
+  margin: 20px auto;
+  font-weight: bold;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  grid-column: 1 / -1; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -2rem;
 }
 
 .blogs-page-pinned-full .blogs-page-pinned-overlay {
