@@ -1351,7 +1351,7 @@
 
 .blog-image-preview img {
   width: 100%;
-  height: 100px;
+  height: auto;
   object-fit: cover;
   border-radius: 8px;
 }
