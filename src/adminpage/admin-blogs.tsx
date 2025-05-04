@@ -15,6 +15,7 @@ interface Blog {
   created_at: string;
   content: string;
   image_url: string;
+  more_images?: string[];
 }
 
 const AdminBlogs = () => {
@@ -91,8 +92,9 @@ const AdminBlogs = () => {
 
   const handleEdit = () => {
     setEditableBlog({ ...selectedBlog! });
+    setEditableBlogMoreImages(selectedBlog?.more_images || []);
     setIsEditing(true);
-  };
+  };  
   
   const handleCancel = () => {
     setIsEditing(false);
@@ -100,21 +102,23 @@ const AdminBlogs = () => {
   };
   
   const handleSave = () => {
+    const mergedBlog = {
+      ...editableBlog!,
+      more_images: editableBlogMoreImages,
+    };
+  
     fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_blogs.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...editableBlog,
-        more_images: editableBlogMoreImages,
-      }),      
+      body: JSON.stringify(mergedBlog),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
           setBlogs((prev) =>
-            prev.map((b) => (b.blog_id === editableBlog?.blog_id ? editableBlog : b))
+            prev.map((b) => (b.blog_id === mergedBlog.blog_id ? mergedBlog : b))
           );
-          setSelectedBlog(editableBlog);
+          setSelectedBlog(mergedBlog); 
           setIsEditing(false);
           setNotification("Blog updated successfully!");
           setTimeout(() => setNotification(""), 4000);
@@ -128,7 +132,7 @@ const AdminBlogs = () => {
         setNotification("Error occurred while updating blog.");
         setTimeout(() => setNotification(""), 4000);
       });
-  };
+  };  
   
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -360,11 +364,17 @@ const AdminBlogs = () => {
     fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/blogs.php")
       .then((res) => res.json())
       .then((data) => {
-        setBlogs(data.blogs);
+        if (data.blogs && Array.isArray(data.blogs)) {
+          const processed = data.blogs.map((b) => ({
+            ...b,
+            more_images: b.more_images ?? []  
+          }));
+          setBlogs(processed);
+        }
       })
       .catch((err) => console.error("Failed to fetch blogs:", err));
   }, []);
-
+  
   useEffect(() => {
     if (isEditing && textareaRef.current && editableBlog?.content) {
       textareaRef.current.innerHTML = editableBlog.content;
@@ -495,28 +505,29 @@ const AdminBlogs = () => {
 
   useEffect(() => {
     if (selectedBlog) {
-      setEditableBlogMoreImages([]); 
-    }
-  }, [selectedBlog]);
-
-  useEffect(() => {
-    if (selectedBlog) {
       fetch(`http://localhost/tara-kabataan/tara-kabataan-backend/api/get_blog_images.php?blog_id=${selectedBlog.blog_id}`)
         .then(res => res.json())
         .then(data => {
-          if (data.success && Array.isArray(data.images)) {
-            setEditableBlogMoreImages(data.images); 
-          } else {
-            setEditableBlogMoreImages([]);
-          }
+          const moreImages = data.success && Array.isArray(data.images) ? data.images : [];
+          setEditableBlogMoreImages(moreImages);
+          setSelectedBlog((prev) => prev ? { ...prev, more_images: moreImages } : prev);
+          setEditableBlog((prev) => prev ? { ...prev, more_images: moreImages } : prev);
         })
         .catch(err => {
           console.error("Failed to load more blog images:", err);
           setEditableBlogMoreImages([]);
+          setEditableBlog({ ...selectedBlog, more_images: [] });
         });
     }
-  }, [selectedBlog]);
+  }, [selectedBlog]);  
   
+  const imageList = isEditing
+  ? editableBlogMoreImages
+  : newBlogModalOpen
+    ? newBlogMoreImages
+    : selectedBlog?.more_images || [];
+
+  const [confirmThumbDeleteIndex, setConfirmThumbDeleteIndex] = useState<number | null>(null);
   
   return (
     <div className="admin-blogs">
@@ -578,10 +589,19 @@ const AdminBlogs = () => {
             </button>
           </div>
           <div className="admin-blogs-lower-header-new-blog">
-            <button onClick={() => setNewBlogModalOpen(true)}>
-              <FaPlus className="admin-icon-left" />
-              Add New Blog
-            </button>
+          <button
+            onClick={() => {
+              resetNewBlogForm();
+              setNewBlogMoreImages([]);
+              setNewBlogImage("");
+              setNewBlogContent("");
+              setShowAllImagesModal(false);
+              setNewBlogModalOpen(true);
+            }}
+          >
+            <FaPlus className="admin-icon-left" />
+            Add New Blog
+          </button>
           </div>
         </div>
       </div>
@@ -828,7 +848,10 @@ const AdminBlogs = () => {
                         <input
                           type="text"
                           value={editableBlog?.title || ""}
-                          onChange={(e) => setEditableBlog({ ...editableBlog!, title: e.target.value })}
+                          onChange={(e) =>
+                            editableBlog &&
+                            setEditableBlog({ ...editableBlog, title: e.target.value })
+                          }                          
                           className="admin-blogs-modal-title-content"
                         />
                       ) : (
@@ -884,12 +907,17 @@ const AdminBlogs = () => {
                   </div>
                   <div className="admin-blogs-modal-right">
                     <div className="admin-blogs-modal-image">
-                      <p><strong>Image</strong></p>
+                      <p><strong>Main Image</strong></p>
                       {(isEditing ? editableBlog?.image_url : selectedBlog.image_url) ? (
                         <img
-                          src={`http://localhost${isEditing ? editableBlog?.image_url : selectedBlog.image_url}`}
-                          alt="Blog"
-                        />
+                        src={`http://localhost${isEditing ? editableBlog?.image_url : selectedBlog.image_url}`}
+                        alt="Blog"
+                        style={{ cursor: "zoom-in" }}
+                        onClick={() =>
+                          setFullImageUrl(`http://localhost${isEditing ? editableBlog?.image_url : selectedBlog.image_url}`)
+                        }
+                      />
+                      
                       ) : (
                         <div className="no-image-placeholder">No Blog Image</div>
                       )}
@@ -921,34 +949,45 @@ const AdminBlogs = () => {
                     </div>
                     <div className="admin-blogs-new-blog-modal-image">
                       <p><strong>More Images</strong></p>
-                      {editableBlogMoreImages.length > 0 ? (
-                        <div className="blog-more-image-grid">
-                          {editableBlogMoreImages.slice(0, 4).map((img, i) => {
-                            const isLast = i === 3 && editableBlogMoreImages.length > 4;
-                            return (
-                              <div key={i} className="blog-image-preview">
-                                <img src={`http://localhost${img}`} alt={`More Image ${i}`} />
-                                {isLast && (
-                                  <div
-                                    className="blog-image-overlay"
-                                    onClick={() => setShowAllImagesModal(true)}
-                                  >
-                                    +{editableBlogMoreImages.length - 3}
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      ) : (
-                        <div className="blog-more-image-placeholder-grid">
-                          {[...Array(4)].map((_, i) => (
-                            <div key={i} className="blog-more-image-placeholder-cell">
-                              <span className="blog-placeholder-icon">+</span>
+                      {(isEditing ? editableBlogMoreImages.length > 0 : selectedBlog.more_images?.length > 0) ? (
+                      <div className="blog-more-image-grid">
+                        {(isEditing ? editableBlogMoreImages : selectedBlog.more_images).slice(0, 4).map((img, i) => {
+                          const isLast =
+                            i === 3 &&
+                            (isEditing
+                              ? editableBlogMoreImages.length > 4
+                              : selectedBlog.more_images!.length > 4);
+                          return (
+                            <div key={i} className="blog-image-preview">
+                              <img
+                                src={`http://localhost${img}`}
+                                alt={`More Image ${i}`}
+                                onClick={() => setFullImageUrl(`http://localhost${img}`)}
+                                style={{ cursor: "zoom-in" }}
+                              />
+                              {isLast && (
+                                <div
+                                  className="blog-image-overlay"
+                                  onClick={() => setShowAllImagesModal(true)}
+                                >
+                                  +{(isEditing
+                                    ? editableBlogMoreImages.length
+                                    : selectedBlog.more_images!.length) - 3}
+                                </div>
+                              )}
                             </div>
-                          ))}
-                        </div>
-                      )}
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="blog-more-image-placeholder-grid">
+                        {[...Array(4)].map((_, i) => (
+                          <div key={i} className="blog-more-image-placeholder-cell">
+                            <span className="blog-placeholder-icon">+</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                       <input
                         type="file"
                         accept="image/*"
@@ -1190,10 +1229,11 @@ const AdminBlogs = () => {
                     <p><strong>Main Image</strong></p>
                     {newBlogImage ? (
                       <img
-                        src={`http://localhost${newBlogImage}`}
-                        alt="Preview"
-                        style={{ maxWidth: "100%", maxHeight: "300px", borderRadius: "4px" }}
-                      />
+                      src={`http://localhost${newBlogImage}`}
+                      alt="Preview"
+                      style={{ maxWidth: "100%", maxHeight: "300px", borderRadius: "4px", cursor: "zoom-in" }}
+                      onClick={() => setFullImageUrl(`http://localhost${newBlogImage}`)}
+                    />                    
                     ) : (
                       <div
                         style={{
@@ -1246,7 +1286,12 @@ const AdminBlogs = () => {
                       const isLast = i === 3 && newBlogMoreImages.length > 4;
                       return (
                         <div key={i} className="blog-image-preview">
-                          <img src={`http://localhost${img}`} alt={`More Image ${i}`} />
+                          <img
+                            src={`http://localhost${img}`}
+                            alt={`More Image ${i}`}
+                            onClick={() => setFullImageUrl(`http://localhost${img}`)}
+                            style={{ cursor: "zoom-in" }}
+                          />
                           {isLast && (
                             <div
                               className="blog-image-overlay"
@@ -1395,62 +1440,86 @@ const AdminBlogs = () => {
         <div className="blog-gallery-overlay" onClick={() => setShowAllImagesModal(false)}></div>
         <div className="blog-gallery-wrapper">
           <button className="blog-gallery-close" onClick={() => setShowAllImagesModal(false)}>✕</button>
+
           <div className="blog-gallery-grid">
-            {(isEditing ? editableBlogMoreImages : newBlogMoreImages).map((img, index) => (
-              <div key={index} className="blog-gallery-thumb">
+            {(
+              (isEditing
+                ? editableBlogMoreImages
+                : newBlogModalOpen
+                  ? newBlogMoreImages
+                  : selectedBlog?.more_images || [])
+            ).map((img, index) => (
+              <div
+                key={index}
+                className={`blog-gallery-thumb ${isEditing ? "editable-mode" : ""}`}
+              >
                 <div
                   className="thumb-image-wrapper"
                   onClick={() => setFullImageUrl(`http://localhost${img}`)}
                 >
                   <img src={`http://localhost${img}`} alt={`More Image ${index}`} />
-                  {index > 0 && (
+
+                  {(isEditing || newBlogModalOpen) && (
+                  <div className="thumb-controls">
+                    {index > 0 && (
+                      <button
+                        className="thumb-swap-left"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const updater = isEditing ? setEditableBlogMoreImages : setNewBlogMoreImages;
+                          updater((prev) => {
+                            const updated = [...prev];
+                            [updated[index - 1], updated[index]] = [updated[index], updated[index - 1]];
+                            return updated;
+                          });
+                        }}
+                      >
+                        ←
+                      </button>
+                    )}
+
                     <button
-                      className="thumb-swap-left"
+                      className="thumb-delete"
                       onClick={(e) => {
-                        e.stopPropagation(); 
-                        if (isEditing) {
-                          setEditableBlogMoreImages((prev) => {
-                            const updated = [...prev];
-                            [updated[index - 1], updated[index]] = [updated[index], updated[index - 1]];
-                            return updated;
-                          });
-                        } else {
-                          setNewBlogMoreImages((prev) => {
-                            const updated = [...prev];
-                            [updated[index - 1], updated[index]] = [updated[index], updated[index - 1]];
-                            return updated;
-                          });
-                        }
+                        e.stopPropagation();
+                        setConfirmThumbDeleteIndex(index);
+                        const updater = isEditing ? setEditableBlogMoreImages : setNewBlogMoreImages;
+                        updater((prev) => prev.filter((_, i) => i !== index));
                       }}
                     >
-                      ←
+                      🗑
                     </button>
-                  )}
-                  <button
-                    className="delete-btn thumb-delete"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (isEditing) {
-                        setEditableBlogMoreImages((prev) => prev.filter((_, i) => i !== index));
-                      } else {
-                        setNewBlogMoreImages((prev) => prev.filter((_, i) => i !== index));
-                      }
-                    }}
-                  >
-                    🗑
-                  </button>
+
+                    {index < imageList.length - 1 && (
+                      <button
+                        className="thumb-swap-right"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const updater = isEditing ? setEditableBlogMoreImages : setNewBlogMoreImages;
+                          updater((prev) => {
+                            const updated = [...prev];
+                            [updated[index], updated[index + 1]] = [updated[index + 1], updated[index]];
+                            return updated;
+                          });
+                        }}
+                      >
+                        →
+                      </button>
+                    )}
+                  </div>
+                )}
                 </div>
               </div>
             ))}
           </div>
         </div>
-        {fullImageUrl && (
-          <div className="blog-fullscreen-viewer">
-            <div className="blog-fullscreen-backdrop" onClick={() => setFullImageUrl("")}></div>
-            <img src={fullImageUrl} alt="Fullscreen" className="blog-fullscreen-image" />
-            <button className="blog-fullscreen-exit" onClick={() => setFullImageUrl("")}>✕</button>
-          </div>
-        )}
+      </div>
+    )}
+    {fullImageUrl && (
+      <div className="blog-fullscreen-viewer">
+        <div className="blog-fullscreen-backdrop" onClick={() => setFullImageUrl("")}></div>
+        <img src={fullImageUrl} alt="Fullscreen" className="blog-fullscreen-image" />
+        <button className="blog-fullscreen-exit" onClick={() => setFullImageUrl("")}>✕</button>
       </div>
     )}
       {bulkConfirmVisible && (

@@ -501,6 +501,7 @@ const AdminEvents = () => {
   };  
 
   const isFieldLocked = selectedEvent?.event_status === "COMPLETED" || selectedEvent?.event_status === "CANCELLED";
+  const [fullscreenImageUrl, setFullscreenImageUrl] = useState<string | null>(null);
   
   return (
     <div className="admin-events">
@@ -936,6 +937,18 @@ const AdminEvents = () => {
                                 : selectedEvent.image_url
                             )}
                             alt="Event"
+                            style={{ cursor: "zoom-in" }}
+                            onClick={() =>
+                              setFullscreenImageUrl(
+                                getFullImageUrl(
+                                  isEditing
+                                    ? tempImageUrl !== null
+                                      ? tempImageUrl
+                                      : editableEvent?.image_url || ""
+                                    : selectedEvent.image_url
+                                )
+                              )
+                            }
                           />
                         ) : (
                           <div style={{
@@ -1301,6 +1314,8 @@ const AdminEvents = () => {
                         <img
                           src={getFullImageUrl(newImageUrl)}
                           alt="Event"
+                          style={{ cursor: "zoom-in" }}
+                          onClick={() => setFullscreenImageUrl(getFullImageUrl(newImageUrl))}
                         />
                       ) : (
                         <div style={{
@@ -1452,6 +1467,14 @@ const AdminEvents = () => {
               </div>
           </div>
         </div>
+      </div>
+    )}
+    {fullscreenImageUrl && (
+      <div
+        className="fullscreen-image-overlay"
+        onClick={() => setFullscreenImageUrl(null)}
+      >
+        <img src={fullscreenImageUrl} alt="Fullscreen" />
       </div>
     )}
     </div>

@@ -612,6 +612,8 @@ const AdminSettings = () => {
     partner.partner_phone_number.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const [fullscreenImageUrl, setFullscreenImageUrl] = useState<string | null>(null);
+
   return (
     <div className="admin-settings">
       {notification && (
@@ -1300,15 +1302,17 @@ const AdminSettings = () => {
                     <h1>Edit Member</h1>
                     <div className="admin-member-edit-section">
                       <div className="admin-member-edit-image-wrapper">
-                        {memberImageUrl ? (
-                          <img
-                            src={getFullImageUrlCouncil(memberImageUrl)}
-                            alt="Preview"
-                            className="admin-member-edit-photo"
-                          />
-                        ) : (
-                          <div className="admin-member-no-image">No Image</div>
-                        )}
+                      {memberImageUrl ? (
+                        <img
+                          src={getFullImageUrlCouncil(memberImageUrl)}
+                          onClick={() => setFullscreenImageUrl(getFullImageUrlCouncil(memberImageUrl))}
+                          style={{ cursor: "zoom-in" }}
+                          alt="Preview"
+                          className="admin-member-edit-photo"
+                        />
+                      ) : (
+                        <div className="admin-member-no-image">No Image</div>
+                      )}
                         <input
                         type="file"
                         accept="image/*"
@@ -1723,10 +1727,10 @@ const AdminSettings = () => {
                               )
                             ) : selectedPartner?.partner_image ? (
                               <img
-                                src={getFullImageUrl(
-                                  selectedPartner.partner_image,
-                                )}
+                                src={getFullImageUrl(selectedPartner.partner_image)}
                                 alt="Partner"
+                                onClick={() => setFullscreenImageUrl(getFullImageUrl(selectedPartner.partner_image))}
+                                style={{ cursor: "zoom-in" }} 
                               />
                             ) : (
                               <div className="admin-partners-no-image">
@@ -2029,6 +2033,14 @@ const AdminSettings = () => {
                 </div>
               </div>
             )}
+          </div>
+        )}
+        {fullscreenImageUrl && (
+          <div className="fullscreen-image-modal" onClick={() => setFullscreenImageUrl(null)}>
+            <div className="fullscreen-image-wrapper">
+              <img src={fullscreenImageUrl} alt="Full view" />
+              <button className="close-fullscreen-btn" onClick={() => setFullscreenImageUrl(null)}>✕</button>
+            </div>
           </div>
         )}
       </div>
