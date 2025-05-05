@@ -68,24 +68,5 @@
     }
   }
   
-  @media screen and (max-width: 480px) {
-    .mission-vision-sec {
-        padding: 20px;
-      }
-      
-    .mission-header,
-    .vision-header {
-      font-size: 18px;
-    }
-  
-    .mission-description,
-    .vision-description {
-      font-size: 14px;
-    }
-  
-    .mission-sec-content,
-    .vision-sec-content {
-      padding: 0 15px 20px 15px;
-    }
-  }
+
   
