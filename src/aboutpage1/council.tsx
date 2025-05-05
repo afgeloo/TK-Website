@@ -77,7 +77,7 @@ function Council() {
                                 <div className="council-inner-card-2">
                                 <div className="council-member-image">
                                 <img
-                                src={`http://localhost/tara-kabataan/tara-kabataan-webapp/uploads/members-images/${member.member_id}.jpg?t=${Date.now()}`}
+                                src={`http://localhost/tara-kabataan/tara-kabataan-webapp/uploads/members-images/${member.member_id}.jpg`}
                                 onError={(e) => {
                                     const basePath = "http://localhost/tara-kabataan/tara-kabataan-webapp/uploads/members-images/";
                                     const fallbackExtensions = ["png", "jpeg"];

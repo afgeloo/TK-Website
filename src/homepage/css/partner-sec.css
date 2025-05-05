@@ -74,8 +74,8 @@
 
 .BePartnerMemberSection-box {
   position: relative;
-  width: 350px;
-  min-height: 350px; 
+  width: 450px;
+  min-height: 450px; 
   padding: 40px 30px; 
   border-radius: 25px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -377,7 +377,7 @@
   }
   
   .BePartnerMemberSection {
-    width: 60%;
+    width: 80%;
   }
   
   .BePartnerMemberText {
@@ -389,7 +389,6 @@
   .BePartnerMemberSection-box {
     width: 100%;
     min-height: auto;
-    padding: 30px 40px;
   }
   
   .button-inside-be-a-partner-member {
@@ -417,8 +416,8 @@
   }
   
   .support-tk-container {
-    width: 60%;
-    padding: 40px;
+    width: 80%;
+    padding: 40px 20px;
   }
   
   .support-tk-content-format {

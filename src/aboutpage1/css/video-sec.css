@@ -48,17 +48,14 @@
   border-radius: 20px;
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
   width: 80%;
-  max-width: 1000px;
+  max-width: 950px;
 }
 
 .custom-video-frame {
-  width: 100%;  
-  max-width: 1000px;  
+  width: 100%;
   aspect-ratio: 16 / 9;  
   border-radius: 15px;  
   overflow: hidden;
-  background: white;
-  padding: 6px;
   box-shadow: 0px 10px 25px rgba(255, 59, 106, 0.3), 0px 10px 25px rgba(106, 125, 255, 0.3);
 }
 

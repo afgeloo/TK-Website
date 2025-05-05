@@ -23,7 +23,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  padding-bottom: 150px;
+  padding-bottom: 80px;
   justify-content: start;
 }
 
@@ -404,7 +404,7 @@
 
   .eventsrsvp-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 15px;
     justify-content: center;
     justify-items: center;
     justify-self: center;
@@ -434,7 +434,8 @@
   }
 
   .event-card {
-    width: 150px;
+    min-width: 100%;
+    width: 100%;
   }
 
   .event-image {

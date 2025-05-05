@@ -41,21 +41,12 @@
   z-index: 5;
 }
 
-.footer-number,
-.footer-email {
-  margin-left: 30px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .footer-icon-circle {
   background-color: white;
   color: #0F82CA;
   border-radius: 50%;
-  padding: 8px;
-  width: 18px;
-  height: 18px;
+  width: 35px;
+  height: 35px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -82,7 +73,7 @@
   z-index: 5;
 }
 
-.footer-facebook, .footer-instagram {
+.footer-facebook, .footer-instagram, .footer-number, .footer-email {
   display: flex;
   gap: 10px;
   align-items: center; 

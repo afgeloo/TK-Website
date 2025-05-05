@@ -9,6 +9,13 @@ body{
     user-select: none;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
 
 
 

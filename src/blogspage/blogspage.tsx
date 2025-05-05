@@ -8,6 +8,7 @@ import timeblack from "../assets/logos/timeblack.png";
 import authorblack from "../assets/logos/pencilblack.jpg";
 import { useNavigate } from "react-router-dom";
 import Preloader from "../preloader";
+import searchIconEventspage from "../assets/eventspage/Search-icon-events.png";
 
 interface Blog {
   blog_id: string;
@@ -217,21 +218,46 @@ function BlogsPage() {
         </>
       )}
       <div className="blogs-page-blog-categories">
-        <h2 className="blogs-page-blogs-header" style={{ fontFamily: "'Bogart Trial', sans-serif" }}>
-          Blogs
-        </h2>
-        <div className="blogs-page-category-list">
-          {categories.map((category) => (
-            <span
-              key={category}
-              className={selectedCategory === category ? "active-category" : ""}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </span>
-          ))}
+      <h2 className="blogs-page-blogs-header" style={{ fontFamily: "'Bogart Trial', sans-serif" }}>
+        Blogs
+      </h2>
+      <div className="blogs-category-dropdown-search-bar">
+      <div className="blogs-category-buttons-desktop blogs-page-category-list">
+        {categories.map((category) => (
+          <span
+            key={category}
+            className={selectedCategory === category ? "active-category" : ""}
+            onClick={() => setSelectedCategory(category)}
+          >
+            {category}
+          </span>
+        ))}
+      </div>
+        <div className="blogs-category-dropdown-mobile">
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="blogs-category-select"
+          >
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="blog-search-bar" style={{ marginTop: "14px" }}>
+          <input
+            type="text"
+            placeholder="Search blogs..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="blog-search-input"
+          />
+          <img src={searchIconEventspage} alt="Search" className="blog-search-icon" />
         </div>
       </div>
+    </div>
       <hr className="blogs-page-Hr" />
       <div className="blogs-page-blogs-list">
         {loading ? (

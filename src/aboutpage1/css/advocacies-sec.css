@@ -32,9 +32,9 @@
     font-family: 'Bogart Trial', sans-serif;
     font-size: 35px;
     font-weight: bold;
-    margin-left: 100px;
     margin-bottom: 10px;
     margin-top: 50px;
+    margin-left: 100px;
 }
 
 .advocacies-slider {
@@ -122,11 +122,11 @@
 }
 
 .advocacy-card:hover {
-  transform: scale(1.05); /* Slight enlargement */
-  color: rgb(255, 255, 255) !important; /* Ensures text turns black */
+  transform: scale(1.05); 
+  color: rgb(255, 255, 255) !important;
 }
 
-/* Hover Color Fill for Each Card */
+
 .advocacy-card.kalusugan:hover {
   background-color: #FF7474;
   border-color: #FF7474;
@@ -210,3 +210,11 @@
   height: 8px;
 }
 
+@media screen and (max-width: 768px) {
+  .advocacies-header {
+    font-size: 24px;
+    justify-self: center;
+    margin-left: 0;
+    margin-bottom: -30px;
+  }
+}
