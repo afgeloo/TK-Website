@@ -145,7 +145,7 @@ function EventsPageRSVP() {
   return (
     <div className="events-page-rsvp">
       <div className="events-header-row">
-        <h1 className="eventspage-header-EVENTS">EVENTS</h1>
+        <h1 className="eventspage-header-EVENTS">Events</h1>
         <div className="event-toggle-wrapper">
           <div className="event-toggle-tabs">
             <button

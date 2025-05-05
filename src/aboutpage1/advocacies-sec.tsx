@@ -47,7 +47,7 @@ function AboutAdvocacies() {
     return (
         <div>
             <hr className="advocacies-line" />
-            <h1 className="advocacies-header">ADVOCACIES</h1>
+            <h1 className="advocacies-header">Advocacies</h1>
             <div className="advocacies-slider">
             {slidesadvocacies.map((slide, index) => (
                 <div

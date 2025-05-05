@@ -35,7 +35,7 @@
 }
 
 .blogs-page-pinned-header h2 {
-    font-size: 30px;
+    font-size: 40px;
     font-weight: bold;
     font-family: 'Bogart Trial', sans-serif;
     margin-bottom: -5px;
@@ -262,7 +262,7 @@
 }
 
 .blogs-page-blogs-header {
-    font-size: 34px;
+    font-size: 40px;
     max-width: 1080px; 
     margin: 27px auto 9px; 
     padding-left: 0;
