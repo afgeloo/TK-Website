@@ -1,4 +1,3 @@
-
 .fancy-scrollbar::-webkit-scrollbar {
     width: 6px;
 }
@@ -176,25 +175,26 @@
     padding: 10px;
     margin: 0;
     list-style: none;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     flex-grow: 1;
     border-radius: 4px;
     background: #ffffff;
+    scrollbar-width: thin;
+    scrollbar-color: #cccccc transparent;
 }
 
 .floating-chat .chat .messages::-webkit-scrollbar {
-    width: 5px;
-}
-
-.floating-chat .chat .messages::-webkit-scrollbar-track {
-    border-radius: 5px;
-    background-color: rgba(25, 147, 147, 0.1);
+    width: 6px;
 }
 
 .floating-chat .chat .messages::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    background-color: rgba(25, 147, 147, 0.2);
+    background-color: #cccccc;
+    border-radius: 10px;
+}
+
+.floating-chat .chat .messages::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 .floating-chat .chat .messages li {
@@ -500,4 +500,3 @@
       font-size: 13px;
     }
   }
-  

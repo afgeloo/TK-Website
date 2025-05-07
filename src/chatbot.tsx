@@ -56,7 +56,7 @@ const Chatbot: React.FC = () => {
     };
 
     const sendNewMessage = () => {
-        if (isTyping || isDisplayingMessage) return;
+        if (isTyping || isDisplayingMessage) return; // Prevent sending while typing or displaying
         if (textBoxRef.current) {
             const newMessage = textBoxRef.current.innerHTML.replace(/<div>|<br.*?>/ig, '\n').replace(/<\/div>/g, '').trim().replace(/\n/g, '<br>');
             if (!newMessage) return;
@@ -65,6 +65,9 @@ const Chatbot: React.FC = () => {
             textBoxRef.current.innerHTML = '';
             textBoxRef.current.focus();
 
+            setIsTyping(true);
+            setIsDisplayingMessage(true);
+
             setTimeout(() => {
                 strictProductSearch ? searchProduct(newMessage) : handlePredefinedReplies(newMessage);
             }, 500);
@@ -72,14 +75,21 @@ const Chatbot: React.FC = () => {
     };
 
     const handlePredefinedReplies = (message: string) => {
-        let reply = '';
+        if (isTyping || isDisplayingMessage) return; // Prevent interaction while typing
+
+        setIsTyping(true);
+        setIsDisplayingMessage(true);
+
         const lowerCaseMessage = message.toLowerCase();
-    
+        let reply = '';
+
         if (lowerCaseMessage.includes("what is tara kabataan")) {
             reply = "Ang Tara Kabataan (TK) ay isang organisasyon ng mga kabataan sa Maynila na itinatag para isulong ang kaginhawaan ng bawat kabataan at Manilenyo. Pinapahalagahan ng samahan ang pakikipagkapwa ng mga Pilipino na nakasandig sa ating karapatan at pagkakapantay-pantay. Naniniwala ang TK sa kakayahan ng bawat kabataan, sa loob at labas ng paaralan, na siyang higit na dapat mabigyan ng oportunidad na malinang at mapaunlad. Mula rito, mas makikilala ng kabataan ang kaniyang sarili at matatanaw ang kaniyang mahalagang papel sa komunidad, lipunan, at bayan. Mula sa sarili tungo sa bayan ang siyang hinihikayat ng Tara Kabataan sa kaniyang kapwa.";
+            displayReply(reply);
         } else if (lowerCaseMessage.includes("how to join tara kabataan")) {
             reply = "To join Tara Kabataan, you can visit our website and fill out the membership form. You can also attend our events and meetings to learn more about our organization and how you can get involved.";
-        } else if (lowerCaseMessage.includes("what are the advocacies of tara kabataan")) {
+            displayReply(reply);
+        } else if (lowerCaseMessage.includes("what are the advocacies")) {
             reply = `The advocacies of Tara Kabataan (5 K) are:
     - *Kalusugan*: Promoting accessible and humane healthcare services for all.
     - *Kalikasan*: Leading the call for climate justice and environmental protection.
@@ -88,28 +98,39 @@ const Chatbot: React.FC = () => {
     - *Kasarian*: Valuing gender equality and inclusive society.
     
     Visit the About page to learn more.`;
-        } else if (/^(hello+|hi+|hey+)[!?,.]*$/.test(lowerCaseMessage)) {
-            reply = "Hello! How can I assist you today?";
-        } else if (lowerCaseMessage.includes("thank you") || lowerCaseMessage.includes("thanks") || lowerCaseMessage.includes("thank")) {
-            reply = "You're always welcome with Tara Kabataan!";
+            displayReply(reply);
         } else {
-            const productQuery = lowerCaseMessage.match(/(?:find|search for|check for|look for|do you have|is there)\s+(.+)/i);
-            if (productQuery) {
-                const productName = productQuery[1].trim();
-                searchProduct(productName);
-                return;
-            } else {
-                reply = "I'm sorry, I can't determine what you said. Please try again.";
-            }
+            // Forward to Gemini
+            askGemini(message);
         }
+    };
     
-        if (reply) {
-            setIsTyping(true);
-            setIsDisplayingMessage(true);
-    
-            setTimeout(() => {
-                displayReply(reply);
-            }, 2000);
+    const askGemini = async (message: string) => {
+        setIsTyping(true);
+        setIsDisplayingMessage(true);
+
+        try {
+            // Change the URL to the backend folder once nalipat na si askGemini.php
+            // const res = await fetch('http://localhost/tara-kabataan-backend/api/askGemini.php', {
+            const res = await fetch('http://localhost/tara-kabataan-backend/askGemini.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message })
+            });
+
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+
+            const data = await res.json();
+            const reply = data.reply || "I'm sorry, I couldn't get an answer.";
+
+            displayReply(reply);
+        } catch (err) {
+            console.error("Error contacting Gemini:", err);
+            displayReply("An error occurred while contacting Gemini.");
         }
     };
     
@@ -158,6 +179,12 @@ const Chatbot: React.FC = () => {
         }
     }, [messages]);
 
+    const predefinedMessages = [
+        "What is Tara Kabataan?",
+        "How to join Tara Kabataan?",
+        "What are the advocacies of Tara Kabataan?"
+    ];
+
     return (
         <div
             className={`floating-chat ${hasEntered ? 'enter' : ''} ${isExpanded ? 'expand' : ''}`}
@@ -190,6 +217,7 @@ const Chatbot: React.FC = () => {
                         contentEditable
                         ref={textBoxRef}
                         onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); sendNewMessage(); } }}
+                        style={{ pointerEvents: isTyping || isDisplayingMessage ? 'none' : 'auto' }}
                     ></div>
                     <button
                         id="sendMessage"
@@ -199,7 +227,7 @@ const Chatbot: React.FC = () => {
                     >send</button>
                 </div>
                 <div className="predefined-messages">
-                    {["What is Tara Kabataan?", "How to join Tara Kabataan?", "What are the advocacies of Tara Kabataan?"].map((q, i) => (
+                    {predefinedMessages.map((q, i) => (
                         <button
                             key={i}
                             className={`predefined-message ${isTyping || isDisplayingMessage ? "disabled-button" : ""}`}
