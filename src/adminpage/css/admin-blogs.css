@@ -23,9 +23,15 @@
     max-width: 600px;
     width: 100%;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+    max-height: 50px;
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
+    align-items: center;
 }
 
 .admin-blogs-search-container input {
+    margin-top: 20px;
     border: none;
     outline: none;
     width: 100%;

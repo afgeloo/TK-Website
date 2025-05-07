@@ -100,19 +100,10 @@
     background-color: rgba(255, 255, 255, 0.2);
   }
   
-  .admin-logout-link.active {
-    background-color: white;
-    color: #FE93B4;
-  }
-  
   .admin-logout-icon {
     font-size: 1.75rem;
     color: white;
     transition: color 0.2s;
-  }
-  
-  .admin-logout-link.active .admin-logout-icon {
-    color: #FE93B4;
   }
 
 .admin-sidebar.events-page {

@@ -1,13 +1,14 @@
 import { StrictMode, lazy } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider,Navigate  } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import "./global-css/index.css";
 import App from "./app"; 
 import AdminPage from "./adminpage/adminpage";
 import AdminBlogs from "./adminpage/admin-blogs";
 import AdminEvents from "./adminpage/admin-events";
 import AdminSettings from "./adminpage/admin-settings";
-
+import AdminLogin from "./adminpage/admin-login"; 
+import RequireAuth from "./adminpage/requireauth";
 const HomePage = lazy(() => import("./homepage/homepage"));
 const EventsPage = lazy(() => import("./eventspage/eventspagehome"));
 const AboutPage = lazy(() => import("./aboutpage1/aboutpage"));
@@ -31,12 +32,16 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "/admin-login",
+    element: <AdminLogin />,
+  },
+  {
     path: "/admin",
-    element: <App />, 
+    element: <RequireAuth />, 
     children: [
       {
         path: "",
-        element: <AdminPage />, 
+        element: <AdminPage />,
         children: [
           { path: "blogs", element: <AdminBlogs /> },
           { path: "events", element: <AdminEvents /> },

@@ -61,9 +61,14 @@ const AdminSidebar = () => {
           Settings
         </NavLink>
         <NavLink
-          to="/"
+          to="#"
           className="admin-logout-link"
-          onClick={() => setIsOpen(false)}
+          onClick={(e) => {
+            e.preventDefault();
+            localStorage.removeItem("admin-auth"); 
+            setIsOpen(false);
+            window.location.href = "/admin-login"; 
+          }}
         >
           <FaSignOutAlt className="admin-logout-icon" />
           Logout
