@@ -724,7 +724,7 @@ const AdminSettings = () => {
               setBulkConfirmVisible(true);
             }}
           >
-            Delete
+            DELETE
           </button>
         </div>
       )}

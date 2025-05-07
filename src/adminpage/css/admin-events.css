@@ -779,6 +779,13 @@
   gap: 0.5rem;
   z-index: 100;
   flex-wrap: wrap;
+  background: white;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 12px 18px;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(229, 231, 235, 0.6);
 }
 
 .admin-events-bulk-actions button {

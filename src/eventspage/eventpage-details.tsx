@@ -7,6 +7,7 @@ import locationIcon from "../assets/eventspage/Location-eventspage.png";
 import attachIcon from "../assets/logos/attachicon.jpg";
 import Header from "../header";
 import Footer from "../footer";
+import Preloader from "../preloader";
 
 export interface Event {
   event_id: string;
@@ -29,10 +30,12 @@ export interface Event {
 function EventDetails() {
   const { id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const from = queryParams.get("from");
   const [event, setEvent] = useState<Event | null>(null);
   const [canCopy, setCanCopy] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id) return;
@@ -42,12 +45,17 @@ function EventDetails() {
         const data = await response.json();
         const selected = data.find((e: Event) => e.event_id === id);
         setEvent(selected || null);
+  
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
       } catch (error) {
         console.error("Error fetching event:", error);
+        setLoading(false);
       }
     };
     fetchEvent();
-  }, [id]);
+  }, [id]);  
 
   const copyEventLink = () => {
     if (!canCopy) return;
@@ -58,7 +66,10 @@ function EventDetails() {
       .catch(() => toast.error("Failed to copy."));
   };
 
-  if (!event) return null;
+  if (loading || !event) {
+    return <Preloader />;
+  }
+    
   const imageUrl = `http://localhost/${event.event_image}`;
 
   function formatContent(content: string) {
@@ -68,10 +79,20 @@ function EventDetails() {
       .replace(/  /g, " &nbsp;");
   }  
 
+  if (loading || !event) return <Preloader />;
+
   return (
     <div className="event-details">
-        <Header />
+    <Header />
     <div className="event-details-page">
+    <div className="back-button-container">
+      <button
+        className="back-button"
+        onClick={() => navigate(-1)}
+      >
+        ← Go Back
+      </button>
+    </div>
       <div className="event-details-grid">
         <div className="event-details-left">
           <img src={imageUrl} alt="Event" className="event-details-image" />

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./css/eventpage-rsvp.css";
 import locationIconeventspage from "../assets/eventspage/Location-eventspage.png";
 import searchIconEventspage from "../assets/eventspage/Search-icon-events.png";
-import PreloaderEvents from "./loader-events";
+import Preloader from "../preloader";
 
 export interface Event {
   event_id: string;
@@ -57,28 +57,58 @@ const convertTo12HourFormat = (time: string) => {
 function EventsPageRSVP() {
   const [events, setEvents] = useState<Event[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [eventsToShow, setEventsToShow] = useState(12);
-  const [viewType, setViewType] = useState<"UPCOMING" | "PAST">("UPCOMING");
+  const [eventsToShow, setEventsToShow] = useState(() => {
+    const saved = sessionStorage.getItem("eventShowCount");
+    return saved ? parseInt(saved) : 12;
+  });  
+  const [viewType, setViewType] = useState<"UPCOMING" | "PAST">(() => {
+    return (sessionStorage.getItem("eventViewType") as "UPCOMING" | "PAST") || "UPCOMING";
+  });  
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState("ALL");
+  const [selectedCategory, setSelectedCategory] = useState(() => {
+    return sessionStorage.getItem("eventCategory") || "ALL";
+  });  
+  const [searchQuery, setSearchQuery] = useState(() => {
+    return sessionStorage.getItem("eventSearchQuery") || "";
+  });
   const categories = ["ALL", "KALUSUGAN", "KALIKASAN", "KARUNUNGAN", "KULTURA", "KASARIAN"];
-  const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [restoringScroll, setRestoringScroll] = useState(true);
 
   useEffect(() => {
     const fetchEvents = async () => {
+      setLoading(true);
       try {
         const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/events.php");
         const data = await res.json();
         setEvents(data);
+    
+        const savedScroll = sessionStorage.getItem("eventScrollY");
+        if (savedScroll) {
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              window.scrollTo({ top: parseInt(savedScroll), behavior: "auto" });
+              sessionStorage.removeItem("eventScrollY");
+              sessionStorage.removeItem("eventViewType");
+              sessionStorage.removeItem("eventCategory");
+              sessionStorage.removeItem("eventSearchQuery");
+              setRestoringScroll(false);
+            }, 500); 
+          });
+        } else {
+          setRestoringScroll(false);
+        }
       } catch (error) {
         console.error("Error fetching events:", error);
+        setRestoringScroll(false);
+      } finally {
+        setLoading(false);
       }
-    };
-
+    };    
+  
     fetchEvents();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+  }, []);  
 
   useEffect(() => {
     const now = new Date();
@@ -143,135 +173,155 @@ function EventsPageRSVP() {
 
   return (
     <div className="events-page-rsvp">
-      <div className="events-header-row">
-        <h1 className="eventspage-header-EVENTS">Events</h1>
-        <div className="event-toggle-wrapper">
-          <div className="event-toggle-tabs">
-            <button
-              className={`event-toggle-tab ${viewType === "UPCOMING" ? "active" : ""}`}
-              onClick={() => setViewType("UPCOMING")}
-            >
-              UPCOMING
-            </button>
-            <button
-              className={`event-toggle-tab ${viewType === "PAST" ? "active" : ""}`}
-              onClick={() => setViewType("PAST")}
-            >
-              PAST
-            </button>
+      {loading || restoringScroll ? (
+        <Preloader />
+      ) : (
+        <>
+          <div className="events-header-row">
+            <h1 className="eventspage-header-EVENTS">Events</h1>
+            <div className="event-toggle-wrapper">
+              <div className="event-toggle-tabs">
+                <button
+                  className={`event-toggle-tab ${viewType === "UPCOMING" ? "active" : ""}`}
+                  onClick={() => setViewType("UPCOMING")}
+                >
+                  UPCOMING
+                </button>
+                <button
+                  className={`event-toggle-tab ${viewType === "PAST" ? "active" : ""}`}
+                  onClick={() => setViewType("PAST")}
+                >
+                  PAST
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className="event-category-search-wrapper">
-      <div className="event-category-filter">
-        <div className="category-buttons-desktop">
-          {categories.map((category) => (
-            <span
-              key={category}
-              className={`category-button ${selectedCategory === category ? "active" : ""}`}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </span>
-          ))}
-        </div>
-        <div className="category-dropdown-mobile">
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="category-select"
-          >
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-        <div className="event-search-bar">
-          <input
-            type="text"
-            placeholder="Search events..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="event-search-input"
-          />
-          <img
-            src={searchIconEventspage}
-            alt="Search"
-            className="event-search-icon"
-          />
-        </div>
-      </div>
-
-      <div className="custom-divider-pagination"></div>
-
-      {filteredEvents.length > 0 ? (
-        <div className="eventsrsvp-grid">
-          {currentEvents.map((event) => (
-            <div
-              key={event.event_id}
-              className="event-card"
-              onClick={() => navigate(`/events/${event.event_id}?from=${viewType.toLowerCase()}`)}
-              style={{ cursor: "pointer" }}
-            >
-              <img
-                src={getFullImageUrl(event.event_image)}
-                alt={event.event_title || "No image available"}
-                className="event-image"
-              />
-              <h3 className="event-title">{event.event_title}</h3>
-              <p className="event-category">{event.event_category}</p>
-              <p className="event-date">
-                {formatDateRSVP(event.event_date)} <br />
-                {convertTo12HourFormat(event.event_start_time)} - {convertTo12HourFormat(event.event_end_time)}
-              </p>
-              <p className="event-location">
-                <img
-                  src={locationIconeventspage}
-                  alt="Location"
-                  className="locationevent-icon"
-                />
-                {event.event_venue}
-              </p>
-              {viewType === "UPCOMING" && (
-                <div className="event-buttons">
-                  <button
-                    className="eventrsvp-button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      window.open("https://docs.google.com/forms/d/1t6zpzidXd5fhIdotpMYwJpOhobaw0VzsYaouREs4kgg/edit", "_blank");
-                    }}
+  
+          <div className="event-category-search-wrapper">
+            <div className="event-category-filter">
+              <div className="category-buttons-desktop">
+                {categories.map((category) => (
+                  <span
+                    key={category}
+                    className={`category-button ${selectedCategory === category ? "active" : ""}`}
+                    onClick={() => setSelectedCategory(category)}
                   >
-                    RSVP
-                  </button>
+                    {category}
+                  </span>
+                ))}
+              </div>
+              <div className="category-dropdown-mobile">
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="category-select"
+                >
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+  
+            <div className="event-search-bar">
+              <input
+                type="text"
+                placeholder="Search events..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="event-search-input"
+              />
+              <img
+                src={searchIconEventspage}
+                alt="Search"
+                className="event-search-icon"
+              />
+            </div>
+          </div>
+  
+          <div className="custom-divider-pagination"></div>
+  
+          {filteredEvents.length > 0 ? (
+            <div className="eventsrsvp-grid">
+              {currentEvents.map((event) => (
+                <div
+                  key={event.event_id}
+                  className="event-card"
+                  onClick={() => {
+                    sessionStorage.setItem("eventScrollY", window.scrollY.toString());
+                    sessionStorage.setItem("eventViewType", viewType);
+                    sessionStorage.setItem("eventCategory", selectedCategory);
+                    sessionStorage.setItem("eventSearchQuery", searchQuery);
+                    sessionStorage.setItem("eventShowCount", eventsToShow.toString()); 
+                    navigate(`/events/${event.event_id}`);
+                  }}                  
+                  style={{ cursor: "pointer" }}
+                >
+                  <img
+                    src={getFullImageUrl(event.event_image)}
+                    alt={event.event_title || "No image available"}
+                    className="event-image"
+                  />
+                  <h3 className="event-title">{event.event_title}</h3>
+                  <p className="event-category">{event.event_category}</p>
+                  <p className="event-date">
+                    {formatDateRSVP(event.event_date)} <br />
+                    {convertTo12HourFormat(event.event_start_time)} -{" "}
+                    {convertTo12HourFormat(event.event_end_time)}
+                  </p>
+                  <p className="event-location">
+                    <img
+                      src={locationIconeventspage}
+                      alt="Location"
+                      className="locationevent-icon"
+                    />
+                    {event.event_venue}
+                  </p>
+                  {viewType === "UPCOMING" && (
+                    <div className="event-buttons">
+                      <button
+                        className="eventrsvp-button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(
+                            "https://docs.google.com/forms/d/1t6zpzidXd5fhIdotpMYwJpOhobaw0VzsYaouREs4kgg/edit",
+                            "_blank"
+                          );
+                        }}
+                      >
+                        RSVP
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+  
+              {filteredEvents.length > 0 && (
+                <div className="see-more-container">
+                  {eventsToShow < filteredEvents.length && (
+                    <button className="see-more-button" onClick={handleSeeMore}>
+                      See More
+                    </button>
+                  )}
+                  {eventsToShow > 12 && (
+                    <button className="see-less-button" onClick={handleSeeLess}>
+                      Show Less
+                    </button>
+                  )}
                 </div>
               )}
             </div>
-          ))}
-          {filteredEvents.length > 0 && (
-            <div className="see-more-container">
-              {eventsToShow < filteredEvents.length && (
-                <button className="see-more-button" onClick={handleSeeMore}>
-                  See More
-                </button>
-              )}
-              {eventsToShow > 12 && (
-                <button className="see-less-button" onClick={handleSeeLess}>
-                  Show Less
-                </button>
-              )}
+          ) : (
+            <div className="no-events-container">
+              <p>No events found.</p>
             </div>
           )}
-        </div>
-      ) : (
-        <div className="no-events-container">
-          <p>No events found.</p>
-        </div>
+        </>
       )}
     </div>
-  );
+  );  
 }
 
 export default EventsPageRSVP;

@@ -1,14 +1,14 @@
-// SingleBlog.tsx
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "../header";
 import Footer from "../footer";
 import Preloader from "../preloader";
 import "./singleblog.css";
-
 import silverPencil from "../assets/logos/silverPencil.png";
 import silverTime from "../assets/logos/silverTime.jpg";
 import attachIcon from "../assets/logos/attachicon.jpg";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; 
 
 interface Blog {
   blog_id: string;
@@ -24,10 +24,12 @@ function SingleBlog() {
   const { id } = useParams();
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const [copied, setCopied] = useState(false); 
   const [moreImages, setMoreImages] = useState<string[]>([]);
   const [fullImageUrl, setFullImageUrl] = useState<string | null>(null);
   const [showAllImagesModal, setShowAllImagesModal] = useState(false);
+  const [restoringScroll, setRestoringScroll] = useState(true);
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -69,14 +71,24 @@ function SingleBlog() {
   const copyBlogLink = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000); 
+      toast.success("Link copied!");
     } catch (err) {
-      console.error("Failed to copy link:", err);
+      toast.error("Failed to copy.");
     }
   };
+  
+  useEffect(() => {
+    if (!loading && blog) {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: "auto" });
+          setRestoringScroll(false);
+        }, 500); 
+      });
+    }
+  }, [loading, blog]);  
 
-  if (loading) return <Preloader />;
+  if (loading || restoringScroll) return <Preloader />;
   if (!blog) return <div className="single-blog-not-found">Blog not found.</div>;
 
   function formatContent(content: string) {
@@ -95,6 +107,12 @@ function SingleBlog() {
     <div className="single-blog-container">
       <Header />
       <main className="single-blog-main">
+      <button
+        className="back-button"
+        onClick={() => navigate(-1)}
+      >
+        ← Go Back
+      </button>
           <div className="single-blog-image-wrapper">
             <img
               src={getFullImageUrl(blog.image_url)}
@@ -182,6 +200,17 @@ function SingleBlog() {
           </div>
         )}
       </main>
+      <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar
+        closeOnClick
+        pauseOnFocusLoss={false}
+        pauseOnHover
+        className="custom-toast-container"
+        toastClassName="custom-toast"
+        limit={1}
+      />
       <Footer />
     </div>
   );

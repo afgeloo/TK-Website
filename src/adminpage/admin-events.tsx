@@ -531,7 +531,7 @@ const AdminEvents = () => {
         <div className="admin-events-lower-header-right">
         {viewMode === 'table' ? (
         <>
-          <div className="admin-events-lower-header-show">
+          {/* <div className="admin-events-lower-header-show">
             <p>Showing</p>
             <div className="admin-events-lower-header-count" onClick={() => setOpen(!open)}>
               {count === -1 ? 'All' : count}
@@ -553,7 +553,7 @@ const AdminEvents = () => {
                 </div>
               )}
             </div>
-          </div>
+          </div> */}
           <div className="admin-events-lower-header-select">
             <button onClick={() => {
               setSelectMode(!selectMode);

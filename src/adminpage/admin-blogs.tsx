@@ -562,7 +562,7 @@ const AdminBlogs = () => {
         <div className="admin-blogs-lower-header-right">
         {viewMode === "table" ? (
         <>
-          <div className="admin-blogs-lower-header-show">
+          {/* <div className="admin-blogs-lower-header-show">
             <p>Showing</p>
             <div className="admin-blogs-lower-header-count" onClick={() => setOpen(!open)}>
               {count === -1 ? 'All' : count}
@@ -584,7 +584,7 @@ const AdminBlogs = () => {
                 </div>
               )}
             </div>
-          </div>
+          </div> */}
           <div className="admin-blogs-lower-header-select">
             <button onClick={() => setSelectMode(!selectMode)}>
               <img src={select} className="admin-blogs-lower-header-select-img" />
@@ -671,7 +671,7 @@ const AdminBlogs = () => {
             setBulkConfirmVisible(true);
           }}        
         >
-          Delete
+          DELETE
         </button>
       </div>
     )}

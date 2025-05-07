@@ -112,13 +112,13 @@
 .advocacy-card.kasarian {
   background-color: white;
   color: black;
-  border: 3px solid #d898c8;
+  border: 3px solid #FF51D9;
 }
 
 .advocacy-card.kultura {
   background-color: white;
   color: black;
-  border: 3px solid #ded245;
+  border: 3px solid #D2C42B;
 }
 
 .advocacy-card:hover {
@@ -142,13 +142,13 @@
 }
 
 .advocacy-card.kasarian:hover {
-  background-color: #d898c8;
-  border-color: #d898c8;
+  background-color: #FF51D9;
+  border-color: #FF51D9;
 }
 
 .advocacy-card.kultura:hover {
-  background-color: #ded245;
-  border-color: #ded245;
+  background-color: #D2C42B;
+  border-color: #D2C42B;
 }
 
 .advocacy-icon-container {

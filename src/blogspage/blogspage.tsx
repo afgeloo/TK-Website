@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Footer from "../footer";
 import Header from "../header";
 import "./blogspage.css";
@@ -29,9 +29,17 @@ function BlogsPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [allBlogs, setAllBlogs] = useState<Blog[]>([]);
   const [pinnedBlogs, setPinnedBlogs] = useState<Blog[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("ALL");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showAllBlogs, setShowAllBlogs] = useState(false);
+  const sessionRestored = useRef(false);
+  const [restoringScroll, setRestoringScroll] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState(() => {
+    return sessionStorage.getItem("blogCategory") || "ALL";
+  });
+  const [searchQuery, setSearchQuery] = useState(() => {
+    return sessionStorage.getItem("blogSearchQuery") || "";
+  }); 
+  const [showAllBlogs, setShowAllBlogs] = useState(() => {
+    return sessionStorage.getItem("blogShowAll") === "true";
+  });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -74,18 +82,49 @@ function BlogsPage() {
   };  
 
   useEffect(() => {
-    fetchBlogs();
+    const savedCategory = sessionStorage.getItem("blogCategory");
+    const savedSearch = sessionStorage.getItem("blogSearchQuery");
+    const savedShowAll = sessionStorage.getItem("blogShowAll");
+  
+    if (savedCategory) setSelectedCategory(savedCategory);
+    if (savedSearch) setSearchQuery(savedSearch);
+    if (savedShowAll) setShowAllBlogs(savedShowAll === "true");
+  
+    sessionRestored.current = true;
+  
+    fetchBlogs(); 
   }, []);
+  
+  useEffect(() => {
+    const savedScroll = sessionStorage.getItem("blogScrollY");
+  
+    if (!loading && blogs.length > 0) {
+      if (savedScroll) {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            window.scrollTo({ top: parseInt(savedScroll), behavior: "auto" });
+  
+            sessionStorage.removeItem("blogScrollY");
+            sessionStorage.removeItem("blogCategory");
+            sessionStorage.removeItem("blogSearchQuery");
+            sessionStorage.removeItem("blogShowAll");
+  
+            setRestoringScroll(false);
+          }, 500);
+        });
+      } else {
+        setRestoringScroll(false);
+      }
+    }
+  }, [loading, blogs]);   
 
   useEffect(() => {
-    if (allBlogs.length > 0) {
-      setBlogs(
-        selectedCategory === "ALL"
-          ? allBlogs
-          : allBlogs.filter((blog) => blog.category === selectedCategory)
-      );
-    }
-  }, [selectedCategory, allBlogs]);
+    setBlogs(
+      selectedCategory === "ALL"
+        ? allBlogs
+        : allBlogs.filter((blog) => blog.category === selectedCategory)
+    );
+  }, [selectedCategory, allBlogs]);  
 
   useEffect(() => {
     if (displayedBlogs.length > 0 && !loading) {
@@ -119,7 +158,13 @@ function BlogsPage() {
                 <div
                   className="blogs-page-pinned-full"
                   style={{ "--bg-image": `url(${getSafeImageUrl(pinnedBlogs[0].image_url)})` } as React.CSSProperties}
-                  onClick={() => handleBlogClick(pinnedBlogs[0].blog_id)}
+                  onClick={() => {
+                    sessionStorage.setItem("blogScrollY", window.scrollY.toString());
+                    sessionStorage.setItem("blogCategory", selectedCategory);
+                    sessionStorage.setItem("blogSearchQuery", searchQuery);
+                    sessionStorage.setItem("blogShowAll", JSON.stringify(showAllBlogs));
+                    handleBlogClick(pinnedBlogs[0].blog_id);
+                  }}  
                 >
                   <div className="blogs-page-pinned-overlay">
                     <p className="blogs-page-pinned-category-1">{pinnedBlogs[0].category}</p>
@@ -145,7 +190,13 @@ function BlogsPage() {
                     key={blog.blog_id}
                     className="blogs-page-pinned-half"
                     style={{ "--bg-image": `url(${getSafeImageUrl(blog.image_url)})` } as React.CSSProperties}
-                    onClick={() => handleBlogClick(blog.blog_id)}
+                    onClick={() => {
+                      sessionStorage.setItem("blogScrollY", window.scrollY.toString());
+                      sessionStorage.setItem("blogCategory", selectedCategory);
+                      sessionStorage.setItem("blogSearchQuery", searchQuery);
+                      sessionStorage.setItem("blogShowAll", JSON.stringify(showAllBlogs));
+                      handleBlogClick(blog.blog_id);
+                    }}                    
                   >
                     <div className="blogs-page-pinned-overlay">
                       <p className="blogs-page-pinned-category-1">{blog.category}</p>
@@ -170,7 +221,13 @@ function BlogsPage() {
                 <div
                   className="blogs-page-pinned-main"
                   style={{ "--bg-image": `url(${getSafeImageUrl(pinnedBlogs[0].image_url)})` } as React.CSSProperties}
-                  onClick={() => handleBlogClick(pinnedBlogs[0].blog_id)}
+                  onClick={() => {
+                    sessionStorage.setItem("blogScrollY", window.scrollY.toString());
+                    sessionStorage.setItem("blogCategory", selectedCategory);
+                    sessionStorage.setItem("blogSearchQuery", searchQuery);
+                    sessionStorage.setItem("blogShowAll", JSON.stringify(showAllBlogs));
+                    handleBlogClick(pinnedBlogs[0].blog_id);
+                  }}  
                 >
                   <div className="blogs-page-pinned-overlay">
                     <p className="blogs-page-pinned-category-1">{pinnedBlogs[0].category}</p>
@@ -193,7 +250,13 @@ function BlogsPage() {
                       key={blog.blog_id}
                       className="blogs-page-pinned-item"
                       style={{ "--bg-image": `url(${getSafeImageUrl(blog.image_url)})` } as React.CSSProperties}
-                      onClick={() => handleBlogClick(blog.blog_id)}
+                      onClick={() => {
+                        sessionStorage.setItem("blogScrollY", window.scrollY.toString());
+                        sessionStorage.setItem("blogCategory", selectedCategory);
+                        sessionStorage.setItem("blogSearchQuery", searchQuery);
+                        sessionStorage.setItem("blogShowAll", JSON.stringify(showAllBlogs));
+                        handleBlogClick(blog.blog_id);
+                      }}      
                     >
                       <div className="blogs-page-pinned-overlay">
                         <p className="blogs-page-pinned-category-2">{blog.category}</p>
@@ -260,23 +323,35 @@ function BlogsPage() {
     </div>
       <hr className="blogs-page-Hr" />
       <div className="blogs-page-blogs-list">
-        {loading ? (
-          <Preloader />
-        ) : displayedBlogs.length > 0 ? (
+      {loading || restoringScroll ? (
+        <Preloader />
+      ) : displayedBlogs.length > 0 ? (
           <div className="blogs-page-blogs-grid">
             {displayedBlogs.map((blog) => (
               <div key={blog.blog_id} className="blogs-page-blog-item">
                 <img
                   src={getSafeImageUrl(blog.image_url)}
                   alt={blog.title}
-                  onClick={() => handleBlogClick(blog.blog_id)}
+                  onClick={() => {
+                    sessionStorage.setItem("blogScrollY", window.scrollY.toString());
+                    sessionStorage.setItem("blogCategory", selectedCategory);
+                    sessionStorage.setItem("blogSearchQuery", searchQuery);
+                    sessionStorage.setItem("blogShowAll", JSON.stringify(showAllBlogs));
+                    handleBlogClick(blog.blog_id);
+                  }}      
                   style={{ cursor: "pointer" }}
                 />
                 <div className="blogs-page-pinned-overlay">
                   <p className="blogs-page-pinned-category-3">{blog.category}</p>
                   <h3
                     className="blogs-page-pinned-title-3"
-                    onClick={() => handleBlogClick(blog.blog_id)}
+                    onClick={() => {
+                      sessionStorage.setItem("blogScrollY", window.scrollY.toString());
+                      sessionStorage.setItem("blogCategory", selectedCategory);
+                      sessionStorage.setItem("blogSearchQuery", searchQuery);
+                      sessionStorage.setItem("blogShowAll", JSON.stringify(showAllBlogs));
+                      handleBlogClick(blog.blog_id);
+                    }}      
                     style={{ cursor: "pointer" }}
                   >
                     {blog.title}
