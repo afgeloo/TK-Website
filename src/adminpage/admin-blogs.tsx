@@ -102,6 +102,13 @@ const AdminBlogs = () => {
   };
   
   const handleSave = () => {
+    if (textareaRef.current) {
+      const updatedContent = textareaRef.current.innerHTML;
+      if (editableBlog) {
+        editableBlog.content = updatedContent;
+      }
+    }
+  
     const mergedBlog = {
       ...editableBlog!,
       more_images: editableBlogMoreImages,
@@ -419,15 +426,20 @@ const AdminBlogs = () => {
   };
     
   const handleNewBlogSave = async () => {
+    const isIncomplete =
+      !newBlogTitle.trim() ||
+      !newBlogContent.trim() ||
+      !newBlogImage;
+  
     const blogData = {
       title: newBlogTitle,
       content: newBlogContent,
       category: newBlogCategory,
-      blog_status: newBlogStatus,
+      blog_status: isIncomplete ? "DRAFT" : newBlogStatus, 
       image_url: newBlogImage,
       author: newBlogAuthor,
-      more_images: newBlogMoreImages, 
-    };    
+      more_images: newBlogMoreImages,
+    };
   
     try {
       const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/add_new_blog.php", {
@@ -436,23 +448,21 @@ const AdminBlogs = () => {
         body: JSON.stringify(blogData),
       });
   
-      const text = await res.text(); 
-      const data = JSON.parse(text); 
+      const text = await res.text();
+      const data = JSON.parse(text);
   
       if (data.success && data.blog) {
-        setBlogs((prev) => [...prev, data.blog]); 
+        setBlogs((prev) => [...prev, data.blog]);
   
         fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/blogs.php")
           .then((res) => res.json())
-          .then((data) => {
-            setBlogs(data.blogs);
-          })
+          .then((data) => setBlogs(data.blogs))
           .catch((err) => console.error("Failed to refresh blogs:", err));
   
-          resetNewBlogForm();
-          setNewBlogMoreImages([]);
-          setShowAllImagesModal(false);
-          setNewBlogModalOpen(false);
+        resetNewBlogForm();
+        setNewBlogMoreImages([]);
+        setShowAllImagesModal(false);
+        setNewBlogModalOpen(false);
       } else {
         alert("Failed to save new blog: " + (data.error || "Unknown error"));
       }
@@ -460,7 +470,7 @@ const AdminBlogs = () => {
       console.error("Save error:", err);
       alert("Error occurred while saving blog.");
     }
-  };
+  };  
 
   const pinnedBlogs = blogs.filter(blog => blog.blog_status === "PINNED");
   const pinnedCount = pinnedBlogs.length;

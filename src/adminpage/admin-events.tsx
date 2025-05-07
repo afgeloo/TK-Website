@@ -268,6 +268,22 @@ const AdminEvents = () => {
     const editor = document.getElementById("add-event-content-editor");
     const extractedContent = editor ? editor.innerHTML.trim() : "";
   
+    if (
+      !newEvent.title.trim() ||
+      !newEvent.category.trim() ||
+      !newEvent.event_date ||
+      !newEvent.event_start_time ||
+      !newEvent.event_end_time ||
+      !newEvent.event_venue.trim() ||
+      !newEvent.event_speakers.trim() ||
+      !extractedContent ||
+      !newImageUrl
+    ) {
+      setNotification("Please complete all fields before saving the event.");
+      setTimeout(() => setNotification(""), 4000);
+      return;
+    }
+  
     const today = new Date();
     today.setHours(0, 0, 0, 0); 
     const selectedDate = new Date(newEvent.event_date);
