@@ -64,7 +64,6 @@ function EventsPageRSVP() {
   const [selectedCategory, setSelectedCategory] = useState("ALL");
   const categories = ["ALL", "KALUSUGAN", "KALIKASAN", "KARUNUNGAN", "KULTURA", "KASARIAN"];
   const [searchQuery, setSearchQuery] = useState("");
-  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -135,12 +134,12 @@ function EventsPageRSVP() {
   const currentEvents = filteredEvents.slice(0, eventsToShow);
 
   const handleSeeMore = () => {
-    setLoadingMore(true);
-    setTimeout(() => {
-      setEventsToShow((prev) => prev + 4);
-      setLoadingMore(false);
-    }, 2000);
-  };
+    setEventsToShow((prev) => prev + 4);
+  };  
+
+  const handleSeeLess = () => {
+    setEventsToShow((prev) => Math.max(12, prev - 4));
+  };  
 
   return (
     <div className="events-page-rsvp">
@@ -251,16 +250,18 @@ function EventsPageRSVP() {
               )}
             </div>
           ))}
-          {filteredEvents.length > 0 && eventsToShow < filteredEvents.length && !loadingMore && (
+          {filteredEvents.length > 0 && (
             <div className="see-more-container">
-              <button className="see-more-button" onClick={handleSeeMore}>
-                See More
-              </button>
-            </div>
-          )}
-          {loadingMore && (
-            <div className="see-more-loader" style={{ gridColumn: "1 / -1" }}>
-              <PreloaderEvents inline />
+              {eventsToShow < filteredEvents.length && (
+                <button className="see-more-button" onClick={handleSeeMore}>
+                  See More
+                </button>
+              )}
+              {eventsToShow > 12 && (
+                <button className="see-less-button" onClick={handleSeeLess}>
+                  Show Less
+                </button>
+              )}
             </div>
           )}
         </div>

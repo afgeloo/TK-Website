@@ -123,7 +123,7 @@ const PartnerSec: React.FC = () => {
               rel="noopener noreferrer"
               className="messenger-link"
             >
-              Tara, Kabataan!
+              Send a Message!
             </a>
           </div>
         </div>

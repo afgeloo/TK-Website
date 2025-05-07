@@ -40,7 +40,15 @@ const Chatbot: React.FC = () => {
     const openElement = () => {
         setIsExpanded(true);
         if (textBoxRef.current) textBoxRef.current.focus();
-    };
+    
+        if (messages.length === 0) {
+            setIsTyping(true);
+            setIsDisplayingMessage(true);
+            setTimeout(() => {
+                displayReply("Mabuhay! Ako si Cow, ang iyong gabay mula sa Tara Kabataan. Paano kita matutulungan sa araw na ito?");
+            }, 1000);
+        }
+    };    
 
     const closeElement = (event: React.MouseEvent) => {
         event.stopPropagation();

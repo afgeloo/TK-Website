@@ -655,7 +655,7 @@
   }
   
   .blog-search-input {
-    width: 0;
+    width: 150px;
     opacity: 0;
     border: none;
     outline: none;
@@ -668,7 +668,7 @@
   }
   
   .blog-search-bar:hover .blog-search-input {
-    width: 150px;
+    width: 130px;
     opacity: 1;
     background-color: white;
     border: 1px solid #ccc;

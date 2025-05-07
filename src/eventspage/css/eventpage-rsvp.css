@@ -114,7 +114,7 @@
 }
 
 .event-search-input {
-  width: 0;
+  width: 220px;
   opacity: 0;
   border: none;
   outline: none;
@@ -139,7 +139,7 @@
   border: 1px solid #f9d6e1;
   border-radius: 20px;
   padding: 18px 16px;
-  width: 280px;
+  width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -351,7 +351,7 @@
   margin: 0 auto;
 }
 
-.see-more-button {
+.see-more-button, .see-less-button {
   background-color: #FE93B4;
   color: white;
   font-size: 16px;
@@ -372,7 +372,7 @@
   margin-top: 2rem;
 }
 
-.see-more-button.see-less {
+.see-more-button .see-less-button {
   background: white;
   color: #f04f88; 
   border: 2px solid #f04f88; 
@@ -429,8 +429,13 @@
   }
 
   .event-search-input {
+    width: 150px;
     padding: 6px 12px;
     font-size: 14px;
+  }
+
+  .event-search-bar:hover .event-search-input {
+    width: 130px;
   }
 
   .event-card {

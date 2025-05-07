@@ -143,15 +143,15 @@ function SingleBlog() {
               <img src={silverPencil} alt="Author Icon" className="single-blog-icon" />
               <span>{blog.author}</span>
             </div>
+            <button className="single-blog-copy-link" onClick={copyBlogLink}>
+              <img src={attachIcon} alt="Copy Link" />
+              <span>{copied ? "Link Copied!" : "Copy Blog Link"}</span>
+            </button>
           </div>
           <div
             className="single-blog-content"
             dangerouslySetInnerHTML={{ __html: formatContent(blog.content) }}
           ></div>
-          <button className="single-blog-copy-link" onClick={copyBlogLink}>
-            <img src={attachIcon} alt="Copy Link" />
-            <span>{copied ? "Link Copied!" : "Copy Blog Link"}</span>
-          </button>
         </div>
         {showAllImagesModal && (
           <div className="blog-gallery-modal">

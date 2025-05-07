@@ -158,7 +158,7 @@
   border-radius: 30px;
   overflow: hidden;
   min-height: 480px;
-  max-height: 480px;
+  max-height: 520px;
 }
 
 .admin-events-table-header{
@@ -609,6 +609,12 @@
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 12px;
+  font-family: inherit;
+}
+
+.admin-events-inner-content-modal-id-content{
+  background-color: #f9f9f9;
+  cursor: not-allowed;
 }
 
 .admin-events-inner-content-modal-status-content,
@@ -684,7 +690,13 @@
   flex: 1 1 50px;
 }
 
-.admin-events-inner-content-modal-time-start-content{
+.admin-events-inner-content-modal-date-content{
+  font-family: inherit;
+}
+
+.admin-events-inner-content-modal-time-start-content,
+.admin-events-inner-content-modal-time-end-content
+{
   width: 30%;
   padding: 5px 10px;
   border-radius: 8px;
@@ -700,6 +712,7 @@
   overflow-wrap: break-word; 
   flex-shrink: 1;
   flex-grow: 1;
+  font-family: inherit;
 }
 
 .admin-events-inner-content-modal-time-end-content{
@@ -936,6 +949,8 @@
 
 .admin-new-event-inner-content-modal-venue-content,
 .admin-new-event-inner-content-modal-date-content,
+.admin-new-event-inner-content-modal-time-start-content,
+.admin-new-event-inner-content-modal-time-end-content,
 .admin-new-event-inner-content-modal-desc-content,
 .admin-new-event-inner-content-modal-speakers-content
 {
@@ -953,6 +968,7 @@
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 12px;
+  font-family: inherit;
 }
 
 .admin-new-event-inner-content-modal-title-content

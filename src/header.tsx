@@ -4,6 +4,7 @@ import "./global-css/header.css";
 import logo from "./assets/header/tarakabataanlogo2.png";
 
 const navLinks = [
+  { path: "/", label: "Home" },
   { path: "/About", label: "About" },
   { path: "/Contact", label: "Contact" },
   { path: "/Events", label: "Events" },
