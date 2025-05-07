@@ -110,9 +110,7 @@ const Chatbot: React.FC = () => {
         setIsDisplayingMessage(true);
 
         try {
-            // Change the URL to the backend folder once nalipat na si askGemini.php
-            // const res = await fetch('http://localhost/tara-kabataan-backend/api/askGemini.php', {
-            const res = await fetch('http://localhost/tara-kabataan-backend/askGemini.php', {
+            const res = await fetch('http://localhost/tara-kabataan/tara-kabataan-backend/api/askGemini.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
