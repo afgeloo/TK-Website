@@ -642,11 +642,16 @@ const AdminSettings = () => {
       <div className="admin-settings-header">
         <div className="admin-settings-search-container">
           <FaSearch className="admin-settings-search-icon" />
+          <input type="text" name="fakeusernameremembered" style={{ display: "none" }} />
+          <input type="password" name="fakepasswordremembered" style={{ display: "none" }} />
           <input
             type="text"
             placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            autoComplete="off"
+            name="search-blog"
+            id="search-blog"
           />
         </div>
         <div className="admin-settings-header-right">

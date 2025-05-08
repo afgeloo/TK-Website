@@ -538,11 +538,16 @@ const AdminEvents = () => {
       <div className="admin-events-header">
         <div className="admin-events-search-container">
           <FaSearch className="admin-events-search-icon" />
+          <input type="text" name="fakeusernameremembered" style={{ display: "none" }} />
+          <input type="password" name="fakepasswordremembered" style={{ display: "none" }} />
           <input
             type="text"
             placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            autoComplete="off"
+            name="search-blog"
+            id="search-blog"
           />
         </div>
         <div className="admin-events-header-right">
