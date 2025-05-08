@@ -729,8 +729,6 @@
   font-size: 14px;
   font-weight: 600;
   display: block;
-  margin-bottom: 6px;
-  margin-top: 12px;
 }
 
 .admin-member-edit-fields input {
@@ -1023,8 +1021,7 @@
 .admin-contact-edit-fields {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-  margin-top: 1.5rem;
+  gap: 3px;
 }
 
 .admin-contact-edit-fields label {
@@ -1041,7 +1038,6 @@
   font-size: 14px;
   outline: none;
   transition: background-color 0.3s, border 0.3s;
-  margin-top: -0.5rem;
   font-family: 'Helvetica', sans-serif;
 }
 
@@ -1171,6 +1167,10 @@
 .admin-contact-edit-select:focus {
   border-color: #4DB1E3;
   box-shadow: 0 0 0 2px rgba(77, 177, 227, 0.2);
+}
+
+.label-page-content{
+  margin-top: 20px;
 }
 
 .fullscreen-image-modal {

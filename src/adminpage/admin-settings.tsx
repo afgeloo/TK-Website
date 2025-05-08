@@ -1013,7 +1013,7 @@ const AdminSettings = () => {
                         <option value="core_kalinangan">Kalinangan</option>
                         <option value="core_kaginhawaan">Kaginhawaan</option>
                       </select>
-                      <label>Edit Text</label>
+                      <label className="label-page-content">Edit Text</label>
                       <textarea
                         value={editableCoreValues[selectedCoreValue]}
                         onChange={(e) =>
@@ -1064,7 +1064,7 @@ const AdminSettings = () => {
                       <option value="adv_kultura">Kultura</option>
                       <option value="adv_kasarian">Kasarian</option>
                     </select>
-                    <label>Edit Text</label>
+                    <label className="label-page-content">Edit Text</label>
                     <textarea
                       value={editableAdvocacies[selectedAdvocacy]}
                       onChange={(e) =>

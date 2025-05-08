@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./css/admin-login.css";
 import logo from "../assets/header/tarakabataanlogo2.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -13,30 +14,77 @@ const AdminLogin: React.FC = () => {
   const [resetEmail, setResetEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [resetMessage, setResetMessage] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpDigits, setOtpDigits] = useState(Array(6).fill("")); 
+  const otpRefs = Array(6).fill(null).map(() => React.createRef<HTMLInputElement>());
+  const [otpError, setOtpError] = useState("");
 
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+  
+    const simulateOTP = false;
+  
     try {
       const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/adminlogin.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-
+  
       const data = await res.json();
+  
       if (data.success) {
-        localStorage.setItem("admin-auth", "true");
-        localStorage.setItem("admin-user", JSON.stringify(data.user));
-        navigate("/admin", { replace: true });
+        localStorage.setItem("admin-user-temp", JSON.stringify(data.user));
+  
+        if (simulateOTP) {
+          setOtpSent(true);
+        } else {
+          setOtpSent(true);
+  
+          const toastId = toast.loading("Sending OTP...");
+  
+          const otpRes = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/send_otp.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+          });
+  
+          const otpData = await otpRes.json();
+  
+          if (otpData.success) {
+            toast.update(toastId, {
+              render: (
+                <div>
+                  <strong>OTP sent to your email.</strong>
+                  <div style={{ fontSize: "0.8rem", marginTop: "4px" }}>
+                    Please check in your spam inbox if not found.
+                  </div>
+                </div>
+              ),
+              type: "success",
+              isLoading: false,
+              autoClose: 3000,
+            });
+          } else {
+            toast.update(toastId, {
+              render: otpData?.phpmailer_error || otpData?.exception || otpData?.message || "OTP sending failed.",
+              type: "error",
+              isLoading: false,
+              autoClose: 3000,
+            });
+            setError("OTP sending failed.");
+          }
+        }
       } else {
         setError(data.message || "Login failed.");
       }
-    } catch (err) {
+    } catch {
       setError("Server error. Please try again.");
     }
-  };
+  };    
 
   const handlePasswordReset = async () => {
     if (!resetEmail || !newPassword) {
@@ -111,6 +159,91 @@ const AdminLogin: React.FC = () => {
             </div>
           </div>
         </form>
+        {otpSent && (
+          <div className="otp-box-wrapper">
+            <label>Enter 6-digit OTP:</label>
+            <div className="otp-inputs">
+            {otpDigits.map((digit, index) => (
+              <input
+                key={index}
+                ref={otpRefs[index]}
+                type="text"
+                maxLength={1}
+                className="otp-box"
+                value={digit}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/g, "");
+                  if (!val) return;
+                
+                  const updated = [...otpDigits];
+                  updated[index] = val[0];
+                  setOtpDigits(updated);
+                  setOtpError("");
+                  if (index < 5 && val) {
+                    otpRefs[index + 1].current?.focus();
+                  }
+                }}                
+                onKeyDown={(e) => {
+                  if (e.key === "Backspace") {
+                    const updated = [...otpDigits];
+                    if (otpDigits[index]) {
+                      updated[index] = "";
+                      setOtpDigits(updated);
+                    } else if (index > 0) {
+                      otpRefs[index - 1].current?.focus();
+                    }
+                  }
+                }}
+              />
+            ))}
+            </div>
+            <button
+              className="admin-login-button"
+              onClick={async () => {
+                const otp = otpDigits.join("");
+                const simulateOTP = false;
+
+                if (simulateOTP) {
+                  if (otp.length === 6) {
+                    const user = localStorage.getItem("admin-user-temp");
+                    if (user) {
+                      localStorage.setItem("admin-auth", "true");
+                      localStorage.setItem("admin-user", user);
+                      localStorage.removeItem("admin-user-temp");
+                      navigate("/admin", { replace: true });
+                    } else {
+                      setError("Session expired. Please login again.");
+                    }
+                  } else {
+                    setError("Enter a 6-digit OTP.");
+                  }
+                } else {
+                  try {
+                    const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/verify_otp.php", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ email, otp, password }),
+                    });
+
+                    const data = await res.json();
+                    if (data.success) {
+                      localStorage.setItem("admin-auth", "true");
+                      localStorage.setItem("admin-user", JSON.stringify(data.user));
+                      navigate("/admin", { replace: true });
+                    } else {
+                      setOtpError(data.message || "Invalid OTP.");
+                    }
+                  } catch {
+                    setOtpError("OTP verification failed.");
+                  }
+                }
+              }}
+            >
+              Verify OTP
+            </button>
+            {otpError && <div className="admin-login-error">{otpError}</div>}
+          </div>
+        )}
       </div>
 
       {showResetModal && (
@@ -137,6 +270,18 @@ const AdminLogin: React.FC = () => {
           </div>
         </div>
       )}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };

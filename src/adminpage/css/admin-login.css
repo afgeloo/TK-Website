@@ -89,7 +89,6 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    margin-top: 10px;
     box-shadow: 0 4px 6px rgba(255, 92, 148, 0.4);
     transition: background 0.3s ease;
   }
@@ -100,8 +99,8 @@
   
   .admin-login-error {
     color: red;
-    margin-bottom: 10px;
     font-size: 13px;
+    margin-top: 10px;
   }
   
   .forgot-password {
@@ -216,4 +215,115 @@
     from { background: rgba(0, 0, 0, 0); }
     to { background: rgba(0, 0, 0, 0.6); }
   }
+  
+  .otp-box-wrapper {
+    margin-top: 30px;
+    text-align: center;
+    padding: 20px 10px;
+    background: #fefefe;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(255, 92, 148, 0.15);
+    animation: popUp 0.3s ease;
+  }
+  
+  .otp-box-wrapper label {
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'Helvetica', sans-serif;
+  }
+  
+  .otp-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding: 0 20px;
+  }
+  
+  .otp-box {
+    width: 100%;
+    height: 56px;
+    font-size: 22px;
+    text-align: center;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    transition: border 0.3s, box-shadow 0.3s;
+    background: #fff;
+    font-weight: 600;
+  }
+  
+  .otp-box:focus {
+    border-color: #ff5c94;
+    box-shadow: 0 0 6px rgba(255, 92, 148, 0.3);
+  }
+  
+  .otp-box::-webkit-outer-spin-button,
+  .otp-box::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+ 
+@media (max-width: 768px) {
+  .admin-login-box {
+    padding: 30px 20px;
+    border-radius: 12px;
+  }
+
+  .admin-login-logo {
+    width: 140px;
+  }
+
+  input,
+  .password-input-wrapper input {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .admin-login-button {
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  .otp-box {
+    width: 42px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  .reset-password-box {
+    padding: 28px 20px;
+  }
+
+  .reset-password-box h3 {
+    font-size: 18px;
+  }
+
+  .modal-buttons button {
+    font-size: 13px;
+    padding: 9px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-login-box {
+    padding: 24px 16px;
+    max-width: 90vw;
+  }
+
+  .otp-box {
+    width: 36px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+  .otp-inputs {
+    gap: 8px;
+  }
+
+  .admin-login-logo {
+    width: 120px;
+  }
+}
+
   
