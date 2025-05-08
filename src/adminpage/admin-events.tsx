@@ -1529,7 +1529,7 @@ const AdminEvents = () => {
 
                             const data = await res.json();
                             if (data.success && data.image_url) {
-                              const img = `<img src="http://localhost${data.image_url}" alt="event image" style="max-width:100%; margin: 10px 0; display:block;" />`;
+                              const img = `<img src="${data.base64}" alt="event image" style="max-width:100%; margin: 10px 0; display:block;" />`;
                               const div = document.getElementById("add-event-content-editor");
                               if (div) {
                                 div.innerHTML += img;
