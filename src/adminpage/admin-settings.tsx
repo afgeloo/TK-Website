@@ -32,6 +32,19 @@ const AdminSettings = () => {
   const [isEditingMember, setIsEditingMember] = useState(false);
   const [editableMember, setEditableMember] = useState<Member | null>(null);
   const [memberImageUrl, setMemberImageUrl] = useState<string | null>(null);
+  const [loggedInUser, setLoggedInUser] = useState<any>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("admin-user");
+    if (storedUser) {
+      try {
+        const parsed = JSON.parse(storedUser);
+        setLoggedInUser(parsed);
+      } catch {
+        console.error("Failed to parse stored user");
+      }
+    }
+  }, []);
 
   const handleMemberImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -637,11 +650,11 @@ const AdminSettings = () => {
           />
         </div>
         <div className="admin-settings-header-right">
-          <div className="admin-settings-loggedin-info">
-            <img src={president} className="admin-settings-loggedin-avatar" />
-            <div className="admin-settings-loggedin-desc">
-              <strong>Yugi Revaula</strong>
-              <p>yugirevaula@gmail.com</p>
+          <div className="admin-blogs-userinfo">
+            <div className="userinfo-label">Logged in as:</div>
+            <div className="userinfo-details">
+              <p className="userinfo-name">{loggedInUser?.user_name || "Admin"}</p>
+              <p className="userinfo-email">{loggedInUser?.user_email || ""}</p>
             </div>
           </div>
         </div>

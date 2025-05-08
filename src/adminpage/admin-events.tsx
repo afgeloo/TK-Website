@@ -52,6 +52,19 @@ const AdminEvents = () => {
   const [notification, setNotification] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
+  const [loggedInUser, setLoggedInUser] = useState<any>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("admin-user");
+    if (storedUser) {
+      try {
+        const parsed = JSON.parse(storedUser);
+        setLoggedInUser(parsed);
+      } catch {
+        console.error("Failed to parse stored user");
+      }
+    }
+  }, []);
 
   const [markerPosition, setMarkerPosition] = useState<{ lat: number; lng: number }>({
     lat: 14.5995, 
@@ -533,11 +546,11 @@ const AdminEvents = () => {
           />
         </div>
         <div className="admin-events-header-right">
-          <div className="admin-events-loggedin-info">
-            <img src={president} className="admin-events-loggedin-avatar" />
-            <div className="admin-events-loggedin-desc">
-              <strong>Yugi Revaula</strong>
-              <p>yugirevaula@gmail.com</p>
+          <div className="admin-blogs-userinfo">
+            <div className="userinfo-label">Logged in as:</div>
+            <div className="userinfo-details">
+              <p className="userinfo-name">{loggedInUser?.user_name || "Admin"}</p>
+              <p className="userinfo-email">{loggedInUser?.user_email || ""}</p>
             </div>
           </div>
         </div>

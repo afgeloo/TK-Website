@@ -45,40 +45,6 @@
     font-size: 14px;
   }
   
-  .password-input-wrapper {
-    position: relative;
-    width: 100%;
-  }
-  
-  .password-input-wrapper input {
-    width: 100%;
-    padding: 10px 38px 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
-    line-height: 1.5;
-    height: 44px; 
-    box-sizing: border-box;
-  }
-  
-  .toggle-password {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 12px;
-    display: flex;
-    border: none;
-    background: transparent;
-    font-size: 18px;
-    color: #888;
-    cursor: pointer;
-    padding: 0;
-    justify-content: center;
-    justify-items: center;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
   .admin-login-button {
     width: 100%;
     background: #ff5c94;
@@ -101,6 +67,7 @@
     color: red;
     font-size: 13px;
     margin-top: 10px;
+    margin-bottom: 10px;
   }
   
   .forgot-password {
@@ -217,7 +184,8 @@
   }
   
   .otp-box-wrapper {
-    margin-top: 30px;
+    margin-top: 10px;
+    margin-bottom: 30px;
     text-align: center;
     padding: 20px 10px;
     background: #fefefe;
@@ -240,6 +208,10 @@
     padding: 0 20px;
   }
   
+  .otp-inputs input{
+    font-size: 20px;
+  }
+
   .otp-box {
     width: 100%;
     height: 56px;
@@ -326,4 +298,17 @@
   }
 }
 
-  
+.modal-close-icon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 18px;
+  color: #444;
+  cursor: pointer;
+  z-index: 1000;
+  transition: color 0.2s ease;
+}
+
+.modal-close-icon:hover {
+  color: #e74c3c;
+}

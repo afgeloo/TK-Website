@@ -72,29 +72,44 @@
     border-radius: 50%;
 }
 
-.admin-blogs-loggedin-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.admin-blogs-userinfo {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  padding: 14px 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid #eee;
+  font-family: 'Bogart Trial', sans-serif;
+  gap: 16px;
+  max-width: 320px;
 }
 
-.admin-blogs-loggedin-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
+.userinfo-label {
+  font-size: 13px;
+  color: #0f85cc;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.admin-blogs-loggedin-desc {
-    display: flex;
-    flex-direction: column;
-    line-height: 1;
+.userinfo-details {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
 }
 
-.admin-blogs-loggedin-desc p {
-    font-size: 13px;
-    margin: 0;
-    color: gray;
+.userinfo-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #544C4F;
+  margin: 0;
+}
+
+.userinfo-email {
+  font-size: 12px;
+  color: #777;
+  font-family: 'Helvetica', sans-serif;
+  margin: 2px 0 0;
 }
 
 .admin-blogs-lower-header{
