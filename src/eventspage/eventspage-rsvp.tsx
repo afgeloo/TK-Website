@@ -27,21 +27,13 @@ const getFullImageUrl = (imageUrl: string) => {
 };
 
 const formatDateRSVP = (dateString: string) => {
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: "long", 
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
+  if (!dateString || isNaN(Date.parse(dateString))) return "Invalid date";
   const date = new Date(dateString);
-  const formatted = date.toLocaleDateString(undefined, options);
-
-  const parts = formatted.split(", ");
-  if (parts.length === 3) {
-    return `${parts[1]}, ${parts[2]} - ${parts[0]}`;
-  }
-  return formatted;
+  return date.toLocaleDateString(undefined, {
+    weekday: "long", year: "numeric", month: "long", day: "numeric"
+  });
 };
+
 
 const convertTo12HourFormat = (time: string) => {
   if (!time) return "";
@@ -81,8 +73,9 @@ function EventsPageRSVP() {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-      const res = await fetch(`${window.location.origin}/tara-kabataan/tara-kabataan-backend/api/events.php`);
-        const data = await res.json();
+      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/events.php");        
+      const data = await res.json();
+        console.log("Fetched events data:", data); 
         setEvents(data);
     
         const savedScroll = sessionStorage.getItem("eventScrollY");
