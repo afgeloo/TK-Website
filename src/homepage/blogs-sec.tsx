@@ -9,7 +9,7 @@ interface Blog {
   category: string;
   content?: string;
   blog_status?: string;
-  created_at?: string; // Important for sorting by latest
+  created_at?: string; 
 }
 
 const BlogsSec: React.FC = () => {

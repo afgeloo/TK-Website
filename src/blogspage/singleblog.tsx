@@ -69,11 +69,18 @@ function SingleBlog() {
   }, [id]);  
 
   const copyBlogLink = async () => {
+    const link = window.location.href;
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(link);
       toast.success("Link copied!");
     } catch (err) {
-      toast.error("Failed to copy.");
+      const textarea = document.createElement("textarea");
+      textarea.value = link;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      toast.success("Link copied");
     }
   };
   

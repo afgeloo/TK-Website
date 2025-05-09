@@ -45,7 +45,7 @@ const Chatbot: React.FC = () => {
             setIsTyping(true);
             setIsDisplayingMessage(true);
             setTimeout(() => {
-                displayReply("Mabuhay! Ako si Cow, ang iyong gabay mula sa Tara Kabataan. Paano kita matutulungan sa araw na ito?");
+                displayReply("Mabuhay! Ako si Baby Baka, ang iyong gabay mula sa Tara Kabataan. Paano kita matutulungan sa araw na ito?");
             }, 1000);
         }
     };    

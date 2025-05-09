@@ -3,9 +3,11 @@ import president from "../assets/aboutpage/council/president.jpg";
 import { BsThreeDots } from "react-icons/bs";
 import { FaSearch, FaBell, FaPlus } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
-import { FaBold, FaItalic, FaUnderline, FaImage, FaListUl, FaUndo, FaRedo } from "react-icons/fa";
+import { FaBold, FaItalic, FaUnderline, FaImage, FaListUl, FaUndo, FaRedo, FaTimes } from "react-icons/fa";
 import select from "../assets/adminpage/blogs/select.png";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 const AdminEvents = () => {
 
@@ -53,6 +55,260 @@ const AdminEvents = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
   const [loggedInUser, setLoggedInUser] = useState<any>(null);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [profileEmail, setProfileEmail] = useState(loggedInUser?.user_email || "");
+  const [profilePhone, setProfilePhone] = useState(loggedInUser?.user_contact || "");
+  const [profilePassword, setProfilePassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpInput, setOtpInput] = useState("");
+  const [otpRequired, setOtpRequired] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const otpRefs = useRef<HTMLInputElement[]>([]);
+
+  useEffect(() => {
+    if (loggedInUser) {
+      setProfileEmail(loggedInUser.user_email || "");
+      setProfilePhone(loggedInUser.user_contact || "");
+    }
+  }, [loggedInUser]);  
+
+  const handleSendOTP = async () => {
+        if (!profileEmail) {
+          toast.error("Email not found.");
+          return;
+        }
+      
+        if (!profilePhone && !profilePassword) {
+          toast.error("At least one of phone or password must be provided.");
+          return;
+        }
+      
+        if (profilePassword) {
+          if (!oldPassword) {
+            toast.error("Please enter your current password.");
+            return;
+          }
+      
+          try {
+            const verifyRes = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/verify_old_password.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: profileEmail, old_password: oldPassword }),
+            });
+      
+            const verifyData = await verifyRes.json();
+            if (!verifyData.valid) {
+              toast.error("Old password is incorrect.");
+              return;
+            }
+          } catch (err) {
+            toast.error("Failed to verify old password.");
+            return;
+          }
+      
+          if (profilePassword.length < 8) {
+            toast.error("Password must be at least 8 characters.");
+            return;
+          }
+      
+          const strongPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^\w\s]).+$/;
+          if (!strongPattern.test(profilePassword)) {
+            toast.error("Password must include letters, numbers, and symbols.");
+            return;
+          }
+      
+          const emailParts = profileEmail.split(/[@._\-]/).filter(Boolean);
+          const passwordLower = profilePassword.toLowerCase();
+          for (const part of emailParts) {
+            if (part && passwordLower.includes(part.toLowerCase())) {
+              toast.error("Password should not include parts of your email.");
+              return;
+            }
+          }
+      
+          try {
+            const prevRes = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/check_previous_password.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: profileEmail, new_password: profilePassword }),
+            });
+            const prevData = await prevRes.json();
+            if (prevData.same === true) {
+              toast.error("New password must be different from the previous password.");
+              return;
+            }
+          } catch {
+            toast.error("Failed to check previous password.");
+            return;
+          }
+        }
+      
+        const toastId = toast.loading("Sending OTP...");
+      
+        try {
+          const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/send_otp.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: profileEmail }),
+          });
+      
+          const data = await res.json();
+      
+          if (data.success) {
+            setOtpSent(true);
+            toast.update(toastId, {
+              render: (
+                <div>
+                  <strong>OTP sent to your email.</strong>
+                  <div style={{ fontSize: "0.8rem", marginTop: "4px" }}>
+                    Check spam folder if not found.
+                  </div>
+                </div>
+              ),
+              type: "success",
+              isLoading: false,
+              autoClose: 3000,
+            });
+          } else {
+            toast.update(toastId, {
+              render: data.message || "Failed to send OTP.",
+              type: "error",
+              isLoading: false,
+              autoClose: 3000,
+            });
+          }
+        } catch (err) {
+          toast.update(toastId, {
+            render: "Error sending OTP.",
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+          });
+          console.error(err);
+        }
+      };    
+
+    const handleProfileUpdate = async () => {
+          if (!profilePhone && !profilePassword) {
+            toast.error("At least one of phone or password must be provided.");
+            return;
+          }
+        
+          if (profilePassword) {
+            if (profilePassword.length < 8) {
+              toast.error("Password must be at least 8 characters.");
+              return;
+            }
+        
+            const strongPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^\w\s]).+$/;
+            if (!strongPattern.test(profilePassword)) {
+              toast.error("Password must include letters, numbers, and symbols.");
+              return;
+            }
+        
+            const emailParts = profileEmail.split(/[@._\-]/).filter(Boolean);
+            const passwordLower = profilePassword.toLowerCase();
+            for (const part of emailParts) {
+              if (part && passwordLower.includes(part.toLowerCase())) {
+                toast.error("Password should not include parts of your email.");
+                return;
+              }
+            }
+        
+            try {
+              const prevRes = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/check_previous_password.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: profileEmail, new_password: profilePassword }),
+              });
+              const prevData = await prevRes.json();
+              if (prevData.same === true) {
+                toast.error("New password must be different from the previous password.");
+                return;
+              }
+            } catch {
+              toast.error("Failed to check previous password.");
+              return;
+            }
+          }
+        
+          try {
+            const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_profile.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                user_id: loggedInUser?.user_id,
+                email: profileEmail,
+                phone: profilePhone,
+                password: profilePassword,
+              }),
+            });
+        
+            const text = await res.text();
+        
+            try {
+              const data = JSON.parse(text);
+              if (data.success) {
+                toast.success("Profile updated!");
+                setLoggedInUser(data.user);
+                localStorage.setItem("admin-user", JSON.stringify(data.user));
+                setShowProfileModal(false);
+              } else {
+                toast.error(data.message || "Failed to update profile.");
+              }
+            } catch (err) {
+              console.error("Invalid JSON from update_profile.php:", text);
+              toast.error("Invalid server response.");
+            }
+          } catch (err) {
+            console.error("Fetch error:", err);
+            toast.error("Server error.");
+          }
+        };    
+
+    const handleVerifyOTP = async () => {
+          const toastId = toast.loading("Verifying OTP...");
+        
+          try {
+            const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/verify_otp.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: profileEmail, otp: otpInput }),
+            });
+        
+            const data = await res.json();
+        
+            if (data.success) {
+              await handleProfileUpdate();
+              setOtpSent(false);
+              setOtpInput("");
+              setIsEditingProfile(false);
+              toast.update(toastId, {
+                render: "OTP verified. Profile updated.",
+                type: "success",
+                isLoading: false,
+                autoClose: 3000,
+              });
+            } else {
+              toast.update(toastId, {
+                render: "Incorrect OTP.",
+                type: "error",
+                isLoading: false,
+                autoClose: 3000,
+              });
+            }
+          } catch (err) {
+            toast.update(toastId, {
+              render: "Error verifying OTP.",
+              type: "error",
+              isLoading: false,
+              autoClose: 3000,
+            });
+            console.error(err);
+          }
+        };    
 
   useEffect(() => {
     const storedUser = localStorage.getItem("admin-user");
@@ -532,6 +788,16 @@ const AdminEvents = () => {
 
   const isFieldLocked = selectedEvent?.event_status === "COMPLETED" || selectedEvent?.event_status === "CANCELLED";
   const [fullscreenImageUrl, setFullscreenImageUrl] = useState<string | null>(null);
+
+  const resetProfileModal = () => {
+    setProfilePhone(loggedInUser?.user_contact || "");
+    setProfilePassword("");
+    setOldPassword("");
+    setOtpInput("");
+    setOtpSent(false);
+    setOtpRequired(false);
+    setIsEditingProfile(false);
+  };  
   
   return (
     <div className="admin-events">
@@ -551,13 +817,137 @@ const AdminEvents = () => {
           />
         </div>
         <div className="admin-events-header-right">
-          <div className="admin-blogs-userinfo">
-            <div className="userinfo-label">Logged in as:</div>
+        <div className="admin-blogs-userinfo" onClick={() => setShowProfileModal(true)} style={{ cursor: "pointer" }}>
+          <div className="userinfo-label">Logged in as:</div>
             <div className="userinfo-details">
               <p className="userinfo-name">{loggedInUser?.user_name || "Admin"}</p>
               <p className="userinfo-email">{loggedInUser?.user_email || ""}</p>
             </div>
           </div>
+          {showProfileModal && (
+            <div className="admin-profile-modal">
+              <div className="admin-profile-modal-box">
+              <div
+                className="modal-close-icon"
+                onClick={() => {
+                  setShowProfileModal(false);
+                  resetProfileModal();
+                }}
+              >
+                <FaTimes />
+              </div>
+                <h2>Edit Profile</h2>
+                <label>Email:</label>
+                <input type="email" value={profileEmail} disabled />
+                <label>Phone:</label>
+                <input
+                  type="tel"
+                  value={profilePhone}
+                  disabled={!isEditingProfile}
+                  onChange={(e) => setProfilePhone(e.target.value)}
+                />
+                <div style={{ position: "relative" }}>
+                <label>Old Password:</label>
+                <input type="text" name="fakeusernameremembered" style={{ display: "none" }} />
+                <input type="password" name="fakepasswordremembered" style={{ display: "none" }} />
+                <form autoComplete="off">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your current password"
+                    autoComplete="current-password"
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    style={{ width: "100%" }}
+                    required
+                  />
+                </form>
+                <label>New Password:</label>
+                <input type="text" name="fakeusernameremembered" style={{ display: "none" }} />
+                <input type="password" name="fakepasswordremembered" style={{ display: "none" }} />
+                <form autoComplete="off">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter a New Password"
+                    autoComplete="new-password"
+                    value={profilePassword}
+                    readOnly={!isEditingProfile}
+                    onChange={(e) => setProfilePassword(e.target.value)}
+                    style={{
+                      width: "100%",
+                      color: !isEditingProfile ? "#999" : "inherit",
+                      cursor: !isEditingProfile ? "default" : "text",
+                    }}
+                  />
+                </form>
+                </div>
+                <div className="admin-profile-buttons">
+                  {!isEditingProfile ? (
+                    <button onClick={() => setIsEditingProfile(true)}>Edit</button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => {
+                          handleSendOTP();
+                          setOtpRequired(true); 
+                        }}
+                      >
+                        Send OTP
+                      </button>
+                      <button
+                        onClick={() => {
+                          setShowProfileModal(false);
+                          resetProfileModal();
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </>
+                  )}
+                </div>
+                {otpSent && (
+                  <div className="otp-verification">
+                    <label>Enter 6-digit OTP:</label>
+                    <div className="otp-inputs">
+                      {Array(6).fill("").map((_, index) => (
+                        <input
+                          key={index}
+                          ref={(el) => {
+                            otpRefs.current[index] = el;
+                          }}                  
+                          type="text"
+                          maxLength={1}
+                          className="otp-box"
+                          value={otpInput[index] || ""}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, "");
+                            if (!val) return;
+                            const updated = [...otpInput];
+                            updated[index] = val[0];
+                            setOtpInput(updated.join(""));
+                            if (index < 5 && val) {
+                              otpRefs.current[index + 1]?.focus();
+                            }
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Backspace") {
+                              const updated = [...otpInput];
+                              if (otpInput[index]) {
+                                updated[index] = "";
+                                setOtpInput(updated.join(""));
+                              } else if (index > 0) {
+                                otpRefs.current[index - 1]?.focus();
+                              }
+                            }
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <button onClick={handleVerifyOTP}>Verify OTP & Save</button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="admin-events-lower-header">
@@ -1590,6 +1980,18 @@ const AdminEvents = () => {
         <img src={fullscreenImageUrl} alt="Fullscreen" />
       </div>
     )}
+    <ToastContainer
+      position="top-center"
+      autoClose={4000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+    />
     </div>
   );
 };

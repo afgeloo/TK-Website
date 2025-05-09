@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { formatDateDetails, convertTo12HourFormat } from "./mockServer";
 import { ToastContainer, toast } from "react-toastify";
 import "./css/eventdetails.css";
-import locationIcon from "../assets/eventspage/Location-eventspage.png";
-import attachIcon from "../assets/logos/attachicon.jpg";
 import Header from "../header";
 import Footer from "../footer";
 import Preloader from "../preloader";
+import locationIcon from "../assets/eventspage/Location-eventspage.png";
+import attachIcon from "../assets/logos/attachicon.jpg";
 
 export interface Event {
   event_id: string;
@@ -57,14 +57,22 @@ function EventDetails() {
     fetchEvent();
   }, [id]);  
 
-  const copyEventLink = () => {
-    if (!canCopy) return;
-    setCanCopy(false);
-    setTimeout(() => setCanCopy(true), 2000);
-    navigator.clipboard.writeText(window.location.href)
-      .then(() => toast.success("Link copied!"))
-      .catch(() => toast.error("Failed to copy."));
+  const copyEventLink= async () => {
+    const link = window.location.href;
+    try {
+      await navigator.clipboard.writeText(link);
+      toast.success("Link copied!");
+    } catch (err) {
+      const textarea = document.createElement("textarea");
+      textarea.value = link;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      toast.success("Link copied");
+    }
   };
+ 
 
   if (loading || !event) {
     return <Preloader />;
