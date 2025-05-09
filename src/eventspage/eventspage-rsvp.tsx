@@ -43,7 +43,6 @@ const formatDateRSVP = (dateString: string) => {
   return formatted;
 };
 
-
 const convertTo12HourFormat = (time: string) => {
   if (!time) return "";
   const [hourStr, minuteStr] = time.split(":");
@@ -64,6 +63,8 @@ function EventsPageRSVP() {
   const [viewType, setViewType] = useState<"UPCOMING" | "PAST">(() => {
     return (sessionStorage.getItem("eventViewType") as "UPCOMING" | "PAST") || "UPCOMING";
   });  
+  const [selectedMonth, setSelectedMonth] = useState("ALL");
+  const [selectedYear, setSelectedYear] = useState("ALL");
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState(() => {
@@ -80,7 +81,7 @@ function EventsPageRSVP() {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/events.php");
+      const res = await fetch(`${window.location.origin}/tara-kabataan/tara-kabataan-backend/api/events.php`);
         const data = await res.json();
         setEvents(data);
     
@@ -111,54 +112,65 @@ function EventsPageRSVP() {
   }, []);  
 
   useEffect(() => {
-    const now = new Date();
-  
-    const filtered = events.filter((event) => {
-      const eventDate = new Date(event.event_date);
-      const [startHour, startMinute] = event.event_start_time.split(":").map(Number);
-      const [endHour, endMinute] = event.event_end_time.split(":").map(Number);
-  
-      const eventStartDateTime = new Date(eventDate);
-      eventStartDateTime.setHours(startHour, startMinute, 0, 0);
-  
-      const eventEndDateTime = new Date(eventDate);
-      eventEndDateTime.setHours(endHour, endMinute, 0, 0);
-  
-      const isOngoingNow = now >= eventStartDateTime && now <= eventEndDateTime;
-      const isFutureEvent = now < eventStartDateTime;
-      const isPastEvent = now > eventEndDateTime;
-  
-      let correctedStatus = event.event_status.toLowerCase();
-  
-      if (correctedStatus === "upcoming" && isOngoingNow) {
-        correctedStatus = "ongoing";
-      }
-      if ((correctedStatus === "upcoming" || correctedStatus === "ongoing") && isPastEvent) {
-        correctedStatus = "completed";
-      }
-  
-      const isMatchingView =
-        viewType === "UPCOMING"
-          ? (correctedStatus === "upcoming" || correctedStatus === "ongoing")
-          : (correctedStatus === "completed");
-  
-      const isMatchingCategory =
-        selectedCategory === "ALL" ||
-        event.event_category.toUpperCase() === selectedCategory;
-  
-      const isMatchingSearch =
-        searchQuery.trim() === "" ||
-        event.event_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.event_category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.event_venue.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        formatDateRSVP(event.event_date).toLowerCase().includes(searchQuery.toLowerCase());
-  
-      return isMatchingView && isMatchingCategory && isMatchingSearch;
-    });
-  
-    setFilteredEvents(filtered);
-    setCurrentPage(1);
-  }, [viewType, selectedCategory, searchQuery, events]);  
+  const now = new Date();
+
+  const filtered = events.filter((event) => {
+    const eventDate = new Date(event.event_date);
+    const eventMonth = eventDate.toLocaleString("default", { month: "long" });
+    const eventYear = eventDate.getFullYear().toString();
+
+    const [startHour, startMinute] = event.event_start_time.split(":").map(Number);
+    const [endHour, endMinute] = event.event_end_time.split(":").map(Number);
+
+    const eventStartDateTime = new Date(eventDate);
+    eventStartDateTime.setHours(startHour, startMinute, 0, 0);
+
+    const eventEndDateTime = new Date(eventDate);
+    eventEndDateTime.setHours(endHour, endMinute, 0, 0);
+
+    const isOngoingNow = now >= eventStartDateTime && now <= eventEndDateTime;
+    const isFutureEvent = now < eventStartDateTime;
+    const isPastEvent = now > eventEndDateTime;
+
+    let correctedStatus = event.event_status.toLowerCase();
+
+    if (correctedStatus === "upcoming" && isOngoingNow) {
+      correctedStatus = "ongoing";
+    }
+    if ((correctedStatus === "upcoming" || correctedStatus === "ongoing") && isPastEvent) {
+      correctedStatus = "completed";
+    }
+
+    const isMatchingView =
+      viewType === "UPCOMING"
+        ? correctedStatus === "upcoming" || correctedStatus === "ongoing"
+        : correctedStatus === "completed";
+
+    const isMatchingCategory =
+      selectedCategory === "ALL" || event.event_category.toUpperCase() === selectedCategory;
+
+    const isMatchingSearch =
+      searchQuery.trim() === "" ||
+      event.event_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.event_category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.event_venue.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      formatDateRSVP(event.event_date).toLowerCase().includes(searchQuery.toLowerCase());
+
+    const isMatchingMonth = selectedMonth === "ALL" || eventMonth === selectedMonth;
+    const isMatchingYear = selectedYear === "ALL" || eventYear === selectedYear;
+
+    return (
+      isMatchingView &&
+      isMatchingCategory &&
+      isMatchingSearch &&
+      isMatchingMonth &&
+      isMatchingYear
+    );
+  });
+
+  setFilteredEvents(filtered);
+  setCurrentPage(1);
+}, [viewType, selectedCategory, searchQuery, selectedMonth, selectedYear, events]);
   
 
   const currentEvents = filteredEvents.slice(0, eventsToShow);
@@ -179,24 +191,37 @@ function EventsPageRSVP() {
         <>
           <div className="events-header-row">
             <h1 className="eventspage-header-EVENTS">Events</h1>
-            <div className="event-toggle-wrapper">
-              <div className="event-toggle-tabs">
-                <button
-                  className={`event-toggle-tab ${viewType === "UPCOMING" ? "active" : ""}`}
-                  onClick={() => setViewType("UPCOMING")}
-                >
-                  UPCOMING
-                </button>
-                <button
-                  className={`event-toggle-tab ${viewType === "PAST" ? "active" : ""}`}
-                  onClick={() => setViewType("PAST")}
-                >
-                  PAST
-                </button>
-              </div>
+          </div>
+          <div className="events-header-row-2">
+          <div className="event-search-bar">
+            <img
+              src={searchIconEventspage}
+              alt="Search"
+              className="event-search-icon"
+            />
+            <input
+              type="text"
+              placeholder="Search events..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="event-search-input"
+            />
+          </div>
+          <div className="event-toggle-tabs">
+            <button
+              className={`event-toggle-tab ${viewType === "UPCOMING" ? "active" : ""}`}
+              onClick={() => setViewType("UPCOMING")}
+            >
+              UPCOMING
+            </button>
+            <button
+              className={`event-toggle-tab ${viewType === "PAST" ? "active" : ""}`}
+              onClick={() => setViewType("PAST")}
+            >
+              PAST
+            </button>
             </div>
           </div>
-  
           <div className="event-category-search-wrapper">
             <div className="event-category-filter">
               <div className="category-buttons-desktop">
@@ -224,20 +249,34 @@ function EventsPageRSVP() {
                 </select>
               </div>
             </div>
-  
-            <div className="event-search-bar">
-              <input
-                type="text"
-                placeholder="Search events..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="event-search-input"
-              />
-              <img
-                src={searchIconEventspage}
-                alt="Search"
-                className="event-search-icon"
-              />
+            <div className="event-filter-wrapper">
+                <select
+                  className="event-filter-dropdown"
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                >
+                  <option value="ALL">All Months</option>
+                  {[...new Set(events
+                    .filter(e => !!e.event_date && !isNaN(new Date(e.event_date).getTime()))
+                    .map(e => new Date(e.event_date).toLocaleString("default", { month: "long" }))
+                  )].sort().map((month) => (
+                    <option key={month} value={month}>{month}</option>
+                  ))}
+                </select>
+
+                <select
+                  className="event-filter-dropdown"
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(e.target.value)}
+                >
+                  <option value="ALL">All Years</option>
+                  {[...new Set(events
+                    .filter(e => !!e.event_date && !isNaN(new Date(e.event_date).getTime()))
+                    .map(e => new Date(e.event_date).getFullYear().toString())
+                  )].sort().map((year) => (
+                    <option key={year} value={year}>{year}</option>
+                  ))}
+                </select>
             </div>
           </div>
   

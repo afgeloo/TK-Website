@@ -19,6 +19,91 @@
   max-width: 100%; 
 }
 
+.eventspage-header-EVENTS {
+  font-weight: bold;
+  font-family: 'Bogart Trial', sans-serif;
+  margin: 0;
+}
+
+.event-search-bar {
+  display: flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0 12px;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.event-search-input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-family: 'Helvetica Now Text', sans-serif;
+  background: transparent;
+  width: 250px;
+  height: 40px;
+  margin-top: 20px;
+}
+
+.event-search-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.event-monthyear-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.event-filter-wrapper{
+  gap:10px;
+  display: flex;
+}
+
+.event-filter-dropdown {
+  appearance: none;
+  background-color: #ffffff;
+  border: 1.8px solid #d4d4d4;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-family: 'Helvetica Now Text', sans-serif;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%237a7a7a' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+  padding-right: 40px;
+}
+
+.event-filter-dropdown:hover {
+  border-color: #bbb;
+}
+
+.event-filter-dropdown:focus {
+  outline: none;
+  border-color: #ff5a89;
+  box-shadow: 0 0 0 2px rgba(255, 90, 137, 0.2);
+}
+
+@media (max-width: 768px) {
+  .event-monthyear-filters {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .event-filter-dropdown {
+    width: 100%;
+    font-size: 10px;
+  }
+}
+
 .eventsrsvp-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -51,6 +136,14 @@
   align-items: center;
   margin-top: 50px;
   margin-bottom: 10px;
+  width: 100%;
+}
+
+.events-header-row-2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .eventspage-header-EVENTS {
@@ -398,6 +491,10 @@
 
 @media (max-width: 768px) {
 
+  .event-filter-wrapper{
+    gap:2px;
+  }
+
   .events-page-rsvp {
     padding: 0 20px;
   }
@@ -429,13 +526,13 @@
   }
 
   .event-search-input {
-    width: 150px;
+    width: 100px;
     padding: 6px 12px;
     font-size: 14px;
   }
 
   .event-search-bar:hover .event-search-input {
-    width: 130px;
+    width: 100px;
   }
 
   .event-card {

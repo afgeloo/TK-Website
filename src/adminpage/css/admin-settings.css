@@ -1294,4 +1294,33 @@
   text-overflow: ellipsis;
 }
 
+.admin-member-edit-fields select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #333;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='10' height='7' viewBox='0 0 10 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23999' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.admin-member-edit-fields select:hover {
+  border-color: #bbb;
+}
+
+.admin-member-edit-fields select:focus {
+  border-color: #4DB1E3;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(77, 177, 227, 0.2);
+}
+
+.admin-member-edit-fields select option {
+  padding: 10px;
+}
 
