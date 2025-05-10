@@ -22,7 +22,7 @@ interface Blog {
 
 const getSafeImageUrl = (url: string | null | undefined): string => {
   if (!url) return "";
-  return url.startsWith("http") || url.startsWith("/") ? `http://172.20.98.49${url}` : url;
+  return url.startsWith("http") || url.startsWith("/") ? `http://192.168.55.114${url}` : url;
 };
 
 function BlogsPage() {
@@ -57,7 +57,7 @@ function BlogsPage() {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/blogs.php?category=ALL`
+        `http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/blogs.php?category=ALL`
       );
       const data = await response.json();
   

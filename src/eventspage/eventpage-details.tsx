@@ -41,7 +41,7 @@ function EventDetails() {
     if (!id) return;
     const fetchEvent = async () => {
       try {
-        const response = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/events.php");
+        const response = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/events.php");
         const data = await response.json();
         const selected = data.find((e: Event) => e.event_id === id);
         setEvent(selected || null);
@@ -78,7 +78,7 @@ function EventDetails() {
     return <Preloader />;
   }
     
-  const imageUrl = `http://172.20.98.49/${event.event_image}`;
+  const imageUrl = `http://192.168.55.114/${event.event_image}`;
 
   function formatContent(content: string) {
     if (!content) return "";

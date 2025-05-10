@@ -88,7 +88,7 @@ const AdminLogin: React.FC = () => {
         ? { phone: phoneNumber, password }
         : { email, password };
   
-      const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/adminlogin.php", {
+      const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/adminlogin.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginPayload),
@@ -111,7 +111,7 @@ const AdminLogin: React.FC = () => {
             setPhoneOtpSent(true);
             const toastId = toast.loading("Sending OTP to phone...");
   
-            const otpRes = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/send_phone_otp.php", {
+            const otpRes = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/send_phone_otp.php", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ phone: phoneNumber }),
@@ -139,7 +139,7 @@ const AdminLogin: React.FC = () => {
             setOtpSent(true);
             const toastId = toast.loading("Sending OTP...");
   
-            const otpRes = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/send_otp.php", {
+            const otpRes = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/send_otp.php", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email }),
@@ -224,7 +224,7 @@ const AdminLogin: React.FC = () => {
       }
     }
   
-    const prevRes = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/check_previous_password.php", {
+    const prevRes = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/check_previous_password.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: resetContact, new_password: newPassword }),
@@ -238,7 +238,7 @@ const AdminLogin: React.FC = () => {
     setPasswordError("");
   
     try {
-      const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/resetadminpass.php", {
+      const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/resetadminpass.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: resetContact, new_password: newPassword }),
@@ -425,7 +425,7 @@ const AdminLogin: React.FC = () => {
 
                   const otp = phoneOtp.join("");
                   try {
-                    const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/verify_phone_otp.php", {
+                    const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/verify_phone_otp.php", {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify({ phone: phoneNumber, otp }),
@@ -483,7 +483,7 @@ const AdminLogin: React.FC = () => {
                   }
                 } else {
                   try {
-                    const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/verify_otp.php", {
+                    const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/verify_otp.php", {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify({ email, otp, password }),
@@ -554,7 +554,7 @@ const AdminLogin: React.FC = () => {
               <button onClick={async () => {
                 const toastId = toast.loading("Sending OTP...");
                 try {
-                  const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/send_otp.php", {
+                  const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/send_otp.php", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email: resetContact }),
@@ -656,7 +656,7 @@ const AdminLogin: React.FC = () => {
                   }                  
 
                   const otp = resetOtp.join("");
-                  const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/verify_otp.php", {
+                  const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/verify_otp.php", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email: resetContact, otp }),

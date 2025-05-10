@@ -82,7 +82,7 @@ function WelcomeSec() {
     const [overview, setOverview] = useState<string>("Loading...");
 
     useEffect(() => {
-        fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/aboutus.php")
+        fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/aboutus.php")
             .then((res) => res.json())
             .then((data) => {
                 if (data.overview) {

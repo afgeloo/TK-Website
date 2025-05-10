@@ -16,7 +16,7 @@ const BriefBg: React.FC = memo(() => {
   const [background, setBackground] = useState<string>("Loading...");
 
   useEffect(() => {
-    fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/aboutus.php")
+    fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/aboutus.php")
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok");
         return res.json();

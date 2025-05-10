@@ -92,7 +92,7 @@ const AdminEvents = () => {
           }
       
           try {
-            const verifyRes = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/verify_old_password.php", {
+            const verifyRes = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/verify_old_password.php", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email: profileEmail, old_password: oldPassword }),
@@ -129,7 +129,7 @@ const AdminEvents = () => {
           }
       
           try {
-            const prevRes = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/check_previous_password.php", {
+            const prevRes = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/check_previous_password.php", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email: profileEmail, new_password: profilePassword }),
@@ -148,7 +148,7 @@ const AdminEvents = () => {
         const toastId = toast.loading("Sending OTP...");
       
         try {
-          const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/send_otp.php", {
+          const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/send_otp.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email: profileEmail }),
@@ -218,7 +218,7 @@ const AdminEvents = () => {
             }
         
             try {
-              const prevRes = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/check_previous_password.php", {
+              const prevRes = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/check_previous_password.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: profileEmail, new_password: profilePassword }),
@@ -235,7 +235,7 @@ const AdminEvents = () => {
           }
         
           try {
-            const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/update_profile.php", {
+            const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/update_profile.php", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -272,7 +272,7 @@ const AdminEvents = () => {
           const toastId = toast.loading("Verifying OTP...");
         
           try {
-            const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/verify_otp.php", {
+            const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/verify_otp.php", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email: profileEmail, otp: otpInput }),
@@ -358,7 +358,7 @@ const AdminEvents = () => {
   }, [selectedEvent]);
   
   useEffect(() => {
-    fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/events1.php")
+    fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/events1.php")
       .then((res) => res.json())
       .then((data) => {
         console.log("EVENTS DATA:", data);
@@ -380,7 +380,7 @@ const AdminEvents = () => {
             if (now >= eventStartDatetime && now <= eventEndDatetime) {
               event.event_status = "ONGOING";
         
-              fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/update_event_status.php", {
+              fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/update_event_status.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -391,7 +391,7 @@ const AdminEvents = () => {
             } else if (now > eventEndDatetime) {
               event.event_status = "COMPLETED";
         
-              fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/update_event_status.php", {
+              fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/update_event_status.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -503,7 +503,7 @@ const AdminEvents = () => {
       editableEvent.image_url = tempImageUrl;
     }
   
-    fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/update_event.php", {
+    fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/update_event.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editableEvent),
@@ -572,7 +572,7 @@ const AdminEvents = () => {
     };
   
     try {
-      const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/add_new_event.php", {
+      const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/add_new_event.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -607,7 +607,7 @@ const AdminEvents = () => {
     if (!selectedEvent) return;
   
     try {
-      const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/delete_event.php", {
+      const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/delete_event.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ event_id: selectedEvent.event_id })
@@ -639,7 +639,7 @@ const AdminEvents = () => {
     formData.append("image", file);
   
     try {
-      const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/upload_event_image.php", {
+      const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/upload_event_image.php", {
         method: "POST",
         body: formData,
       });
@@ -669,9 +669,9 @@ const AdminEvents = () => {
     if (!url) return "";
     if (url.startsWith("http")) return url;
     if (url.includes("/tara-kabataan/")) {
-      return `http://172.20.98.49${url}`;
+      return `http://192.168.55.114${url}`;
     }
-    return `http://172.20.98.49/tara-kabataan${url.startsWith("/") ? "" : "/"}${url}`;
+    return `http://192.168.55.114/tara-kabataan${url.startsWith("/") ? "" : "/"}${url}`;
   };  
 
   const saveSelection = () => {
@@ -701,7 +701,7 @@ const AdminEvents = () => {
 
   const handleBulkDelete = async () => {
     try {
-      const response = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/delete_bulk_events.php", {
+      const response = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/delete_bulk_events.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ event_ids: selectedEventIds }),
@@ -724,7 +724,7 @@ const AdminEvents = () => {
 
   const applyBulkStatus = async (newStatus: string) => {
     try {
-      const response = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/update_bulk_event_status.php", {
+      const response = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/update_bulk_event_status.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1581,14 +1581,14 @@ const AdminEvents = () => {
                             formData.append("image", file);
 
                             try {
-                              const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/upload_event_image.php", {
+                              const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/upload_event_image.php", {
                                 method: "POST",
                                 body: formData,
                               });
 
                               const data = await res.json();
                               if (data.success && data.image_url) {
-                                const img = `<img src="http://172.20.98.49${data.image_url}" alt="event image" style="max-width:100%; margin: 10px 0; display:block;" />`;
+                                const img = `<img src="http://192.168.55.114${data.image_url}" alt="event image" style="max-width:100%; margin: 10px 0; display:block;" />`;
                                 const div = document.getElementById("new-event-content-editor");
                                 if (div) {
                                   div.innerHTML += img;
@@ -1849,7 +1849,7 @@ const AdminEvents = () => {
                           const formData = new FormData();
                           formData.append("image", file);
 
-                          const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/add_new_event_image.php", {
+                          const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/add_new_event_image.php", {
                             method: "POST",
                             body: formData,
                           });
@@ -1930,14 +1930,14 @@ const AdminEvents = () => {
                           const formData = new FormData();
                           formData.append("image", file);
                           try {
-                            const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/upload_event_image.php", {
+                            const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/upload_event_image.php", {
                               method: "POST",
                               body: formData,
                             });
 
                             const data = await res.json();
                             if (data.success && data.image_url) {
-                              const img = `<img src="http://172.20.98.49${data.image_url}" alt="event image" style="max-width:100%; margin: 10px 0; display:block;" />`;
+                              const img = `<img src="http://192.168.55.114${data.image_url}" alt="event image" style="max-width:100%; margin: 10px 0; display:block;" />`;
                               const div = document.getElementById("add-event-content-editor");
                               if (div) {
                                 div.innerHTML += img;

@@ -23,7 +23,7 @@ export interface Event {
 const getFullImageUrl = (imageUrl: string) => {
   if (!imageUrl) return "";
   if (imageUrl.startsWith("http")) return imageUrl;
-  return `http://172.20.98.49${imageUrl}`;
+  return `http://192.168.55.114${imageUrl}`;
 };
 
 const formatDateRSVP = (dateString: string) => {
@@ -73,7 +73,7 @@ function EventsPageRSVP() {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-      const res = await fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/events.php");        
+      const res = await fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/events.php");        
       const data = await res.json();
         console.log("Fetched events data:", data); 
         setEvents(data);

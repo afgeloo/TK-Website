@@ -6,13 +6,13 @@ function Council() {
     const [councilText, setCouncilText] = useState("Loading...");
 
     useEffect(() => {
-        fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/aboutus.php")
+        fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/aboutus.php")
             .then(res => res.json())
             .then(data => {
                 setCouncilText(data.council || "No data.");
             });
 
-        fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/council.php")
+        fetch("http://192.168.55.114/tara-kabataan/tara-kabataan-backend/api/council.php")
             .then(res => res.json())
             .then(data => setCouncilData(data))
             .catch(err => console.error("Council API error:", err));
@@ -38,9 +38,9 @@ function Council() {
                                 <div className="council-inner-card-2">
                                     <div className="council-member-image">
                                     <img
-                                    src={`http://172.20.98.49/tara-kabataan/tara-kabataan-webapp/uploads/members-images/member-2025-000001.jpg?t=${Date.now()}`}
+                                    src={`http://192.168.55.114/tara-kabataan/tara-kabataan-webapp/uploads/members-images/member-2025-000001.jpg?t=${Date.now()}`}
                                     onError={(e) => {
-                                        const basePath = "http://172.20.98.49/tara-kabataan/tara-kabataan-webapp/uploads/members-images/";
+                                        const basePath = "http://192.168.55.114/tara-kabataan/tara-kabataan-webapp/uploads/members-images/";
                                         const fallbackExtensions = ["png", "jpeg"];
                                         const attemptedSrcs = fallbackExtensions.map(
                                             ext => `${basePath}member-2025-000001.${ext}?t=${Date.now()}`
@@ -77,9 +77,9 @@ function Council() {
                                 <div className="council-inner-card-2">
                                 <div className="council-member-image">
                                 <img
-                                src={`http://172.20.98.49/tara-kabataan/tara-kabataan-webapp/uploads/members-images/${member.member_id}.jpg`}
+                                src={`http://192.168.55.114/tara-kabataan/tara-kabataan-webapp/uploads/members-images/${member.member_id}.jpg`}
                                 onError={(e) => {
-                                    const basePath = "http://172.20.98.49/tara-kabataan/tara-kabataan-webapp/uploads/members-images/";
+                                    const basePath = "http://192.168.55.114/tara-kabataan/tara-kabataan-webapp/uploads/members-images/";
                                     const fallbackExtensions = ["png", "jpeg"];
                                     const attemptedSrcs = fallbackExtensions.map(
                                         ext => `${basePath}${member.member_id}.${ext}?t=${Date.now()}`
