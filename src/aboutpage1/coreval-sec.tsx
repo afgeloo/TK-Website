@@ -10,7 +10,7 @@ function CoreValue() {
   ]);
 
   useEffect(() => {
-    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/aboutus.php")
+    fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/aboutus.php")
       .then((res) => {
         if (!res.ok) throw new Error("Network error");
         return res.json();

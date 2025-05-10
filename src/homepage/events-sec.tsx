@@ -16,7 +16,7 @@ const EventsSec: React.FC = memo(() => {
   const [slides, setSlides] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/events.php")
+    fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/events.php")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -32,7 +32,7 @@ const EventsSec: React.FC = memo(() => {
             });
 
             return {
-              image: `http://localhost${event.event_image}`,
+              image: `http://172.20.10.2${event.event_image}`,
               category: event.event_category,
               title: event.event_title,
               date: formattedDate,

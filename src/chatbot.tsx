@@ -110,7 +110,7 @@ const Chatbot: React.FC = () => {
         setIsDisplayingMessage(true);
 
         try {
-            const res = await fetch('http://localhost/tara-kabataan/tara-kabataan-backend/api/askGemini.php', {
+            const res = await fetch('http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/askGemini.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

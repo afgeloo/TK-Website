@@ -16,7 +16,7 @@ const BlogsSec: React.FC = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/blogs.php")
+    fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/blogs.php")
       .then((res) => res.json())
       .then((data) => {
         if (data.blogs) {
@@ -64,7 +64,7 @@ const BlogsSec: React.FC = () => {
                 >
                   <div className="blogs-image-container">
                     <img
-                      src={`http://localhost${image_url}`}
+                      src={`http://172.20.10.2${image_url}`}
                       alt={`Blog ${blog_id}`}
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = "./src/assets/homepage/default-blog.png";

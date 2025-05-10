@@ -76,7 +76,7 @@ const AdminBlogs = () => {
       }
   
       try {
-        const verifyRes = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/verify_old_password.php", {
+        const verifyRes = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/verify_old_password.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: profileEmail, old_password: oldPassword }),
@@ -113,7 +113,7 @@ const AdminBlogs = () => {
       }
   
       try {
-        const prevRes = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/check_previous_password.php", {
+        const prevRes = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/check_previous_password.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: profileEmail, new_password: profilePassword }),
@@ -132,7 +132,7 @@ const AdminBlogs = () => {
     const toastId = toast.loading("Sending OTP...");
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/send_otp.php", {
+      const res = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/send_otp.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: profileEmail }),
@@ -178,7 +178,7 @@ const AdminBlogs = () => {
     const toastId = toast.loading("Verifying OTP...");
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/verify_otp.php", {
+      const res = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/verify_otp.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: profileEmail, otp: otpInput }),
@@ -244,7 +244,7 @@ const AdminBlogs = () => {
       }
   
       try {
-        const prevRes = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/check_previous_password.php", {
+        const prevRes = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/check_previous_password.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: profileEmail, new_password: profilePassword }),
@@ -261,7 +261,7 @@ const AdminBlogs = () => {
     }
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_profile.php", {
+      const res = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/update_profile.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -389,7 +389,7 @@ const AdminBlogs = () => {
       more_images: editableBlogMoreImages,
     };
   
-    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_blogs.php", {
+    fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/update_blogs.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(mergedBlog),
@@ -424,7 +424,7 @@ const AdminBlogs = () => {
     formData.append("image", file);
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
+      const res = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
         method: "POST",
         body: formData,
       });
@@ -449,7 +449,7 @@ const AdminBlogs = () => {
   const confirmDeleteBlog = () => {
     if (!selectedBlog) return;
   
-    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/delete_blogs.php", {
+    fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/delete_blogs.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ blog_id: selectedBlog.blog_id }),
@@ -490,14 +490,14 @@ const AdminBlogs = () => {
     formData.append("image", file);
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
+      const res = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
         method: "POST",
         body: formData,
       });
       const data = await res.json();
   
       if (data.success && data.image_url) {
-        const imageTag = `<img src="http://localhost${data.image_url}" alt="inserted image" style="max-width:100%;" />`;
+        const imageTag = `<img src="http://172.20.10.2${data.image_url}" alt="inserted image" style="max-width:100%;" />`;
         setEditableBlog((prev) =>
           prev
             ? { ...prev, content: (prev.content || "") + `\n${imageTag}\n` }
@@ -570,7 +570,7 @@ const AdminBlogs = () => {
     }
   
     try {
-      const response = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_bulk_blog_status.php", {
+      const response = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/update_bulk_blog_status.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -610,7 +610,7 @@ const AdminBlogs = () => {
 
   const handleBulkDelete = async () => {
     try {
-      const response = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/delete_bulk_blogs.php", {
+      const response = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/delete_bulk_blogs.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ blog_ids: selectedBlogIds }),
@@ -632,7 +632,7 @@ const AdminBlogs = () => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost/tara-kabataan/tara-kabataan-backend/api/get_user_name.php?user_id=${newBlogAuthor}`)
+    fetch(`http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/get_user_name.php?user_id=${newBlogAuthor}`)
       .then(res => res.json())
       .then(data => {
         if (data.user_name) {
@@ -643,7 +643,7 @@ const AdminBlogs = () => {
   }, [newBlogAuthor]);
 
   useEffect(() => {
-    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/blogs.php")
+    fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/blogs.php")
       .then((res) => res.json())
       .then((data) => {
         if (data.blogs && Array.isArray(data.blogs)) {
@@ -669,7 +669,7 @@ const AdminBlogs = () => {
     formData.append("image", file);
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/add_new_blog_image.php", {
+      const res = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/add_new_blog_image.php", {
         method: "POST",
         body: formData,
       });
@@ -711,7 +711,7 @@ const AdminBlogs = () => {
     };
   
     try {
-      const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/add_new_blog.php", {
+      const res = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/add_new_blog.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(blogData),
@@ -723,7 +723,7 @@ const AdminBlogs = () => {
       if (data.success && data.blog) {
         setBlogs((prev) => [...prev, data.blog]);
   
-        fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/blogs.php")
+        fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/blogs.php")
           .then((res) => res.json())
           .then((data) => setBlogs(data.blogs))
           .catch((err) => console.error("Failed to refresh blogs:", err));
@@ -751,7 +751,7 @@ const AdminBlogs = () => {
       return;
     }
 
-    fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/update_blog_pin_status.php", {
+    fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/update_blog_pin_status.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ blog_id: blogId, is_pinned: currentPinned ? 0 : 1 }),
@@ -784,7 +784,7 @@ const AdminBlogs = () => {
 
   useEffect(() => {
     if (selectedBlog) {
-      fetch(`http://localhost/tara-kabataan/tara-kabataan-backend/api/get_blog_images.php?blog_id=${selectedBlog.blog_id}`)
+      fetch(`http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/get_blog_images.php?blog_id=${selectedBlog.blog_id}`)
         .then(res => res.json())
         .then(data => {
           const moreImages = data.success && Array.isArray(data.images) ? data.images : [];
@@ -1233,7 +1233,7 @@ const AdminBlogs = () => {
                     onClick={() => setSelectedBlog(blog)}
                   >
                     <img
-                      src={`http://localhost${blog.image_url}`}
+                      src={`http://172.20.10.2${blog.image_url}`}
                       alt={blog.title}
                       className="blog-grid-image"
                     />
@@ -1294,7 +1294,7 @@ const AdminBlogs = () => {
                       <button
                         className="confirm-yes"
                         onClick={() => {
-                          fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/delete_blogs.php", {
+                          fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/delete_blogs.php", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ blog_id: selectedBlog?.blog_id }),
@@ -1405,11 +1405,11 @@ const AdminBlogs = () => {
                       <p><strong>Main Image</strong></p>
                       {(isEditing ? editableBlog?.image_url : selectedBlog.image_url) ? (
                         <img
-                        src={`http://localhost${isEditing ? editableBlog?.image_url : selectedBlog.image_url}`}
+                        src={`http://172.20.10.2${isEditing ? editableBlog?.image_url : selectedBlog.image_url}`}
                         alt="Blog"
                         style={{ cursor: "zoom-in" }}
                         onClick={() =>
-                          setFullImageUrl(`http://localhost${isEditing ? editableBlog?.image_url : selectedBlog.image_url}`)
+                          setFullImageUrl(`http://172.20.10.2${isEditing ? editableBlog?.image_url : selectedBlog.image_url}`)
                         }
                       />
                       
@@ -1455,9 +1455,9 @@ const AdminBlogs = () => {
                           return (
                             <div key={i} className="blog-image-preview">
                               <img
-                                src={`http://localhost${img}`}
+                                src={`http://172.20.10.2${img}`}
                                 alt={`More Image ${i}`}
-                                onClick={() => setFullImageUrl(`http://localhost${img}`)}
+                                onClick={() => setFullImageUrl(`http://172.20.10.2${img}`)}
                                 style={{ cursor: "zoom-in" }}
                               />
                               {isLast && (
@@ -1500,7 +1500,7 @@ const AdminBlogs = () => {
                             formData.append("image", file);
 
                             try {
-                              const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
+                              const res = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
                                 method: "POST",
                                 body: formData,
                               });
@@ -1724,10 +1724,10 @@ const AdminBlogs = () => {
                     <p><strong>Main Image</strong></p>
                     {newBlogImage ? (
                       <img
-                      src={`http://localhost${newBlogImage}`}
+                      src={`http://172.20.10.2${newBlogImage}`}
                       alt="Preview"
                       style={{ maxWidth: "100%", maxHeight: "300px", borderRadius: "4px", cursor: "zoom-in" }}
-                      onClick={() => setFullImageUrl(`http://localhost${newBlogImage}`)}
+                      onClick={() => setFullImageUrl(`http://172.20.10.2${newBlogImage}`)}
                     />                    
                     ) : (
                       <div
@@ -1782,9 +1782,9 @@ const AdminBlogs = () => {
                       return (
                         <div key={i} className="blog-image-preview">
                           <img
-                            src={`http://localhost${img}`}
+                            src={`http://172.20.10.2${img}`}
                             alt={`More Image ${i}`}
-                            onClick={() => setFullImageUrl(`http://localhost${img}`)}
+                            onClick={() => setFullImageUrl(`http://172.20.10.2${img}`)}
                             style={{ cursor: "zoom-in" }}
                           />
                           {isLast && (
@@ -1825,7 +1825,7 @@ const AdminBlogs = () => {
                         formData.append("image", file);
 
                         try {
-                          const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
+                          const res = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
                             method: "POST",
                             body: formData,
                           });
@@ -1895,13 +1895,13 @@ const AdminBlogs = () => {
                             const formData = new FormData();
                             formData.append("image", file);
                             try {
-                              const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
+                              const res = await fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
                                 method: "POST",
                                 body: formData,
                               });
                               const data = await res.json();
                               if (data.success && data.image_url) {
-                                const img = `<img src="http://localhost${data.image_url}" alt="blog image" style="max-width:100%;" />`;
+                                const img = `<img src="http://172.20.10.2${data.image_url}" alt="blog image" style="max-width:100%;" />`;
                                 const div = document.getElementById("new-blog-content-editor");
                                 if (div) div.innerHTML += img;
                                 setNewBlogContent((prev) => prev + img);
@@ -1950,9 +1950,9 @@ const AdminBlogs = () => {
               >
                 <div
                   className="thumb-image-wrapper"
-                  onClick={() => setFullImageUrl(`http://localhost${img}`)}
+                  onClick={() => setFullImageUrl(`http://172.20.10.2${img}`)}
                 >
-                  <img src={`http://localhost${img}`} alt={`More Image ${index}`} />
+                  <img src={`http://172.20.10.2${img}`} alt={`More Image ${index}`} />
 
                   {(isEditing || newBlogModalOpen) && (
                   <div className="thumb-controls">
