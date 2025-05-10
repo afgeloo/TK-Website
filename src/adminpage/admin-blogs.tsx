@@ -360,10 +360,16 @@ const AdminBlogs = () => {
   .slice(0, count === -1 ? blogs.length : count);
 
   const handleEdit = () => {
-    setEditableBlog({ ...selectedBlog! });
-    setEditableBlogMoreImages(selectedBlog?.more_images || []);
-    setIsEditing(true);
-  };  
+    if (selectedBlog) {
+      setEditableBlog({ ...selectedBlog });
+      setIsEditing(true);
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.innerHTML = selectedBlog.content || "";
+        }
+      }, 0);
+    }
+  };
   
   const handleCancel = () => {
     setIsEditing(false);
@@ -650,12 +656,6 @@ const AdminBlogs = () => {
       })
       .catch((err) => console.error("Failed to fetch blogs:", err));
   }, []);
-  
-  useEffect(() => {
-    if (isEditing && textareaRef.current && editableBlog?.content) {
-      textareaRef.current.innerHTML = editableBlog.content;
-    }
-  }, [isEditing, editableBlog]);
     
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
   const [newBlogContent, setNewBlogContent] = useState("");
