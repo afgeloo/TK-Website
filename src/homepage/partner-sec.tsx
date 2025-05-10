@@ -18,7 +18,7 @@ const PartnerSec: React.FC = () => {
   }, [partnerLogos]);
 
   useEffect(() => {
-    fetch("http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/partners.php")
+    fetch("http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/partners.php")
       .then((res) => res.json())
       .then((data) => {
         const logos = (data.partners || [])
@@ -27,7 +27,7 @@ const PartnerSec: React.FC = () => {
           .map((fullPath: string) => {
             const parts = fullPath.split(/[/\\]/); 
             const filename = parts[parts.length - 1];
-            return `http://172.20.10.2/tara-kabataan/tara-kabataan-webapp/uploads/partners-images/${filename}`;
+            return `http://172.20.98.49/tara-kabataan/tara-kabataan-webapp/uploads/partners-images/${filename}`;
           });
         setPartnerLogos(logos);
       })

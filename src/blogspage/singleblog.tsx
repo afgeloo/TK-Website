@@ -34,7 +34,7 @@ function SingleBlog() {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await fetch(`http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/blogs.php?blog_id=${id}`);
+        const response = await fetch(`http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/blogs.php?blog_id=${id}`);
         const data = await response.json();
         if (data && data.blog_id) {
           setBlog(data);
@@ -53,7 +53,7 @@ function SingleBlog() {
   useEffect(() => {
     const fetchMoreImages = async () => {
       try {
-        const response = await fetch(`http://172.20.10.2/tara-kabataan/tara-kabataan-backend/api/get_blog_images.php?blog_id=${id}`);
+        const response = await fetch(`http://172.20.98.49/tara-kabataan/tara-kabataan-backend/api/get_blog_images.php?blog_id=${id}`);
         const data = await response.json();
         if (data.success && Array.isArray(data.images)) {
           setMoreImages(data.images);
@@ -106,8 +106,8 @@ function SingleBlog() {
 
   const getFullImageUrl = (path: string): string => {
     return path.startsWith("/") 
-      ? `http://172.20.10.2${path}` 
-      : `http://172.20.10.2/tara-kabataan/tara-kabataan-webapp/uploads/blogs-images/${path}`;
+      ? `http://172.20.98.49${path}` 
+      : `http://172.20.98.49/tara-kabataan/tara-kabataan-webapp/uploads/blogs-images/${path}`;
   };  
 
   return (
