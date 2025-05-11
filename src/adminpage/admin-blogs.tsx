@@ -1424,14 +1424,13 @@ const AdminBlogs = () => {
                             </button>
                           </div>
                     </div>
-                    {((isEditing && editableBlogMoreImages.length > 0) || (!isEditing && selectedBlog.more_images && selectedBlog.more_images.length > 0)) && (
-                    <div className="admin-blogs-modal-more-images">
-                      <p><strong>More Images</strong></p>
-                      {isEditing ? (
-                        editableBlogMoreImages.length > 0 ? (
+                    {(isEditing || selectedBlog.more_images) && (
+                      <div className="admin-blogs-modal-more-images">
+                        <p><strong>More Images</strong></p>
+                        {imageList.length > 0 ? (
                           <div className="blog-more-image-grid">
-                            {editableBlogMoreImages.slice(0, 4).map((img, i) => {
-                              const isLast = i === 3 && editableBlogMoreImages.length > 4;
+                            {imageList.slice(0, 4).map((img, i) => {
+                              const isLast = i === 3 && imageList.length > 4;
                               return (
                                 <div key={i} className="blog-image-preview">
                                   <img
@@ -1445,7 +1444,7 @@ const AdminBlogs = () => {
                                       className="blog-image-overlay"
                                       onClick={() => setShowAllImagesModal(true)}
                                     >
-                                      +{editableBlogMoreImages.length - 3}
+                                      +{imageList.length - 3}
                                     </div>
                                   )}
                                 </div>
@@ -1460,61 +1459,62 @@ const AdminBlogs = () => {
                               </div>
                             ))}
                           </div>
-                        )
-                      ) : selectedBlog.more_images && selectedBlog.more_images.length > 0 ? (
-                        <div className="blog-more-image-grid">
-                          {selectedBlog.more_images.slice(0, 4).map((img, i) => {
-                            const isLast = i === 3 && selectedBlog.more_images!.length > 4;
-                            return (
-                              <div key={i} className="blog-image-preview">
-                                <img
-                                  src={`http://localhost${img}`}
-                                  alt={`More Image ${i}`}
-                                  onClick={() => setFullImageUrl(`http://localhost${img}`)}
-                                  style={{ cursor: "zoom-in" }}
-                                />
-                                {isLast && (
-                                  <div
-                                    className="blog-image-overlay"
-                                    onClick={() => setShowAllImagesModal(true)}
-                                  >
-                                    +{selectedBlog.more_images!.length - 3}
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          })}
+                        )}
+                        <div className="edit-more-images-buttons">
+                          <button
+                            className="upload-btn"
+                            onClick={() => document.getElementById("edit-more-images-input")?.click()}
+                            disabled={!isEditing}
+                          >
+                            Add More
+                          </button>
+                          <button
+                            className="remove-btn"
+                            onClick={() => {
+                              if (isEditing) {
+                                setEditableBlogMoreImages([]);
+                              }
+                            }}
+                            disabled={!isEditing}
+                          >
+                            Clear All
+                          </button>
                         </div>
-                      ) : (
-                        <div className="blog-more-image-placeholder-grid">
-                          {[...Array(4)].map((_, i) => (
-                            <div key={i} className="blog-more-image-placeholder-cell">
-                              <span className="blog-placeholder-icon">+</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          style={{ display: "none" }}
+                          id="edit-more-images-input"
+                          onChange={async (e) => {
+                            const files = e.target.files;
+                            if (!files || !isEditing) return;
 
-                      <div className="admin-blogs-image-buttons">
-                        <button
-                          className="upload-btn"
-                          onClick={() => document.getElementById("edit-more-images-input")?.click()}
-                          disabled={!isEditing}
-                        >
-                          Add More
-                        </button>
-                        <button
-                          className="remove-btn"
-                          onClick={() => {
-                            if (isEditing) setEditableBlogMoreImages([]);
+                            const uploaded: string[] = [];
+
+                            for (const file of Array.from(files)) {
+                              const formData = new FormData();
+                              formData.append("image", file);
+
+                              try {
+                                const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
+                                  method: "POST",
+                                  body: formData,
+                                });
+                                const data = await res.json();
+                                if (data.success && data.image_url) {
+                                  uploaded.push(data.image_url);
+                                }
+                              } catch (err) {
+                                console.error("Upload failed:", err);
+                              }
+                            }
+
+                            setEditableBlogMoreImages((prev) => [...prev, ...uploaded]);
                           }}
-                          disabled={!isEditing}
-                        >
-                          Clear All
-                        </button>
+                        />
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
                 </div>
                 <div className="admin-blogs-modal-inner-content-bot">

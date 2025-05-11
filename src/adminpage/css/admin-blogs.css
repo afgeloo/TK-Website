@@ -690,6 +690,13 @@
     width: fit-content;
     margin-left: auto;
   }
+
+  .edit-more-images-buttons{
+    gap: 10px;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
   
   .edit-btn,
   .save-btn,
