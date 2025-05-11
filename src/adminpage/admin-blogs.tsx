@@ -781,24 +781,6 @@ const AdminBlogs = () => {
   const [showAllImagesModal, setShowAllImagesModal] = useState(false);
   const [fullImageUrl, setFullImageUrl] = useState("");
   const [editableBlogMoreImages, setEditableBlogMoreImages] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (selectedBlog) {
-      fetch(`http://localhost/tara-kabataan/tara-kabataan-backend/api/get_blog_images.php?blog_id=${selectedBlog.blog_id}`)
-        .then(res => res.json())
-        .then(data => {
-          const moreImages = data.success && Array.isArray(data.images) ? data.images : [];
-          setEditableBlogMoreImages(moreImages);
-          setSelectedBlog((prev) => prev ? { ...prev, more_images: moreImages } : prev);
-          setEditableBlog((prev) => prev ? { ...prev, more_images: moreImages } : prev);
-        })
-        .catch(err => {
-          console.error("Failed to load more blog images:", err);
-          setEditableBlogMoreImages([]);
-          setEditableBlog({ ...selectedBlog, more_images: [] });
-        });
-    }
-  }, [selectedBlog]);  
   
   const imageList = isEditing
   ? editableBlogMoreImages
@@ -1442,204 +1424,232 @@ const AdminBlogs = () => {
                             </button>
                           </div>
                     </div>
-                    <div className="admin-blogs-new-blog-modal-image">
-                      <p><strong>More Images</strong></p>
-                      {(isEditing ? editableBlogMoreImages.length > 0 : selectedBlog.more_images?.length > 0) ? (
-                      <div className="blog-more-image-grid">
-                        {(isEditing ? editableBlogMoreImages : selectedBlog.more_images).slice(0, 4).map((img, i) => {
-                          const isLast =
-                            i === 3 &&
-                            (isEditing
-                              ? editableBlogMoreImages.length > 4
-                              : selectedBlog.more_images!.length > 4);
-                          return (
-                            <div key={i} className="blog-image-preview">
-                              <img
-                                src={`http://localhost${img}`}
-                                alt={`More Image ${i}`}
-                                onClick={() => setFullImageUrl(`http://localhost${img}`)}
-                                style={{ cursor: "zoom-in" }}
-                              />
-                              {isLast && (
-                                <div
-                                  className="blog-image-overlay"
-                                  onClick={() => setShowAllImagesModal(true)}
-                                >
-                                  +{(isEditing
-                                    ? editableBlogMoreImages.length
-                                    : selectedBlog.more_images!.length) - 3}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      <div className="blog-more-image-placeholder-grid">
-                        {[...Array(4)].map((_, i) => (
-                          <div key={i} className="blog-more-image-placeholder-cell">
-                            <span className="blog-placeholder-icon">+</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        style={{ display: "none" }}
-                        id="edit-blog-more-images-input"
-                        onChange={async (e) => {
-                          const files = e.target.files;
-                          if (!files) return;
+                    {((isEditing && editableBlogMoreImages.length > 0) || (!isEditing && selectedBlog.more_images && selectedBlog.more_images.length > 0)) && (
+                    <div className="admin-blogs-modal-more-images">
+  <p><strong>More Images</strong></p>
+  {isEditing ? (
+    editableBlogMoreImages.length > 0 ? (
+      <div className="blog-more-image-grid">
+        {editableBlogMoreImages.slice(0, 4).map((img, i) => {
+          const isLast = i === 3 && editableBlogMoreImages.length > 4;
+          return (
+            <div key={i} className="blog-image-preview">
+              <img
+                src={`http://localhost${img}`}
+                alt={`More Image ${i}`}
+                onClick={() => setFullImageUrl(`http://localhost${img}`)}
+                style={{ cursor: "zoom-in" }}
+              />
+              {isLast && (
+                <div
+                  className="blog-image-overlay"
+                  onClick={() => setShowAllImagesModal(true)}
+                >
+                  +{editableBlogMoreImages.length - 3}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    ) : (
+      <div className="blog-more-image-placeholder-grid">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="blog-more-image-placeholder-cell">
+            <span className="blog-placeholder-icon">+</span>
+          </div>
+        ))}
+      </div>
+    )
+  ) : selectedBlog.more_images && selectedBlog.more_images.length > 0 ? (
+    <div className="blog-more-image-grid">
+      {selectedBlog.more_images.slice(0, 4).map((img, i) => {
+        const isLast = i === 3 && selectedBlog.more_images!.length > 4;
+        return (
+          <div key={i} className="blog-image-preview">
+            <img
+              src={`http://localhost${img}`}
+              alt={`More Image ${i}`}
+              onClick={() => setFullImageUrl(`http://localhost${img}`)}
+              style={{ cursor: "zoom-in" }}
+            />
+            {isLast && (
+              <div
+                className="blog-image-overlay"
+                onClick={() => setShowAllImagesModal(true)}
+              >
+                +{selectedBlog.more_images!.length - 3}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  ) : (
+    <div className="blog-more-image-placeholder-grid">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="blog-more-image-placeholder-cell">
+          <span className="blog-placeholder-icon">+</span>
+        </div>
+      ))}
+    </div>
+  )}
 
-                          const uploaded: string[] = [];
+  <div className="admin-blogs-image-buttons">
+    <button
+      className="upload-btn"
+      onClick={() => document.getElementById("edit-more-images-input")?.click()}
+      disabled={!isEditing}
+    >
+      Add More
+    </button>
+    <button
+      className="remove-btn"
+      onClick={() => {
+        if (isEditing) setEditableBlogMoreImages([]);
+      }}
+      disabled={!isEditing}
+    >
+      Clear All
+    </button>
+  </div>
+</div>
 
-                          for (const file of Array.from(files)) {
-                            const formData = new FormData();
-                            formData.append("image", file);
-
-                            try {
-                              const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
-                                method: "POST",
-                                body: formData,
-                              });
-                              const data = await res.json();
-                              if (data.success && data.image_url) {
-                                uploaded.push(data.image_url);
-                              }
-                            } catch (err) {
-                              console.error("Upload failed:", err);
-                            }
-                          }
-
-                          setEditableBlogMoreImages((prev) => [...prev, ...uploaded]);
-                        }}
-                      />
-                      <div className="admin-blogs-image-buttons">
-                        <button
-                          className="upload-btn"
-                          disabled={!isEditing}
-                          onClick={() => document.getElementById("edit-blog-more-images-input")?.click()}
-                        >
-                          Add More
-                        </button>
-                        <button
-                          className="remove-btn"
-                          disabled={!isEditing}
-                          onClick={() => setEditableBlogMoreImages([])}
-                        >
-                          Clear All
-                        </button>
-                      </div>
-                    </div>
+                  )}
                 </div>
                 </div>
                 <div className="admin-blogs-modal-inner-content-bot">
-                  <div className="admin-blogs-modal-desc">
+                  <div className="admin-events-inner-content-modal-desc">
                     <p><strong>Blog Content</strong></p>
                     {isEditing ? (
-                      <>
-                        <div className="admin-blogs-content-image-tools">
-                        <button
-                          className="format-btn undo"
-                          onMouseDown={(e) => {
-                            e.preventDefault(); 
-                            saveSelection();
-                          }}
-                          onClick={() => document.execCommand("undo", false)}
-                        >
-                          <FaUndo />
-                        </button>
-                        <button
-                          className="format-btn redo"
-                          onMouseDown={(e) => {
-                            e.preventDefault();
-                            saveSelection();
-                          }}
-                          onClick={() => document.execCommand("redo", false)}
-                        >
-                          <FaRedo />
-                        </button>
-                        <button
-                          className="format-btn bold"
-                          onMouseDown={(e) => {
-                            e.preventDefault();
-                            saveSelection();
-                          }}
-                          onClick={() => applyFormatting("bold")}
-                        >
-                          <FaBold />
-                        </button>
-                        <button
-                          className="format-btn italic"
-                          onMouseDown={(e) => {
-                            e.preventDefault();
-                            saveSelection();
-                          }}
-                          onClick={() => applyFormatting("italic")}
-                        >
-                          <FaItalic />
-                        </button>
-                        <button
-                          className="format-btn underline"
-                          onMouseDown={(e) => {
-                            e.preventDefault();
-                            saveSelection();
-                          }}
-                          onClick={() => applyFormatting("underline")}
-                        >
-                          <FaUnderline />
-                        </button>
-                        <button
-                          className="format-btn bullet"
-                          onMouseDown={(e) => {
-                            e.preventDefault();
-                            saveSelection();
-                          }}
-                          onClick={applyList}
-                        >
-                          <FaListUl />
-                        </button>
-                        <button
-                          className="format-btn image"
-                          onMouseDown={(e) => {
-                            e.preventDefault();
-                            saveSelection();
-                          }}
-                          onClick={() => document.getElementById("content-image-input")?.click()}
-                        >
-                          <FaImage />
-                        </button>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          id="content-image-input"
-                          style={{ display: "none" }}
-                          onChange={handleContentImageUpload}
-                        />
-                        </div>
-                        <div
-                          ref={textareaRef}
-                          className="admin-blogs-modal-desc-content editable"
-                          contentEditable
-                          onBlur={() => {
-                            if (textareaRef.current) {
-                              const updatedContent = textareaRef.current.innerHTML;
-                              setEditableBlog(prev =>
-                                prev ? { ...prev, content: updatedContent } : prev
-                              );
+                    <>
+                      <div className="admin-blogs-content-image-tools">
+                      <button
+                        className="format-btn undo"
+                        onMouseDown={(e) => {
+                          e.preventDefault(); 
+                          saveSelection();
+                        }}
+                        onClick={() => document.execCommand("undo", false)}
+                      >
+                        <FaUndo />
+                      </button>
+                      <button
+                        className="format-btn redo"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          saveSelection();
+                        }}
+                        onClick={() => document.execCommand("redo", false)}
+                      >
+                        <FaRedo />
+                      </button>
+                      <button
+                        className="format-btn bold"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          saveSelection();
+                        }}
+                        onClick={() => applyFormatting("bold")}
+                      >
+                        <FaBold />
+                      </button>
+                      <button
+                        className="format-btn italic"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          saveSelection();
+                        }}
+                        onClick={() => applyFormatting("italic")}
+                      >
+                        <FaItalic />
+                      </button>
+                      <button
+                        className="format-btn underline"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          saveSelection();
+                        }}
+                        onClick={() => applyFormatting("underline")}
+                      >
+                        <FaUnderline />
+                      </button>
+                      <button
+                        className="format-btn bullet"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          saveSelection();
+                        }}
+                        onClick={applyList}
+                      >
+                        <FaListUl />
+                      </button>
+                      <button
+                        className="format-btn image"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => document.getElementById("new-content-image-input")?.click()}
+                      >
+                        <FaImage />
+                      </button>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        id="new-content-image-input"
+                        style={{ display: "none" }}
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+
+                          const formData = new FormData();
+                          formData.append("image", file);
+
+                          try {
+                            const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_event_image.php", {
+                              method: "POST",
+                              body: formData,
+                            });
+
+                            const data = await res.json();
+                            if (data.success && data.image_url) {
+                              const img = `<img src="http://localhost${data.image_url}" alt="event image" style="max-width:100%; margin: 10px 0; display:block;" />`;
+                              const div = document.getElementById("new-event-content-editor");
+                              if (div) {
+                                div.innerHTML += img;
+                                setEditableBlog(prev => prev ? { ...prev, content: div.innerHTML } : prev);
+                              }
+                            } else {
+                              alert("Image upload failed.");
                             }
-                          }}
-                        />
-                      </>
-                    ) : (
-                      <div className="admin-blogs-modal-desc-content">
-                        <div className="admin-blogs-content-images-wrapper">
-                          <div dangerouslySetInnerHTML={{ __html: selectedBlog.content }} />
-                        </div>
+                          } catch (err) {
+                            console.error("Upload failed:", err);
+                            alert("An error occurred during upload.");
+                          }
+                        }}
+                      />
                       </div>
-                    )}
+                      <div
+                        id="new-event-content-editor"
+                        ref={textareaRef}
+                        className="admin-blogs-modal-desc-content editable"
+                        contentEditable
+                        onBlur={() => {
+                          if (textareaRef.current) {
+                            const updatedContent = textareaRef.current.innerHTML;
+                            setEditableBlog(prev =>
+                              prev ? { ...prev, content: updatedContent } : prev
+                            );
+                          }
+                        }}
+                      />
+
+                    </>
+                  ) : (
+                    <div className="admin-blogs-modal-desc-content">
+                      <div className="admin-blogs-content-images-wrapper">
+                        <div dangerouslySetInnerHTML={{ __html: selectedBlog.content }} />
+                      </div>
+                    </div>
+                  )}
                   </div>
                 </div>
               </div>
