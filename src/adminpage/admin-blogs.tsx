@@ -1426,95 +1426,94 @@ const AdminBlogs = () => {
                     </div>
                     {((isEditing && editableBlogMoreImages.length > 0) || (!isEditing && selectedBlog.more_images && selectedBlog.more_images.length > 0)) && (
                     <div className="admin-blogs-modal-more-images">
-  <p><strong>More Images</strong></p>
-  {isEditing ? (
-    editableBlogMoreImages.length > 0 ? (
-      <div className="blog-more-image-grid">
-        {editableBlogMoreImages.slice(0, 4).map((img, i) => {
-          const isLast = i === 3 && editableBlogMoreImages.length > 4;
-          return (
-            <div key={i} className="blog-image-preview">
-              <img
-                src={`http://localhost${img}`}
-                alt={`More Image ${i}`}
-                onClick={() => setFullImageUrl(`http://localhost${img}`)}
-                style={{ cursor: "zoom-in" }}
-              />
-              {isLast && (
-                <div
-                  className="blog-image-overlay"
-                  onClick={() => setShowAllImagesModal(true)}
-                >
-                  +{editableBlogMoreImages.length - 3}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    ) : (
-      <div className="blog-more-image-placeholder-grid">
-        {[...Array(4)].map((_, i) => (
-          <div key={i} className="blog-more-image-placeholder-cell">
-            <span className="blog-placeholder-icon">+</span>
-          </div>
-        ))}
-      </div>
-    )
-  ) : selectedBlog.more_images && selectedBlog.more_images.length > 0 ? (
-    <div className="blog-more-image-grid">
-      {selectedBlog.more_images.slice(0, 4).map((img, i) => {
-        const isLast = i === 3 && selectedBlog.more_images!.length > 4;
-        return (
-          <div key={i} className="blog-image-preview">
-            <img
-              src={`http://localhost${img}`}
-              alt={`More Image ${i}`}
-              onClick={() => setFullImageUrl(`http://localhost${img}`)}
-              style={{ cursor: "zoom-in" }}
-            />
-            {isLast && (
-              <div
-                className="blog-image-overlay"
-                onClick={() => setShowAllImagesModal(true)}
-              >
-                +{selectedBlog.more_images!.length - 3}
-              </div>
-            )}
-          </div>
-        );
-      })}
-    </div>
-  ) : (
-    <div className="blog-more-image-placeholder-grid">
-      {[...Array(4)].map((_, i) => (
-        <div key={i} className="blog-more-image-placeholder-cell">
-          <span className="blog-placeholder-icon">+</span>
-        </div>
-      ))}
-    </div>
-  )}
+                      <p><strong>More Images</strong></p>
+                      {isEditing ? (
+                        editableBlogMoreImages.length > 0 ? (
+                          <div className="blog-more-image-grid">
+                            {editableBlogMoreImages.slice(0, 4).map((img, i) => {
+                              const isLast = i === 3 && editableBlogMoreImages.length > 4;
+                              return (
+                                <div key={i} className="blog-image-preview">
+                                  <img
+                                    src={`http://localhost${img}`}
+                                    alt={`More Image ${i}`}
+                                    onClick={() => setFullImageUrl(`http://localhost${img}`)}
+                                    style={{ cursor: "zoom-in" }}
+                                  />
+                                  {isLast && (
+                                    <div
+                                      className="blog-image-overlay"
+                                      onClick={() => setShowAllImagesModal(true)}
+                                    >
+                                      +{editableBlogMoreImages.length - 3}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          <div className="blog-more-image-placeholder-grid">
+                            {[...Array(4)].map((_, i) => (
+                              <div key={i} className="blog-more-image-placeholder-cell">
+                                <span className="blog-placeholder-icon">+</span>
+                              </div>
+                            ))}
+                          </div>
+                        )
+                      ) : selectedBlog.more_images && selectedBlog.more_images.length > 0 ? (
+                        <div className="blog-more-image-grid">
+                          {selectedBlog.more_images.slice(0, 4).map((img, i) => {
+                            const isLast = i === 3 && selectedBlog.more_images!.length > 4;
+                            return (
+                              <div key={i} className="blog-image-preview">
+                                <img
+                                  src={`http://localhost${img}`}
+                                  alt={`More Image ${i}`}
+                                  onClick={() => setFullImageUrl(`http://localhost${img}`)}
+                                  style={{ cursor: "zoom-in" }}
+                                />
+                                {isLast && (
+                                  <div
+                                    className="blog-image-overlay"
+                                    onClick={() => setShowAllImagesModal(true)}
+                                  >
+                                    +{selectedBlog.more_images!.length - 3}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <div className="blog-more-image-placeholder-grid">
+                          {[...Array(4)].map((_, i) => (
+                            <div key={i} className="blog-more-image-placeholder-cell">
+                              <span className="blog-placeholder-icon">+</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
 
-  <div className="admin-blogs-image-buttons">
-    <button
-      className="upload-btn"
-      onClick={() => document.getElementById("edit-more-images-input")?.click()}
-      disabled={!isEditing}
-    >
-      Add More
-    </button>
-    <button
-      className="remove-btn"
-      onClick={() => {
-        if (isEditing) setEditableBlogMoreImages([]);
-      }}
-      disabled={!isEditing}
-    >
-      Clear All
-    </button>
-  </div>
-</div>
-
+                      <div className="admin-blogs-image-buttons">
+                        <button
+                          className="upload-btn"
+                          onClick={() => document.getElementById("edit-more-images-input")?.click()}
+                          disabled={!isEditing}
+                        >
+                          Add More
+                        </button>
+                        <button
+                          className="remove-btn"
+                          onClick={() => {
+                            if (isEditing) setEditableBlogMoreImages([]);
+                          }}
+                          disabled={!isEditing}
+                        >
+                          Clear All
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </div>
                 </div>
