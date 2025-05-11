@@ -1797,101 +1797,93 @@ const AdminBlogs = () => {
                     </div>
                   </div>
                  <div className="admin-blogs-new-blog-modal-image">
-  <p><strong>More Images</strong></p>
-  <div className="blog-more-image-grid">
-    {[...Array(4)].map((_, i) => {
-      const image = newBlogMoreImages[i];
-      const totalImages = newBlogMoreImages.length;
-      const isLast = i === 3 && totalImages > 4;
-
-      if (image) {
-        return (
-          <div key={i} className="blog-image-preview">
-            <img
-              src={`http://localhost${image}`}
-              alt={`More Image ${i}`}
-              onClick={() => setFullImageUrl(`http://localhost${image}`)}
-              style={{ cursor: "zoom-in" }}
-            />
-            {isLast && (
-              <div
-                className="blog-image-overlay"
-                onClick={() => setShowAllImagesModal(true)}
-              >
-                +{totalImages - 3}
-              </div>
-            )}
-          </div>
-        );
-      } else {
-        return (
-          <label
-            key={i}
-            htmlFor="new-blog-more-images-input"
-            className="blog-more-image-placeholder-cell clickable"
-          >
-            <span className="blog-placeholder-icon">+</span>
-          </label>
-        );
-      }
-    })}
-  </div>
-
-  <div className="edit-more-images-buttons">
-    <button
-      className="upload-btn"
-      onClick={() =>
-        document.getElementById("new-blog-more-images-input")?.click()
-      }
-    >
-      Add More
-    </button>
-    <button
-      className="remove-btn"
-      onClick={() => setNewBlogMoreImages([])}
-    >
-      Clear All
-    </button>
-  </div>
-
-  <input
-    type="file"
-    accept="image/*"
-    multiple
-    style={{ display: "none" }}
-    id="new-blog-more-images-input"
-    onChange={async (e) => {
-      const files = e.target.files;
-      if (!files) return;
-
-      const uploaded: string[] = [];
-
-      for (const file of Array.from(files)) {
-        const formData = new FormData();
-        formData.append("image", file);
-
-        try {
-          const res = await fetch(
-            "http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php",
-            {
-              method: "POST",
-              body: formData,
-            }
-          );
-          const data = await res.json();
-          if (data.success && data.image_url) {
-            uploaded.push(data.image_url);
-          }
-        } catch (err) {
-          console.error("Upload failed:", err);
-        }
-      }
-
-      setNewBlogMoreImages((prev) => [...prev, ...uploaded]);
-    }}
-  />
-</div>
-
+                    <p><strong>More Images</strong></p>
+                    <div className="blog-more-image-grid">
+                      {[...Array(4)].map((_, i) => {
+                        const image = newBlogMoreImages[i];
+                        const totalImages = newBlogMoreImages.length;
+                        const isLast = i === 3 && totalImages > 4;
+                        if (image) {
+                          return (
+                            <div key={i} className="blog-image-preview">
+                              <img
+                                src={`http://localhost${image}`}
+                                alt={`More Image ${i}`}
+                                onClick={() => setFullImageUrl(`http://localhost${image}`)}
+                                style={{ cursor: "zoom-in" }}
+                              />
+                              {isLast && (
+                                <div
+                                  className="blog-image-overlay"
+                                  onClick={() => setShowAllImagesModal(true)}
+                                >
+                                  +{totalImages - 3}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        } else {
+                          return (
+                            <label
+                              key={i}
+                              htmlFor="new-blog-more-images-input"
+                              className="blog-more-image-placeholder-cell clickable"
+                            >
+                              <span className="blog-placeholder-icon">+</span>
+                            </label>
+                          );
+                        }
+                      })}
+                    </div>
+                    <div className="edit-more-images-buttons">
+                      <button
+                        className="upload-btn"
+                        onClick={() =>
+                          document.getElementById("new-blog-more-images-input")?.click()
+                        }
+                      >
+                        Add More
+                      </button>
+                      <button
+                        className="remove-btn"
+                        onClick={() => setNewBlogMoreImages([])}
+                      >
+                        Clear All
+                      </button>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      style={{ display: "none" }}
+                      id="new-blog-more-images-input"
+                      onChange={async (e) => {
+                        const files = e.target.files;
+                        if (!files) return;
+                        const uploaded: string[] = [];
+                        for (const file of Array.from(files)) {
+                          const formData = new FormData();
+                          formData.append("image", file);
+                          try {
+                            const res = await fetch(
+                              "http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php",
+                              {
+                                method: "POST",
+                                body: formData,
+                              }
+                            );
+                            const data = await res.json();
+                            if (data.success && data.image_url) {
+                              uploaded.push(data.image_url);
+                            }
+                          } catch (err) {
+                            console.error("Upload failed:", err);
+                          }
+                        }
+                        setNewBlogMoreImages((prev) => [...prev, ...uploaded]);
+                      }}
+                    />
+                  </div>
                 </div>
                 </div>
                 <div className="admin-blogs-new-blog-modal-inner-content-bot">
