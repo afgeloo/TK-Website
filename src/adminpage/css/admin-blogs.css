@@ -1572,7 +1572,7 @@
 }
 
 .blog-more-image-placeholder-cell {
-  height: 100px;
+  height: 120px;
   border: 2px dashed #ddd;
   border-radius: 8px;
   background: linear-gradient(135deg, #fafafa, #f1f1f1);
@@ -1583,6 +1583,7 @@
   font-size: 28px;
   font-style: italic;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .blog-more-image-placeholder-cell:hover {

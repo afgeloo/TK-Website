@@ -1427,16 +1427,23 @@ const AdminBlogs = () => {
                     {(isEditing || selectedBlog.more_images) && (
                       <div className="admin-blogs-modal-more-images">
                         <p><strong>More Images</strong></p>
-                        {imageList.length > 0 ? (
-                          <div className="blog-more-image-grid">
-                            {imageList.slice(0, 4).map((img, i) => {
-                              const isLast = i === 3 && imageList.length > 4;
+                       <div className="blog-more-image-grid">
+                          {[...Array(4)].map((_, i) => {
+                            const image = isEditing
+                              ? editableBlogMoreImages[i]
+                              : selectedBlog.more_images?.[i];
+                            const totalImages = isEditing
+                              ? editableBlogMoreImages.length
+                              : selectedBlog.more_images?.length || 0;
+                            const isLast = i === 3 && totalImages > 4;
+
+                            if (image) {
                               return (
                                 <div key={i} className="blog-image-preview">
                                   <img
-                                    src={`http://localhost${img}`}
+                                    src={`http://localhost${image}`}
                                     alt={`More Image ${i}`}
-                                    onClick={() => setFullImageUrl(`http://localhost${img}`)}
+                                    onClick={() => setFullImageUrl(`http://localhost${image}`)}
                                     style={{ cursor: "zoom-in" }}
                                   />
                                   {isLast && (
@@ -1444,22 +1451,31 @@ const AdminBlogs = () => {
                                       className="blog-image-overlay"
                                       onClick={() => setShowAllImagesModal(true)}
                                     >
-                                      +{imageList.length - 3}
+                                      +{totalImages - 3}
                                     </div>
                                   )}
                                 </div>
                               );
-                            })}
-                          </div>
-                        ) : (
-                          <div className="blog-more-image-placeholder-grid">
-                            {[...Array(4)].map((_, i) => (
-                              <div key={i} className="blog-more-image-placeholder-cell">
-                                <span className="blog-placeholder-icon">+</span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                            } else {
+                              return isEditing ? (
+                                <label
+                                  key={i}
+                                  htmlFor="edit-more-images-input"
+                                  className="blog-more-image-placeholder-cell clickable"
+                                >
+                                  <span className="blog-placeholder-icon">+</span>
+                                </label>
+                              ) : (
+                                <div
+                                  key={i}
+                                  className="blog-more-image-placeholder-cell"
+                                >
+                                  <span className="blog-placeholder-icon">+</span>
+                                </div>
+                              );
+                            }
+                          })}
+                        </div>
                         <div className="edit-more-images-buttons">
                           <button
                             className="upload-btn"
@@ -1780,91 +1796,102 @@ const AdminBlogs = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="admin-blogs-new-blog-modal-image">
-                  <p><strong>More Images</strong></p>
-                  {newBlogMoreImages.length > 0 ? (
-                    <div className="blog-more-image-grid">
-                    {[...newBlogMoreImages]
-                    .slice(0, 4)
-                    .map((img, i) => {
-                      const isLast = i === 3 && newBlogMoreImages.length > 4;
-                      return (
-                        <div key={i} className="blog-image-preview">
-                          <img
-                            src={`http://localhost${img}`}
-                            alt={`More Image ${i}`}
-                            onClick={() => setFullImageUrl(`http://localhost${img}`)}
-                            style={{ cursor: "zoom-in" }}
-                          />
-                          {isLast && (
-                            <div
-                              className="blog-image-overlay"
-                              onClick={() => setShowAllImagesModal(true)}
-                            >
-                              +{newBlogMoreImages.length - 3}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>                  
-                  ) : (
-                    <div className="blog-more-image-placeholder-grid">
-                      {[...Array(4)].map((_, i) => (
-                        <div key={i} className="blog-more-image-placeholder-cell">
-                          <span className="blog-placeholder-icon">+</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    style={{ display: "none" }}
-                    id="new-blog-more-images-input"
-                    onChange={async (e) => {
-                      const files = e.target.files;
-                      if (!files) return;
+                 <div className="admin-blogs-new-blog-modal-image">
+  <p><strong>More Images</strong></p>
+  <div className="blog-more-image-grid">
+    {[...Array(4)].map((_, i) => {
+      const image = newBlogMoreImages[i];
+      const totalImages = newBlogMoreImages.length;
+      const isLast = i === 3 && totalImages > 4;
 
-                      const uploaded: string[] = [];
+      if (image) {
+        return (
+          <div key={i} className="blog-image-preview">
+            <img
+              src={`http://localhost${image}`}
+              alt={`More Image ${i}`}
+              onClick={() => setFullImageUrl(`http://localhost${image}`)}
+              style={{ cursor: "zoom-in" }}
+            />
+            {isLast && (
+              <div
+                className="blog-image-overlay"
+                onClick={() => setShowAllImagesModal(true)}
+              >
+                +{totalImages - 3}
+              </div>
+            )}
+          </div>
+        );
+      } else {
+        return (
+          <label
+            key={i}
+            htmlFor="new-blog-more-images-input"
+            className="blog-more-image-placeholder-cell clickable"
+          >
+            <span className="blog-placeholder-icon">+</span>
+          </label>
+        );
+      }
+    })}
+  </div>
 
-                      for (const file of Array.from(files)) {
-                        const formData = new FormData();
-                        formData.append("image", file);
+  <div className="edit-more-images-buttons">
+    <button
+      className="upload-btn"
+      onClick={() =>
+        document.getElementById("new-blog-more-images-input")?.click()
+      }
+    >
+      Add More
+    </button>
+    <button
+      className="remove-btn"
+      onClick={() => setNewBlogMoreImages([])}
+    >
+      Clear All
+    </button>
+  </div>
 
-                        try {
-                          const res = await fetch("http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php", {
-                            method: "POST",
-                            body: formData,
-                          });
-                          const data = await res.json();
-                          if (data.success && data.image_url) {
-                            uploaded.push(data.image_url);
-                          }
-                        } catch (err) {
-                          console.error("Upload failed:", err);
-                        }
-                      }
+  <input
+    type="file"
+    accept="image/*"
+    multiple
+    style={{ display: "none" }}
+    id="new-blog-more-images-input"
+    onChange={async (e) => {
+      const files = e.target.files;
+      if (!files) return;
 
-                      setNewBlogMoreImages((prev) => [...prev, ...uploaded]);
-                    }}
-                  />
-                  <div className="admin-blogs-image-buttons">
-                    <button
-                      className="upload-btn"
-                      onClick={() => document.getElementById("new-blog-more-images-input")?.click()}
-                    >
-                      Add More
-                    </button>
-                    <button
-                      className="remove-btn"
-                      onClick={() => setNewBlogMoreImages([])}
-                    >
-                      Clear All
-                    </button>
-                  </div>
-                </div>
+      const uploaded: string[] = [];
+
+      for (const file of Array.from(files)) {
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+          const res = await fetch(
+            "http://localhost/tara-kabataan/tara-kabataan-backend/api/upload_blog_image.php",
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+          const data = await res.json();
+          if (data.success && data.image_url) {
+            uploaded.push(data.image_url);
+          }
+        } catch (err) {
+          console.error("Upload failed:", err);
+        }
+      }
+
+      setNewBlogMoreImages((prev) => [...prev, ...uploaded]);
+    }}
+  />
+</div>
+
                 </div>
                 </div>
                 <div className="admin-blogs-new-blog-modal-inner-content-bot">
